@@ -9,40 +9,77 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    protected $table = 'users';
+
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function userRole()
+    {
+        return $this->belongsTo(UserRole::class, 'role');
+    }
+
+    public function projectRoleAssignments()
+    {
+        return $this->hasMany(ManagementProjectRoleAssignment::class, 'user_id');
+    }
+
+    public function projectProgressLogs()
+    {
+        return $this->hasMany(ManagementProjectProgress::class, 'user_id');
+    }
+
+    public function inventoryUpdates()
+    {
+        return $this->hasMany(ProductInventory::class, 'last_update_by');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'last_updated_by');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class, 'last_updated_by');
+    }
+
+    public function interested_products()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'interested_products',
+            'user_id',
+            'product_id'
+        );
+    }
+
+    public function interested_services()
+    {
+        return $this->belongsToMany(
+            Service::class,
+            'interested_services',
+            'user_id',
+            'service_id'
+        );
     }
 }
