@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB; // Don't forget to import DB
 
 return new class extends Migration
 {
@@ -11,12 +12,32 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 1. Create the Roles table FIRST
+        Schema::create('user_roles', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique(); // 'Admin', 'Employee'
+            $table->timestamps();
+        });
+
+        // 2. Seed the default roles immediately so ID 1 and 2 exist
+        DB::table('user_roles')->insert([
+            ['name' => 'Admin', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Employee', 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
+        // 3. Create the Users table
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            
+            // --- REVISED ROLE COLUMN ---
+            // Replaces: $table->string('role')->default('user');
+            // We set default to '2' (Employee) assuming the seed above ran correctly.
+            $table->foreignId('role_id')->default(2)->constrained('user_roles');
+            
             $table->rememberToken();
             $table->timestamps();
         });
@@ -43,6 +64,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('user_roles'); // Drop roles as well
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

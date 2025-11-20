@@ -18,7 +18,7 @@
                 <div class="hidden md:ml-10 md:flex md:space-x-4">
                     
                     {{-- === ADMIN LINKS === --}}
-                    @if(Auth::user() && Auth::user()->userRole->name === 'Admin')
+                    @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')
                         <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition">
                             Dashboard
                         </a>
@@ -51,7 +51,7 @@
                     @endif
 
                     {{-- === EMPLOYEE LINKS === --}}
-                    @if(Auth::user() && Auth::user()->userRole->name === 'Employee')
+                    @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Employee')
                         <a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition">
                             <i class="fa-solid fa-briefcase mr-1"></i> My Projects
                         </a>
@@ -64,32 +64,35 @@
                 </div>
             </div>
 
-            {{-- RIGHT: User Dropdown --}}
-            <div class="hidden md:flex items-center">
-                <div class="ml-3 relative group">
-                    <div class="flex items-center cursor-pointer text-gray-300 hover:text-white transition">
-                        <div class="text-right mr-3">
-                            <div class="text-sm font-medium text-white">{{ Auth::user()->name }}</div>
-                            <div class="text-xs text-gray-400">{{ Auth::user()->userRole->name ?? 'User' }}</div>
+            {{-- RIGHT: User Dropdown (ONLY SHOW IF LOGGED IN) --}}
+            @auth
+                <div class="hidden md:flex items-center">
+                    <div class="ml-3 relative group">
+                        <div class="flex items-center cursor-pointer text-gray-300 hover:text-white transition">
+                            <div class="text-right mr-3">
+                                <div class="text-sm font-medium text-white">{{ Auth::user()->name }}</div>
+                                <div class="text-xs text-gray-400">{{ Auth::user()->userRole->name ?? 'User' }}</div>
+                            </div>
+                            <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold border-2 border-gray-700">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
                         </div>
-                        <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold border-2 border-gray-700">
-                            {{ substr(Auth::user()->name, 0, 1) }}
-                        </div>
-                    </div>
-                    
-                    {{-- Dropdown Content --}}
-                    <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
-                        <div class="py-1">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-medium">
+                        
+                        {{-- Dropdown Content --}}
+                        <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right">
+                            <div class="py-1">
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"
+                                    class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-medium">
                                     Log Out
-                                </a>
-                            </form>
+                                    </a>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endauth
 
             {{-- MOBILE: Hamburger Button --}}
             <div class="-mr-2 flex md:hidden">
@@ -108,17 +111,18 @@
     <div class="hidden md:hidden bg-gray-800" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-700">
             
-            @if(Auth::user() && Auth::user()->userRole->name === 'Admin')
+            @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')
                 <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900">Dashboard</a>
                 <a href="{{ route('admin.users.list') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Users</a>
                 <a href="{{ route('projects.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-blue-300 hover:text-white hover:bg-blue-800">Internal Ops</a>
             @endif
 
-            @if(Auth::user() && Auth::user()->userRole->name === 'Employee')
+            @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Employee')
                 <a href="{{ route('projects.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900">My Projects</a>
                 <a href="{{ route('inventory.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Inventory</a>
             @endif
 
+            @auth
             <div class="border-t border-gray-700 mt-4 pt-4">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -127,6 +131,7 @@
                     </button>
                 </form>
             </div>
+            @endauth
         </div>
     </div>
 </nav>
