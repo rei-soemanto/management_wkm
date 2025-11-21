@@ -8,17 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // 1. Product Inventories (Central Stock)
         Schema::create('product_inventories', function (Blueprint $table) {
             $table->id();
-            // Links to existing 'products' table
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('stock')->default(0);
             $table->foreignId('last_update_by')->constrained('users');
             $table->timestamps();
         });
 
-        // 2. Product Project Usages (Allocation)
         Schema::create('product_project_usages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('management_project_id')->constrained('management_projects')->onDelete('cascade');

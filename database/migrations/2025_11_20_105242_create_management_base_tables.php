@@ -9,7 +9,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // 1. Clients Table
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -18,14 +17,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // 2. Status Table
         Schema::create('status', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
         });
 
-        // Seed Statuses
         DB::table('status')->insert([
             ['name' => 'Pending', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'In Progress', 'created_at' => now(), 'updated_at' => now()],
@@ -33,7 +30,6 @@ return new class extends Migration
             ['name' => 'Cancelled', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        // 3. Management Projects Table
         Schema::create('management_projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('status_id')->constrained('status');

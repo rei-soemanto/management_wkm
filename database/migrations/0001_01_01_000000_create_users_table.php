@@ -3,7 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB; // Don't forget to import DB
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -12,35 +13,66 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 1. Create the Roles table FIRST
         Schema::create('user_roles', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); // 'Admin', 'Employee'
+            $table->string('name')->unique();
             $table->timestamps();
         });
 
-        // 2. Seed the default roles immediately so ID 1 and 2 exist
         DB::table('user_roles')->insert([
             ['name' => 'Admin', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Employee', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'User', 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        // 3. Create the Users table
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            
-            // --- REVISED ROLE COLUMN ---
-            // Replaces: $table->string('role')->default('user');
-            // We set default to '2' (Employee) assuming the seed above ran correctly.
             $table->foreignId('role_id')->default(2)->constrained('user_roles');
-            
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::table('users')->insert([
+            [
+                'name' => 'Rei Soemanto',
+                'email' => 'reresoemanto@gmail.com',
+                'password' => Hash::make('@Cc2061355'),
+                'role_id' => 1,
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Antonius Soemanto',
+                'email' => 'antonius.soemanto.as@gmail.com',
+                'password' => Hash::make('Azmaria1'),
+                'role_id' => 1,
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Valentinus Soemanto',
+                'email' => 'wraksa.kencana.mukti@gmail.com',
+                'password' => Hash::make('@Thewkm131428'),
+                'role_id' => 1,
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Office WKM',
+                'email' => 'office@thewkm.com',
+                'password' => Hash::make('@WKMukti131428'),
+                'role_id' => 1,
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Admin WKM',
+                'email' => 'admin@thewkm.com',
+                'password' => Hash::make('@WKM131428'),
+                'role_id' => 1,
+                'email_verified_at' => now(),
+            ],
+        ]);
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();

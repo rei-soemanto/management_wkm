@@ -27,25 +27,25 @@
                         'title' => 'Total User Interest',
                         'value' => $user_count,
                         'route' => 'admin.users.list',
-                        'btn_color' => 'bg-yellow-500 hover:bg-yellow-600 text-white',
+                        'btn_color' => 'bg-[#e0bb35] hover:bg-[#e3cf85] text-[#0f0f0f]',
                     ],
                     [
                         'title' => 'Total Products',
                         'value' => $product_count,
                         'route' => 'admin.products.list',
-                        'btn_color' => 'bg-yellow-500 hover:bg-yellow-600 text-white',
+                        'btn_color' => 'bg-[#e0bb35] hover:bg-[#e3cf85] text-[#0f0f0f]',
                     ],
                     [
                         'title' => 'Total Services',
                         'value' => $service_count,
                         'route' => 'admin.services.list',
-                        'btn_color' => 'bg-yellow-500 hover:bg-yellow-600 text-white',
+                        'btn_color' => 'bg-[#e0bb35] hover:bg-[#e3cf85] text-[#0f0f0f]',
                     ],
                     [
                         'title' => 'Total Projects',
                         'value' => $project_count,
                         'route' => 'admin.projects.list',
-                        'btn_color' => 'bg-yellow-500 hover:bg-yellow-600 text-white',
+                        'btn_color' => 'bg-[#e0bb35] hover:bg-[#e3cf85] text-[#0f0f0f]',
                     ],
                 ];
             @endphp
@@ -73,13 +73,13 @@
                     <h5 class="text-lg font-bold text-gray-800 mb-6">Quick Actions</h5>
                     
                     <div class="flex flex-col space-y-3">
-                        <a href="{{ route('admin.products.create') }}" class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-center shadow-sm transition-colors">
+                        <a href="{{ route('admin.products.create') }}" class="w-full py-2 px-4 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-lg text-center shadow-sm transition-colors">
                             Add Product
                         </a>
-                        <a href="{{ route('admin.services.create') }}" class="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-center shadow-sm transition-colors">
+                        <a href="{{ route('admin.services.create') }}" class="w-full py-2 px-4 bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg text-center shadow-sm transition-colors">
                             Add Service
                         </a>
-                        <a href="{{ route('admin.projects.create') }}" class="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-center shadow-sm transition-colors">
+                        <a href="{{ route('admin.projects.create') }}" class="w-full py-2 px-4 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-lg text-center shadow-sm transition-colors">
                             Add Project
                         </a>
                     </div>

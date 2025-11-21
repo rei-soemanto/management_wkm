@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,7 +15,13 @@ return new class extends Migration
         Schema::create('service_categories', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('name');
+            $table->timestamps();
         });
+
+        DB::table('service_categories')->insert([
+            ['name' => 'Maintenance', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Engineering', 'created_at' => now(), 'updated_at' => now()],
+        ]);
     }
 
     /**
