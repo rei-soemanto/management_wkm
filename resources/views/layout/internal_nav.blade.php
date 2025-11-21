@@ -134,8 +134,7 @@
             <div class="border-t border-gray-700 mt-4 pt-4">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"
-                        class="block px-4 py-2 text-sm text-white hover:bg-[#e0bb35] hover:text-[#0f0f0f] font-medium">
+                    <a href="{{ route('users.index') }}" class="block px-4 py-2 text-sm text-white hover:bg-[#e0bb35] hover:text-[#0f0f0f] font-medium">
                         Account Management
                     </a>
                     <button type="submit" class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-[#400000]">
