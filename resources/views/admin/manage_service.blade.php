@@ -31,7 +31,7 @@
                             
                             <div class="mb-6">
                                 <label for="category_id" class="block text-sm font-bold text-gray-700 mb-2">Category</label>
-                                <select id="category_id" name="category_id" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm px-4 py-2" required>
+                                <select id="category_id" name="category_id" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 sm:text-sm px-4 py-2" required>
                                     <option value="">Select a category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" 
@@ -44,11 +44,11 @@
 
                             <div class="mb-6">
                                 <label for="description" class="block text-sm font-bold text-gray-700 mb-2">Description</label>
-                                <textarea id="description" name="description" rows="5" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm px-4 py-2">{{ old('description', $service_to_edit['description'] ?? '') }}</textarea>
+                                <textarea id="description" name="description" rows="5" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-700 focus:ring-green-700 sm:text-sm px-4 py-2">{{ old('description', $service_to_edit['description'] ?? '') }}</textarea>
                             </div>
 
                             <div class="flex items-center gap-4">
-                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all">
+                                <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all">
                                     {{ $action === 'edit' ? 'Update' : 'Save' }} Service
                                 </button>
                                 <a href="{{ route('admin.services.list') }}" class="text-gray-600 hover:text-gray-800 font-medium underline">Cancel</a>
@@ -62,7 +62,7 @@
         
             <div class="flex flex-col md:flex-row justify-between items-center mb-8">
                 <h1 class="text-3xl md:text-4xl font-bold text-white drop-shadow-sm">Manage Services</h1>
-                <a href="{{ route('admin.services.create') }}" class="mt-4 md:mt-0 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all">
+                <a href="{{ route('admin.services.create') }}" class="mt-4 md:mt-0 bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all">
                     Add New Service
                 </a>
             </div>

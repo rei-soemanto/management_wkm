@@ -73,8 +73,12 @@
                                 <div class="text-sm font-medium text-white">{{ Auth::user()->name }}</div>
                                 <div class="text-xs text-gray-400">{{ Auth::user()->userRole->name ?? 'User' }}</div>
                             </div>
-                            <div class="h-8 w-8 rounded-full bg-[#e0bb35] flex items-center justify-center text-white font-bold">
-                                {{ substr(Auth::user()->name, 0, 1) }}
+                            <div class="h-10 w-10 rounded-full bg-[#e0bb35] flex items-center justify-center text-black font-bold">
+                                @if(Auth::user()->profile_picture)
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Avatar" class="h-full w-full object-cover">
+                                @else
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                @endif
                             </div>
                         </div>
                         
@@ -82,8 +86,7 @@
                             <div class="py-1">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"
-                                    class="block px-4 py-2 text-sm text-white hover:bg-[#e0bb35] hover:text-[#0f0f0f] font-medium">
+                                    <a href="{{ route('users.index') }}" class="block px-4 py-2 text-sm text-white hover:bg-[#e0bb35] hover:text-[#0f0f0f] font-medium">
                                     Account Management
                                     </a>
                                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();"

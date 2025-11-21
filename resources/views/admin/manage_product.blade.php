@@ -27,13 +27,13 @@
                             <div class="mb-6">
                                 <label for="name" class="block text-sm font-bold text-gray-700 mb-2">Product Name</label>
                                 <input type="text" id="name" name="name" value="{{ old('name', $product_to_edit->name ?? '') }}" 
-                                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-2" required>
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700 sm:text-sm px-4 py-2" required>
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                 <div>
                                     <label for="brand_id" class="block text-sm font-bold text-gray-700 mb-2">Brand</label>
-                                    <select id="brand_id" name="brand_id" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-2" required>
+                                    <select id="brand_id" name="brand_id" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700 sm:text-sm px-4 py-2" required>
                                         <option value="">Select a brand</option>
                                         @foreach ($brands as $brand) 
                                             <option value="{{ $brand->id }}" 
@@ -45,7 +45,7 @@
                                 </div>
                                 <div>
                                     <label for="category_id" class="block text-sm font-bold text-gray-700 mb-2">Category</label>
-                                    <select id="category_id" name="category_id" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-2" required>
+                                    <select id="category_id" name="category_id" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700 sm:text-sm px-4 py-2" required>
                                         <option value="">Select a category</option>
                                         @foreach ($categories as $category) 
                                             <option value="{{ $category->id }}" 
@@ -60,7 +60,7 @@
                             <div class="mb-6">
                                 <label for="description" class="block text-sm font-bold text-gray-700 mb-2">Description</label>
                                 <textarea id="description" name="description" rows="5" 
-                                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-2">{{ old('description', $product_to_edit['description'] ?? '') }}</textarea>
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700 sm:text-sm px-4 py-2">{{ old('description', $product_to_edit['description'] ?? '') }}</textarea>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -70,8 +70,8 @@
                                         file:mr-4 file:py-2 file:px-4
                                         file:rounded-full file:border-0
                                         file:text-sm file:font-semibold
-                                        file:bg-blue-50 file:text-blue-700
-                                        hover:file:bg-blue-100">
+                                        file:bg-blue-700 file:text-white
+                                        hover:file:bg-blue-800">
                                     @if (!empty($product_to_edit['image']))
                                         <p class="mt-2 text-xs text-gray-500">Current: {{ basename($product_to_edit->image) }}</p>
                                     @endif
@@ -82,8 +82,8 @@
                                         file:mr-4 file:py-2 file:px-4
                                         file:rounded-full file:border-0
                                         file:text-sm file:font-semibold
-                                        file:bg-blue-50 file:text-blue-700
-                                        hover:file:bg-blue-100">
+                                        file:bg-blue-700 file:text-white
+                                        hover:file:bg-blue-800">
                                     @if (!empty($product_to_edit['pdf_path']))
                                         <p class="mt-2 text-xs text-gray-500">Current: {{ basename($product_to_edit->pdf_path) }}</p>
                                     @endif
@@ -91,7 +91,7 @@
                             </div>
 
                             <div class="flex items-center gap-4">
-                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all">
+                                <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all">
                                     {{ $action === 'edit' ? 'Update' : 'Save' }} Product
                                 </button>
                                 <a href="{{ route('admin.products.list') }}" class="text-gray-600 hover:text-gray-800 font-medium underline">Cancel</a>
@@ -105,7 +105,7 @@
             
             <div class="flex flex-col md:flex-row justify-between items-center mb-8">
                 <h1 class="text-3xl md:text-4xl font-bold text-white drop-shadow-sm">Manage Products</h1>
-                <a href="{{ route('admin.products.create') }}" class="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all">
+                <a href="{{ route('admin.products.create') }}" class="mt-4 md:mt-0 bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all">
                     Add New Product
                 </a>
             </div>

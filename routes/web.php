@@ -34,6 +34,12 @@ Route::get('/', function () {
 // =========================================================================
 Route::middleware(['auth'])->group(function () {
 
+    // --- USER PROFILE ---
+    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+    Route::get('/users/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
+    Route::patch('/users', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+    Route::delete('/users', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.destroy');
+
     // =======================================
     // 1. INTERNAL OPERATIONS (Projects & Ops)
     // =======================================
