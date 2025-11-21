@@ -30,7 +30,7 @@ class AdminController extends Controller
         $userInterestCount = User::whereHas('userRole', function ($q) {
             $q->where('name', '!=', 'Admin');
         })->where(function ($query) {
-            $query->has('interestedProducts')->orHas('interestedServices');
+            $query->has('interested_products')->orHas('interested_services');
         })->count();
 
         return view('admin.admin_dashboard', [
@@ -369,7 +369,7 @@ class AdminController extends Controller
             $q->where('name', '!=', 'Admin');
         })
         ->where(function ($query) {
-            $query->has('interestedProducts')->orHas('interestedServices');
+            $query->has('interested_products')->orHas('interested_services');
         })
         ->with(['interestedProducts', 'interestedServices'])
         ->latest()

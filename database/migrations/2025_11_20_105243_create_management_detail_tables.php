@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // 1. Project Roles (e.g., Project Manager, Engineer)
+        // 1. Project Roles
         Schema::create('project_roles', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -27,7 +27,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('role_id')->constrained('project_roles');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('management_project_id')->constrained('management_projects')->onDelete('cascade');
+            
+            // FIX: Use a shorter custom index name
+            $table->unsignedBigInteger('management_project_id');
+            $table->foreign('management_project_id', 'mpra_mgmt_project_id_foreign')
+                  ->references('id')
+                  ->on('management_projects')
+                  ->onDelete('cascade');
+
             $table->timestamps();
         });
 
@@ -35,7 +42,14 @@ return new class extends Migration
         Schema::create('management_project_progress', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('management_project_id')->constrained('management_projects')->onDelete('cascade');
+            
+            // FIX: Use a shorter custom index name here too just in case
+            $table->unsignedBigInteger('management_project_id');
+            $table->foreign('management_project_id', 'mpp_mgmt_project_id_foreign') // Short name here
+                  ->references('id')
+                  ->on('management_projects')
+                  ->onDelete('cascade');
+
             $table->foreignId('status_id')->constrained('status');
             $table->date('progress_date');
             $table->text('document_path');

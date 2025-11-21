@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clients\Client;
-use App\Models\Managements\ManagementProject;
-use App\Models\Managements\Status;
-use App\Models\Managements\ProjectRole;
-use App\Models\Users\User;
-use App\Events\ManagementProjectFinished; // Import the Event
+use App\Models\Clients\Client; // Changed from App\Models\Clients\...
+use App\Models\Managements\ManagementProject; // Changed from App\Models\Managements\...
+use App\Models\Managements\Status; // Changed from App\Models\Managements\...
+use App\Events\ManagementProjectFinished;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +28,11 @@ class ManagementProjectController extends Controller
             })->with(['client', 'status'])->get();
         }
 
-        return view('projects.index', compact('projects'));
+        // Use the 'manage' view as per our previous refactoring
+        return view('projects.manage', [
+            'action' => 'list',
+            'projects' => $projects
+        ]);
     }
 
     /**
@@ -40,7 +42,13 @@ class ManagementProjectController extends Controller
     {
         $clients = Client::all();
         $statuses = Status::all();
-        return view('projects.create', compact('clients', 'statuses'));
+        
+        return view('projects.manage', [
+            'action' => 'add',
+            'clients' => $clients,
+            'statuses' => $statuses,
+            'project_to_edit' => null // Ensure variable exists for the view
+        ]);
     }
 
     /**
@@ -55,6 +63,9 @@ class ManagementProjectController extends Controller
             'description' => 'nullable|string',
             'due_date' => 'required|date',
         ]);
+
+        // Assign the creator as the initial Project Manager (optional logic)
+        $validated['user_id'] = Auth::id(); 
 
         $project = ManagementProject::create($validated);
 
@@ -77,6 +88,23 @@ class ManagementProjectController extends Controller
         ])->findOrFail($id);
 
         return view('projects.show', compact('project'));
+    }
+
+    /**
+     * Show the form for editing the specified project.
+     */
+    public function edit($id)
+    {
+        $project = ManagementProject::findOrFail($id);
+        $clients = Client::all();
+        $statuses = Status::all();
+
+        return view('projects.manage', [
+            'action' => 'edit',
+            'project_to_edit' => $project,
+            'clients' => $clients,
+            'statuses' => $statuses
+        ]);
     }
 
     /**
@@ -112,5 +140,17 @@ class ManagementProjectController extends Controller
 
         return redirect()->route('projects.show', $project->id)
             ->with('success', 'Project updated successfully.');
+    }
+
+    /**
+     * Remove the specified project from storage.
+     */
+    public function destroy($id)
+    {
+        $project = ManagementProject::findOrFail($id);
+        $project->delete();
+
+        return redirect()->route('projects.index')
+            ->with('success', 'Project deleted successfully.');
     }
 }

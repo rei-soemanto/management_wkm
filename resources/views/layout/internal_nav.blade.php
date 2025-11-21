@@ -1,4 +1,4 @@
-<nav class="bg-gray-900 text-white shadow-lg sticky top-0 z-50">
+<nav class="bg-[#0f0f0f] text-white shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             
@@ -10,7 +10,7 @@
                         <img class="h-8 w-auto" src="{{ asset('img/logoWKM.png') }}" alt="WKM Logo">
                     </a>
                     <span class="ml-3 font-bold text-xl tracking-wider text-gray-100 hidden md:block">
-                        WKM<span class="text-blue-500">INTERNAL</span>
+                        WKM<span class="text-[#e0bb35]">INTERNAL</span>
                     </span>
                 </div>
 
@@ -25,6 +25,14 @@
                         
                         <a href="{{ route('admin.users.list') }}" class="{{ request()->routeIs('admin.users.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition">
                             Users
+                        </a>
+
+                        <a href="{{ route('clients.index') }}" class="{{ request()->routeIs('clients.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition">
+                            Clients
+                        </a>
+
+                        <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition">
+                            <i class="fa-solid fa-boxes-stacked mr-1"></i> Inventory
                         </a>
 
                         {{-- Dropdown for Master Data --}}

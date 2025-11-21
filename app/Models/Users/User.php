@@ -24,7 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
     ];
 
     protected $hidden = [
@@ -42,7 +42,7 @@ class User extends Authenticatable
 
     public function userRole()
     {
-        return $this->belongsTo(UserRole::class, 'role');
+        return $this->belongsTo(UserRole::class, 'role_id');
     }
 
     public function projectRoleAssignments()

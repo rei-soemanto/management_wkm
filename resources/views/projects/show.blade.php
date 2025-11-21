@@ -18,7 +18,12 @@
                     <span class="text-gray-400 text-sm">|</span>
                     <span class="text-gray-500 text-sm">Due: {{ \Carbon\Carbon::parse($project->due_date)->format('M d, Y') }}</span>
                 </div>
-                <h1 class="text-3xl font-bold text-gray-900">{{ $project->name }}</h1>
+                <div class="flex items-center gap-4">
+                    <h1 class="text-3xl font-bold text-gray-900">{{ $project->name }}</h1>
+                    @if(Auth::user()->userRole->name === 'Admin')
+                        <a href="{{ route('projects.edit', $project->id) }}" class="text-sm text-blue-600 hover:underline font-bold">Edit Project</a>
+                    @endif
+                </div>
             </div>
             
             <div class="flex items-center gap-3">
@@ -58,7 +63,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700">New Status</label>
                             <select name="status_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                                @foreach(App\Models\Status::all() as $status)
+                                @foreach(App\Models\Managements\Status::all() as $status)
                                     <option value="{{ $status->id }}" {{ $project->status_id == $status->id ? 'selected' : '' }}>
                                         {{ $status->name }}
                                     </option>
@@ -146,21 +151,35 @@
                 <h3 class="text-lg font-bold text-gray-900 mb-4">Project Team</h3>
                 <ul class="divide-y divide-gray-200">
                     @foreach($project->roleAssignments as $assignment)
-                        <li class="py-3 flex items-center">
-                            <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
-                                {{ substr($assignment->user->name, 0, 1) }}
+                        <li class="py-3 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
+                                    {{ substr($assignment->user->name, 0, 1) }}
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900">{{ $assignment->user->name }}</p>
+                                    <p class="text-xs text-gray-500">{{ $assignment->projectRole->name }}</p>
+                                </div>
                             </div>
-                            <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">{{ $assignment->user->name }}</p>
-                                <p class="text-xs text-gray-500">{{ $assignment->projectRole->name }}</p>
-                            </div>
+                            
+                            {{-- Remove Button (Admin Only) --}}
+                            @if(Auth::user()->userRole->name === 'Admin')
+                                <form action="{{ route('projects.team.destroy', [$project->id, $assignment->id]) }}" method="POST" onsubmit="return confirm('Remove this member?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-gray-400 hover:text-red-500 transition-colors" title="Remove Member">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
+                                </form>
+                            @endif
                         </li>
                     @endforeach
                 </ul>
                 @if(Auth::user()->userRole->name === 'Admin')
-                    <button class="mt-4 w-full border border-dashed border-gray-300 text-gray-600 py-2 rounded-md text-sm hover:bg-gray-50">
+                    {{-- FIXED: Now links to the real controller --}}
+                    <a href="{{ route('projects.team.create', $project->id) }}" class="mt-4 w-full block text-center border border-dashed border-gray-300 text-gray-600 py-2 rounded-md text-sm hover:bg-gray-50 hover:text-blue-600 transition">
                         + Assign Member (Admin)
-                    </button>
+                    </a>
                 @endif
             </div>
 
@@ -169,23 +188,33 @@
                 <h3 class="text-lg font-bold text-gray-900 mb-4">Allocated Products</h3>
                 <ul class="space-y-3">
                     @forelse($project->productUsages as $usage)
-                        <li class="flex justify-between items-center bg-gray-50 p-3 rounded-md">
+                        <li class="flex justify-between items-center bg-gray-50 p-3 rounded-md group">
                             <div>
                                 <p class="text-sm font-medium text-gray-900">{{ $usage->inventoryItem->product->name }}</p>
-                                <p class="text-xs text-gray-500">Qty: {{ $usage->quantity }}</p>
+                                <p class="text-xs text-gray-500">Qty: <span class="font-bold">{{ $usage->quantity }}</span></p>
                             </div>
-                            <span class="text-xs font-mono bg-gray-200 text-gray-600 px-2 py-1 rounded">
-                                Stock: {{ $usage->inventoryItem->stock }}
-                            </span>
+                            <div class="flex items-center gap-2">
+                                {{-- Remove Button (Admin Only) --}}
+                                @if(Auth::user()->userRole->name === 'Admin')
+                                    <form action="{{ route('projects.allocation.destroy', [$project->id, $usage->id]) }}" method="POST" onsubmit="return confirm('Remove item? Stock will be returned.')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-gray-400 hover:text-red-500 p-1" title="Remove & Return Stock">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
                         </li>
                     @empty
-                        <p class="text-sm text-gray-500 italic">No products allocated yet.</p>
+                        <p class="text-sm text-gray-500 italic text-center py-4">No products allocated yet.</p>
                     @endforelse
                 </ul>
                 @if(Auth::user()->userRole->name === 'Admin')
-                    <button class="mt-4 w-full border border-dashed border-gray-300 text-gray-600 py-2 rounded-md text-sm hover:bg-gray-50">
+                    {{-- FIXED: Now links to the real controller --}}
+                    <a href="{{ route('projects.allocation.create', $project->id) }}" class="mt-4 w-full block text-center border border-dashed border-gray-300 text-gray-600 py-2 rounded-md text-sm hover:bg-gray-50 hover:text-blue-600 transition">
                         + Allocate Product (Admin)
-                    </button>
+                    </a>
                 @endif
             </div>
 
