@@ -1,5 +1,5 @@
 <nav class="bg-[#0f0f0f] text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4">
         <div class="flex justify-between h-16">
             
             <div class="flex items-center">
@@ -21,6 +21,10 @@
                         
                         <a href="{{ route('admin.users.list') }}" class="{{ request()->routeIs('admin.users.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
                             Users
+                        </a>
+
+                        <a href="{{ route('admin.user_manage.list') }}" class="{{ request()->routeIs('admin.user_manage.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
+                            Internal
                         </a>
 
                         <a href="{{ route('clients.index') }}" class="{{ request()->routeIs('clients.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
@@ -120,6 +124,7 @@
             @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')
                 <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Dashboard</a>
                 <a href="{{ route('admin.users.list') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('admin.users.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Users</a>
+                <a href="{{ route('admin.user_manage.list') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('admin.user_manage.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Internal</a>
                 <a href="{{ route('clients.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('clients.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Clients</a>
                 <a href="{{ route('inventory.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('inventory.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Inventory</a>
                 <a href="{{ route('projects.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('projects.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Internal Ops</a>

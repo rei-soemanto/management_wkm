@@ -18,7 +18,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','internal'])->group(function () {
 
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::get('/users/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
@@ -42,6 +42,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/inventory/{id}', [ProductInventoryController::class, 'update'])->name('inventory.update');
 
     Route::prefix('admin')->group(function () {
+
+        Route::get('/user_manage', [App\Http\Controllers\Admin\UserManagementController::class, 'index'])->name('admin.user_manage.list');
+        Route::get('/user_manage/{id}/edit', [App\Http\Controllers\Admin\UserManagementController::class, 'edit'])->name('admin.user_manage.edit');
+        Route::put('/user_manage/{id}', [App\Http\Controllers\Admin\UserManagementController::class, 'update'])->name('admin.user_manage.update');
         
         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
