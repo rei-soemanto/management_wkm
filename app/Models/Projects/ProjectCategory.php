@@ -9,9 +9,6 @@ class ProjectCategory extends Model
 {
     use HasFactory;
 
-    /**
-     * Nama tabel.
-     */
     protected $table = 'project_categories';
 
     protected $fillable = ['name'];

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProjectAllocationController extends Controller
 {
-    // Show "Allocate Product" form
+    // Show Allocate Product form
     public function create($projectId)
     {
         $project = ManagementProject::findOrFail($projectId);
@@ -32,18 +32,17 @@ class ProjectAllocationController extends Controller
         return DB::transaction(function () use ($request, $projectId) {
             $inventory = ProductInventory::lockForUpdate()->find($request->product_inventory_id);
 
-            // 1. Check Stock
+            // Check Stock
             if ($inventory->stock < $request->quantity) {
-                // Throw validation exception or redirect back
                 throw \Illuminate\Validation\ValidationException::withMessages([
                     'quantity' => "Not enough stock. Only {$inventory->stock} available."
                 ]);
             }
 
-            // 2. Deduct Stock
+            // Deduct Stock
             $inventory->decrement('stock', $request->quantity);
 
-            // 3. Create Usage Record
+            // Create Usage Record
             ProductProjectUsage::create([
                 'management_project_id' => $projectId,
                 'product_inventory_id' => $inventory->id,
@@ -54,7 +53,7 @@ class ProjectAllocationController extends Controller
         });
     }
 
-    // Remove Allocation (Return to Stock)
+    // Remove Allocation
     public function destroy($projectId, $usageId)
     {
         return DB::transaction(function () use ($projectId, $usageId) {
@@ -62,10 +61,10 @@ class ProjectAllocationController extends Controller
                 ->where('id', $usageId)
                 ->firstOrFail();
 
-            // 1. Return stock to inventory
+            // Return stock to inventory
             $usage->inventoryItem->increment('stock', $usage->quantity);
 
-            // 2. Delete usage record
+            // Delete usage record
             $usage->delete();
 
             return redirect()->route('projects.show', $projectId)->with('success', 'Allocation removed. Stock returned to inventory.');

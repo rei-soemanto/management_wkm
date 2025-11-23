@@ -3,7 +3,7 @@
 @section('name', 'Admin Dashboard')
 @section('content')
 
-<main class="min-h-screen bg-cover bg-center relative" 
+<main class="min-h-[597px] bg-cover bg-center relative" 
     style="background-image: url('{{ asset('img/aboutpagebg.jpg') }}')">
 
     <div class="absolute inset-0 bg-black/50"></div>

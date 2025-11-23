@@ -10,17 +10,12 @@
 </head>
 <body class="antialiased font-sans text-gray-900 bg-gray-100 flex flex-col min-h-screen">
 
-    {{-- 1. NAVIGATION --}}
-    {{-- We use a single 'internal' nav for everyone, handled by logic inside --}}
     @include('layout.internal_nav')
 
-    {{-- 2. MAIN CONTENT --}}
     <main class="flex-grow">
         @yield('content')
     </main>
 
-    {{-- 3. FOOTER --}}
-    {{-- As requested, always use the simple admin footer --}}
     @include('layout.footer')
 
 </body>

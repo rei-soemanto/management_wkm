@@ -3,7 +3,7 @@
 
 @section('name', 'Manage Users')
 @section('content')
-<main class="min-h-screen bg-cover bg-center relative" style="background-image: url('{{ asset('img/aboutpagebg.jpg') }}')">
+<main class="min-h-[597px] bg-cover bg-center relative" style="background-image: url('{{ asset('img/aboutpagebg.jpg') }}')">
     <div class="absolute inset-0 bg-black/50"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

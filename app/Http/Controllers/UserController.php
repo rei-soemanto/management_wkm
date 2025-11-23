@@ -10,9 +10,7 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    /**
-     * Show the User Profile (View Mode).
-     */
+    // Show the User Profile.
     public function index()
     {
         return view('users.manage', [
@@ -21,9 +19,7 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Show the Edit Form.
-     */
+    // Show Edit Form.
     public function edit()
     {
         return view('users.manage', [
@@ -32,9 +28,7 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Update the profile.
-     */
+    // Update profile.
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -43,10 +37,10 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'password' => 'nullable|string|min:8|confirmed', // Optional password change
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        // 1. Handle Profile Picture
+        // Handle Profile Picture
         if ($request->hasFile('profile_picture')) {
             // Delete old image if exists
             if ($user->profile_picture) {
@@ -56,23 +50,21 @@ class UserController extends Controller
             $user->profile_picture = $path;
         }
 
-        // 2. Handle Basic Info
+        // Handle Basic Info
         $user->name = $validated['name'];
         $user->email = $validated['email'];
 
-        // 3. Handle Password (only if provided)
+        // Handle Password 
         if ($request->filled('password')) {
             $user->password = Hash::make($validated['password']);
         }
 
         $user->save();
 
-        return redirect()->route('profile.index')->with('success', 'Profile updated successfully.');
+        return redirect()->route('users.index')->with('success', 'Profile updated successfully.');
     }
 
-    /**
-     * Delete the account.
-     */
+    // Delete account.
     public function destroy(Request $request)
     {
         $request->validate([

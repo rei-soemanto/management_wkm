@@ -10,22 +10,20 @@ use Illuminate\Http\Request;
 
 class ProjectTeamController extends Controller
 {
-    // Show the "Assign Member" form
+    // Show Assign Member form
     public function create($projectId)
     {
         $project = ManagementProject::findOrFail($projectId);
         
-        // Get users who are NOT Admin (usually we assign employees)
-        $users = User::whereHas('userRole', function($q){
-            $q->where('name', 'Employee');
-        })->get();
+        // Get users
+        $users = User::whereHas('userRole')->get();
         
         $roles = ProjectRole::all();
 
         return view('projects.assign_member', compact('project', 'users', 'roles'));
     }
 
-    // Store the assignment
+    // Store assignment
     public function store(Request $request, $projectId)
     {
         $request->validate([

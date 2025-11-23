@@ -6,10 +6,6 @@
 <div class="bg-black mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     @if ($action === 'edit')
-        
-        {{-- ===========================
-             EDIT FORM
-           =========================== --}}
         <div class="max-w-3xl mx-auto">
             <div class="mb-8">
                 <a href="{{ route('users.index') }}" class="text-sm text-white hover:text-gray-300 flex items-center transition-colors">
@@ -24,7 +20,6 @@
                     @csrf
                     @method('PATCH')
 
-                    {{-- Profile Picture Input --}}
                     <div class="flex items-center space-x-6">
                         <div class="shrink-0">
                             @if($user->profile_picture)
@@ -47,14 +42,12 @@
                         </label>
                     </div>
 
-                    {{-- Name --}}
                     <div>
                         <label for="name" class="block text-sm font-bold text-gray-300 mb-1">Full Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required 
                             class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm">
                     </div>
 
-                    {{-- Email --}}
                     <div>
                         <label for="email" class="block text-sm font-bold text-gray-300 mb-1">Email Address</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required 
@@ -64,7 +57,6 @@
                     <hr class="border-[#e0bb35] my-4">
                     <h3 class="text-lg font-medium text-[#e0bb35]">Change Password <span class="text-sm text-gray-300 font-normal">(Leave blank to keep current)</span></h3>
 
-                    {{-- Password --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="password" class="block text-sm font-bold text-gray-300 mb-1">New Password</label>
@@ -76,7 +68,6 @@
                         </div>
                     </div>
 
-                    {{-- Actions --}}
                     <div class="pt-6 border-t border-[#e0bb35] flex justify-end gap-3">
                         <a href="{{ route('users.index') }}" class="px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-300">
                             Cancel
@@ -90,28 +81,20 @@
         </div>
 
     @else
-        
-        {{-- ===========================
-             VIEW MODE (Profile Card)
-           =========================== --}}
         <div class="max-w-3xl mx-auto">
             
-            {{-- Notifications --}}
             @if (session('success'))
                 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-md">
                     {{ session('success') }}
                 </div>
             @endif
 
-            {{-- Profile Card --}}
             <div class="bg-[#0f0f0f] shadow-xl rounded-2xl overflow-hidden">
                 
-                {{-- Header / Banner --}}
                 <div class="h-32 bg-gradient-to-r from-[#e0bb35] to-[#e3cf85]"></div>
                 
                 <div class="px-8 pb-8">
                     <div class="relative flex justify-between items-end -mt-12 mb-6">
-                        {{-- Avatar --}}
                         <div class="relative">
                             @if($user->profile_picture)
                                 <img class="h-32 w-32 rounded-full border-4 border-[#0f0f0f] object-cover shadow-md" src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ $user->name }}">
@@ -122,7 +105,6 @@
                             @endif
                         </div>
 
-                        {{-- Edit Button --}}
                         <a href="{{ route('users.edit') }}" class="mb-2 inline-flex items-center px-4 py-2 bg-[#e0bb35] border border-[#e0bb35] rounded-md font-semibold text-xs text-black uppercase tracking-widest shadow-sm hover:bg-[#e3cf85] transition">
                             <svg class="w-4 h-4 mr-2 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                             Edit Profile
@@ -137,7 +119,6 @@
 
                     <hr class="border-[#e0bb35] my-6">
 
-                    {{-- Stats / Info --}}
                     <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-300">Assigned Projects</dt>
@@ -145,7 +126,6 @@
                         </div>
                     </dl>
 
-                    {{-- Delete Zone --}}
                     <div class="mt-6 pt-6 border-t border-[#e0bb35]">
                         <h3 class="text-lg font-medium text-red-600">Danger Zone</h3>
                         <p class="text-sm text-gray-300 mb-4">Permanently delete your account and all associated data.</p>
@@ -154,7 +134,6 @@
                             @csrf
                             @method('delete')
                             
-                            {{-- Simple password confirmation trick logic handled in controller --}}
                             <div class="flex gap-2 items-center">
                                 <input type="password" name="password" placeholder="Confirm Password" required class="text-sm text-gray-300 border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500">
                                 <button type="submit" class="px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">

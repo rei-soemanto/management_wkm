@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clients\Client; // Changed from App\Models\Clients\...
-use App\Models\Managements\ManagementProject; // Changed from App\Models\Managements\...
-use App\Models\Managements\Status; // Changed from App\Models\Managements\...
+use App\Models\Clients\Client;
+use App\Models\Managements\ManagementProject;
+use App\Models\Managements\Status;
 use App\Events\ManagementProjectFinished;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ManagementProjectController extends Controller
 {
-    /**
-     * Display a listing of projects.
-     */
+    // Display list of projects.
     public function index()
     {
         // If Admin, show all. If Employee, show only assigned projects.
@@ -28,16 +26,13 @@ class ManagementProjectController extends Controller
             })->with(['client', 'status'])->get();
         }
 
-        // Use the 'manage' view as per our previous refactoring
         return view('projects.manage', [
             'action' => 'list',
             'projects' => $projects
         ]);
     }
 
-    /**
-     * Show the form for creating a new project.
-     */
+    // Show the form for creating a new project.
     public function create()
     {
         $clients = Client::all();
@@ -47,13 +42,11 @@ class ManagementProjectController extends Controller
             'action' => 'add',
             'clients' => $clients,
             'statuses' => $statuses,
-            'project_to_edit' => null // Ensure variable exists for the view
+            'project_to_edit' => null
         ]);
     }
 
-    /**
-     * Store a newly created project in storage.
-     */
+    // Store newly created project in storage.
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -64,7 +57,6 @@ class ManagementProjectController extends Controller
             'due_date' => 'required|date',
         ]);
 
-        // Assign the creator as the initial Project Manager (optional logic)
         $validated['user_id'] = Auth::id(); 
 
         $project = ManagementProject::create($validated);
@@ -73,9 +65,7 @@ class ManagementProjectController extends Controller
             ->with('success', 'Project created successfully.');
     }
 
-    /**
-     * Display the specified project (Detail Dashboard).
-     */
+    // Display specified project.
     public function show($id)
     {
         $project = ManagementProject::with([
@@ -83,16 +73,14 @@ class ManagementProjectController extends Controller
             'status', 
             'roleAssignments.user', 
             'roleAssignments.projectRole',
-            'progressLogs.user', // Load history
-            'productUsages.inventoryItem.product' // Load BOM/Inventory
+            'progressLogs.user',
+            'productUsages.inventoryItem.product'
         ])->findOrFail($id);
 
         return view('projects.show', compact('project'));
     }
 
-    /**
-     * Show the form for editing the specified project.
-     */
+    // Show form for edit specified project.
     public function edit($id)
     {
         $project = ManagementProject::findOrFail($id);
@@ -107,10 +95,7 @@ class ManagementProjectController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified project.
-     * THIS IS WHERE THE MAGIC HAPPENS (Event Trigger).
-     */
+    // Update specified project.
     public function update(Request $request, $id)
     {
         $project = ManagementProject::findOrFail($id);
@@ -123,18 +108,17 @@ class ManagementProjectController extends Controller
             'due_date' => 'required|date',
         ]);
 
-        // Update the project
+        // Update project
         $project->update($validated);
 
-        // --- AUTOMATION LOGIC ---
-        // Check if status was changed to "Finished"
+        // Check if status changed to Finished
         $finishedStatus = Status::where('name', 'Finished')->first();
 
         if ($finishedStatus && 
             $project->wasChanged('status_id') && 
             $project->status_id == $finishedStatus->id) {
             
-            // Fire the event to copy data to public site!
+            // Fire event to copy data to public site
             ManagementProjectFinished::dispatch($project);
         }
 
@@ -142,9 +126,7 @@ class ManagementProjectController extends Controller
             ->with('success', 'Project updated successfully.');
     }
 
-    /**
-     * Remove the specified project from storage.
-     */
+    // Remove specified project from storage.
     public function destroy($id)
     {
         $project = ManagementProject::findOrFail($id);

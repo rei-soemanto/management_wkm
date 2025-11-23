@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('user_roles', function (Blueprint $table) {
@@ -90,13 +87,10 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('user_roles'); // Drop roles as well
+        Schema::dropIfExists('user_roles');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

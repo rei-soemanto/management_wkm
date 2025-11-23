@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductInventoryController extends Controller
 {
-    /**
-     * Display a listing of the inventory.
-     */
+    // Display list of inventory.
     public function index()
     {
         // Get all products with their inventory data
@@ -23,16 +21,11 @@ class ProductInventoryController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the inventory stock.
-     * NOTE: We treat 'edit' as selecting a specific product to update stock.
-     */
-    public function edit($id) // Note: $id here refers to the PRODUCT ID, not inventory ID
+    // Show form for edit inventory stock.
+    public function edit($id)
     {
         $product = Product::with('inventory')->findOrFail($id);
         
-        // We need the full list for the table background, or we can just show the form
-        // Let's show just the form for simplicity and focus
         return view('inventory.manage', [
             'action' => 'edit',
             'product_to_edit' => $product,
@@ -40,9 +33,7 @@ class ProductInventoryController extends Controller
         ]);
     }
 
-    /**
-     * Update the stock.
-     */
+    // Update stock.
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -51,7 +42,7 @@ class ProductInventoryController extends Controller
 
         $product = Product::findOrFail($id);
 
-        // Update or Create the inventory record
+        // Update or Create inventory record
         ProductInventory::updateOrCreate(
             ['product_id' => $product->id],
             [

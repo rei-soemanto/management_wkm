@@ -6,10 +6,6 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
     @if ($action === 'edit')
-        
-        {{-- ===========================
-             FORM VIEW (Update Stock)
-           =========================== --}}
         <div class="max-w-2xl mx-auto">
             <div class="mb-8">
                 <a href="{{ route('inventory.index') }}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center transition-colors">
@@ -21,7 +17,6 @@
 
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 p-8">
                 <div class="flex items-start gap-6 mb-8">
-                    {{-- Product Image --}}
                     @if($product_to_edit->image)
                         <img src="{{ asset('storage/' . $product_to_edit->image) }}" alt="{{ $product_to_edit->name }}" class="w-24 h-24 object-cover rounded-lg shadow-sm">
                     @else
@@ -78,17 +73,12 @@
         </script>
 
     @else
-        
-        {{-- ===========================
-             LIST VIEW (Table)
-           =========================== --}}
         <div class="flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">Product Inventory</h1>
                 <p class="text-gray-500 mt-1">Real-time stock levels for all catalog items.</p>
             </div>
             
-            {{-- Stats (Optional Polish) --}}
             <div class="mt-4 md:mt-0 flex gap-4">
                 <div class="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200 text-center">
                     <span class="block text-xs text-gray-500 uppercase font-bold">Total Items</span>

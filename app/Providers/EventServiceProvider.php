@@ -16,12 +16,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        // 2. Tambahkan mapping Anda di sini
         ManagementProjectFinished::class => [
             PublishProjectToPublicWebsite::class,
-            // Anda bisa menambah Listener lain di sini
-            // \App\Listeners\SendSlackNotification::class,
-            // \App\Listeners\EmailAdminNotification::class,
         ],
     ];
 

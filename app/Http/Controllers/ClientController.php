@@ -7,12 +7,9 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    /**
-     * Display a listing of clients.
-     */
+    // Display list of clients.
     public function index()
     {
-        // List view
         $clients = Client::withCount('managementProjects')->latest()->get();
         
         return view('clients.manage', [
@@ -21,21 +18,17 @@ class ClientController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new client.
-     */
+    // Show form to create new client.
     public function create()
     {
         // Create Form view
         return view('clients.manage', [
             'action' => 'add',
-            'client_to_edit' => null // Pass null to avoid undefined variable error
+            'client_to_edit' => null
         ]);
     }
 
-    /**
-     * Store a newly created client in storage.
-     */
+    // Store newly created client.
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -50,9 +43,7 @@ class ClientController extends Controller
             ->with('success', 'Client added successfully.');
     }
 
-    /**
-     * Show the form for editing the specified client.
-     */
+    // Show form to edit specified client.
     public function edit($id)
     {
         // Edit Form view
@@ -64,9 +55,7 @@ class ClientController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified client in storage.
-     */
+    // Update client in storage.
     public function update(Request $request, $id)
     {
         $client = Client::findOrFail($id);
@@ -83,9 +72,7 @@ class ClientController extends Controller
             ->with('success', 'Client updated successfully.');
     }
 
-    /**
-     * Remove the specified client from storage.
-     */
+    // Remove client from storage.
     public function destroy($id)
     {
         $client = Client::findOrFail($id);

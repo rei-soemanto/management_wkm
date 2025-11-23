@@ -20,15 +20,11 @@ use App\Models\Users\User;
 
 class AdminController extends Controller
 {
-    /**
-     * Display admin dashboard with stats.
-     */
+    // Display admin dashboard with stats.
     public function dashboard(): View
     {
-        // Count users who possess the 'Employee' role or 'Client' role (Not Admin)
-        // AND have interests.
         $userInterestCount = User::whereHas('userRole', function ($q) {
-            $q->where('name', '!=', 'Admin');
+            $q->where('name', '==', 'User');
         })->where(function ($query) {
             $query->has('interested_products')->orHas('interested_services');
         })->count();
@@ -42,17 +38,12 @@ class AdminController extends Controller
         ]);
     }
 
-    // =========================================================================
     // PRODUCT MANAGEMENT
-    // =========================================================================
-
     public function listProducts(): View
     {
         return view('admin.manage_product', [
             'action'   => 'list',
-            'products' => Product::with(['brand', 'category', 'lastUpdatedBy'])
-                            ->orderBy('id', 'asc')
-                            ->get(),
+            'products' => Product::with(['brand', 'category', 'lastUpdatedBy'])->orderBy('id', 'asc')->get(),
         ]);
     }
 
@@ -84,7 +75,7 @@ class AdminController extends Controller
             $data['pdf_path'] = $request->file('pdf_path')->store('uploads/pdf', 'public');
         }
 
-        $data['last_update_by'] = Auth::id(); // Note: Logic updated to match DB column name
+        $data['last_update_by'] = Auth::id();
 
         Product::create($data);
 
@@ -146,17 +137,12 @@ class AdminController extends Controller
         return redirect()->route('admin.products.list')->with('message', 'Product deleted successfully.');
     }
 
-    // =========================================================================
     // SERVICE MANAGEMENT
-    // =========================================================================
-
     public function listServices(): View
     {
         return view('admin.manage_service', [
             'action'   => 'list',
-            'services' => Service::with(['category', 'lastUpdatedBy'])
-                            ->orderBy('id', 'asc')
-                            ->get(),
+            'services' => Service::with(['category', 'lastUpdatedBy'])->orderBy('id', 'asc')->get(),
         ]);
     }
 
@@ -214,21 +200,14 @@ class AdminController extends Controller
         return redirect()->route('admin.services.list')->with('message', 'Service deleted successfully.');
     }
 
-    // =========================================================================
     // PUBLIC PROJECT MANAGEMENT
-    // Note: These are the projects shown on the website, separate from internal mgmt_projects
-    // =========================================================================
-
     public function listProjects(): View
     {
-        // Prepare data for the view (formatting categories and thumbnails)
         $projects = Project::with(['categories', 'images', 'lastUpdatedBy'])
             ->orderBy('id', 'asc')
             ->get()
             ->map(function($project) {
-                // Helper to join category names
                 $project->category_names = $project->categories->pluck('name')->join(', ');
-                // Helper to get first image
                 $project->thumbnail = $project->images->sortBy('upload_order')->first()->image_path ?? null;
                 return $project;
             });
@@ -308,23 +287,17 @@ class AdminController extends Controller
         $data['last_update_by'] = Auth::id();
         $project->update($data);
         
-        // Sync categories
         $project->categories()->sync($data['category_ids']);
 
-        // Delete selected images
         if ($request->has('delete_images')) {
-            $images_to_delete = ProjectImage::whereIn('id', $request->delete_images)
-                                            ->where('project_id', $project->id)
-                                            ->get();
+            $images_to_delete = ProjectImage::whereIn('id', $request->delete_images)->where('project_id', $project->id)->get();
             foreach ($images_to_delete as $image) {
                 Storage::disk('public')->delete($image->image_path);
                 $image->delete();
             }
         }
 
-        // Add new images
         if ($request->hasFile('images')) {
-            // Get highest current order to append new images at the end
             $currentMaxOrder = $project->images()->max('upload_order') ?? 0;
             
             foreach ($request->file('images') as $index => $file) {
@@ -344,13 +317,11 @@ class AdminController extends Controller
     {
         $project = Project::with('images')->findOrFail($id);
 
-        // Delete all associated images
         foreach ($project->images as $image) {
             Storage::disk('public')->delete($image->image_path);
             $image->delete();
         }
 
-        // Detach categories
         $project->categories()->detach();
 
         $project->delete();
@@ -358,22 +329,16 @@ class AdminController extends Controller
         return redirect()->route('admin.projects.list')->with('message', 'Project deleted successfully.');
     }
 
-    // =========================================================================
     // USER INTERESTS
-    // =========================================================================
-
     public function listUsers(): View
     {
-        // In the new system, we check the Role Relationship, not a string column
         $users = User::whereHas('userRole', function ($q) {
-            $q->where('name', '!=', 'Admin');
+            $q->where('name', '==', 'User');
         })
         ->where(function ($query) {
             $query->has('interested_products')->orHas('interested_services');
         })
-        ->with(['interestedProducts', 'interestedServices'])
-        ->latest()
-        ->get();
+        ->with(['interestedProducts', 'interestedServices'])->latest()->get();
 
         return view('admin.manage_user', ['users' => $users]);
     }

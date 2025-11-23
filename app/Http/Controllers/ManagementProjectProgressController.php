@@ -11,24 +11,22 @@ use Illuminate\Support\Facades\Storage;
 
 class ManagementProjectProgressController extends Controller
 {
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Store newly created resource in storage.
     public function store(Request $request, $projectId)
     {
         $request->validate([
             'status_id' => 'required|exists:status,id',
             'progress_date' => 'required|date',
-            'document' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:2048', // REQUIRED FILE
+            'document' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:2048',
             'notes' => 'nullable|string',
         ]);
 
         $project = ManagementProject::findOrFail($projectId);
 
-        // 1. Handle File Upload
+        // Handle File Upload
         $path = $request->file('document')->store('project_documents', 'public');
 
-        // 2. Create the Progress Log
+        // Create Progress Log
         ManagementProjectProgress::create([
             'management_project_id' => $project->id,
             'user_id' => Auth::id(),
@@ -38,13 +36,8 @@ class ManagementProjectProgressController extends Controller
             'notes' => $request->notes,
         ]);
 
-        // 3. Automatically update the Main Project Status
-        // The project status should always reflect the latest progress report
+        // Automatically update Main Project Status
         $project->update(['status_id' => $request->status_id]);
-
-        // (Optional) If this status is "Finished", the Event in ManagementProjectController
-        // won't fire here automatically because we didn't use that controller.
-        // You might want to manually check and fire it here too if needed.
 
         return redirect()->route('projects.show', $project->id)
             ->with('success', 'Progress report uploaded and status updated.');

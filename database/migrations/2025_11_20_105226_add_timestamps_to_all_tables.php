@@ -25,10 +25,8 @@ return new class extends Migration
     public function up(): void
     {
         foreach ($this->tables as $tableName) {
-            // Check if the table exists first to avoid errors
             if (Schema::hasTable($tableName)) {
                 Schema::table($tableName, function (Blueprint $table) use ($tableName) {
-                    // Only add timestamps if 'created_at' doesn't exist
                     if (!Schema::hasColumn($tableName, 'created_at')) {
                         $table->timestamps();
                     }

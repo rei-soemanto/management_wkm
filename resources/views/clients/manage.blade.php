@@ -6,10 +6,6 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
     @if ($action === 'add' || $action === 'edit')
-        
-        {{-- ===========================
-             FORM VIEW (Add / Edit)
-           =========================== --}}
         <div class="max-w-3xl mx-auto">
             <div class="mb-8">
                 <a href="{{ route('clients.index') }}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center transition-colors">
@@ -26,28 +22,24 @@
                         @method('PUT')
                     @endif
 
-                    {{-- Company Name --}}
                     <div>
                         <label for="name" class="block text-sm font-bold text-gray-700 mb-1">Company Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $client_to_edit->name ?? '') }}" required 
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
 
-                    {{-- PIC Name --}}
                     <div>
                         <label for="pic_name" class="block text-sm font-bold text-gray-700 mb-1">Person In Charge (PIC)</label>
                         <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name', $client_to_edit->pic_name ?? '') }}" required 
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
 
-                    {{-- Email --}}
                     <div>
                         <label for="email" class="block text-sm font-bold text-gray-700 mb-1">Contact Email</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $client_to_edit->email ?? '') }}" required 
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                     </div>
 
-                    {{-- Actions --}}
                     <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
                         <a href="{{ route('clients.index') }}" class="px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50">
                             Cancel
@@ -61,10 +53,6 @@
         </div>
 
     @else
-        
-        {{-- ===========================
-             LIST VIEW (Table)
-           =========================== --}}
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-900">Clients</h1>
             <a href="{{ route('clients.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow transition flex items-center">
