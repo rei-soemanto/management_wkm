@@ -10,13 +10,9 @@ use Illuminate\Validation\Rule;
 
 class UserManagementController extends Controller
 {
-    /**
-     * List all registered users.
-     */
     public function index()
     {
-        // Get all users with their roles
-        $users = User::with('userRole')->latest()->get();
+        $users = User::with('userRole')->orderBy('id', 'asc')->get();
         
         return view('admin.user_manage.manage', [
             'action' => 'list',
@@ -24,13 +20,10 @@ class UserManagementController extends Controller
         ]);
     }
 
-    /**
-     * Show edit form to change role.
-     */
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $roles = UserRole::all(); // Get Admin, Employee, User
+        $roles = UserRole::all();
 
         return view('admin.user_manage.manage', [
             'action' => 'edit',
@@ -39,9 +32,6 @@ class UserManagementController extends Controller
         ]);
     }
 
-    /**
-     * Update user role.
-     */
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);

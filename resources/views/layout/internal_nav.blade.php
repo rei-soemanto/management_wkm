@@ -20,11 +20,11 @@
                         </a>
                         
                         <a href="{{ route('admin.users.list') }}" class="{{ request()->routeIs('admin.users.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
-                            Users
+                            Interest
                         </a>
 
                         <a href="{{ route('admin.user_manage.list') }}" class="{{ request()->routeIs('admin.user_manage.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
-                            Internal
+                            Users
                         </a>
 
                         <a href="{{ route('clients.index') }}" class="{{ request()->routeIs('clients.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
@@ -123,8 +123,8 @@
             
             @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')
                 <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Dashboard</a>
-                <a href="{{ route('admin.users.list') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('admin.users.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Users</a>
-                <a href="{{ route('admin.user_manage.list') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('admin.user_manage.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Internal</a>
+                <a href="{{ route('admin.users.list') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('admin.users.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Interest</a>
+                <a href="{{ route('admin.user_manage.list') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('admin.user_manage.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Users</a>
                 <a href="{{ route('clients.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('clients.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Clients</a>
                 <a href="{{ route('inventory.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('inventory.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Inventory</a>
                 <a href="{{ route('projects.index') }}" class="block px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('projects.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }}">Internal Ops</a>
