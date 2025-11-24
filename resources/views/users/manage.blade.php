@@ -45,13 +45,13 @@
                     <div>
                         <label for="name" class="block text-sm font-bold text-gray-300 mb-1">Full Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required 
-                            class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm">
+                            class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                     </div>
 
                     <div>
                         <label for="email" class="block text-sm font-bold text-gray-300 mb-1">Email Address</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required 
-                            class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm">
+                            class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                     </div>
 
                     <hr class="border-[#e0bb35] my-4">
@@ -60,11 +60,11 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="password" class="block text-sm font-bold text-gray-300 mb-1">New Password</label>
-                            <input type="password" name="password" id="password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm">
+                            <input type="password" name="password" id="password" placeholder="New Password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                         </div>
                         <div>
                             <label for="password_confirmation" class="block text-sm font-bold text-gray-300 mb-1">Confirm Password</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm">
+                            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                         </div>
                     </div>
 
@@ -127,7 +127,7 @@
                     </dl>
 
                     <div class="mt-6 pt-6 border-t border-[#e0bb35]">
-                        <h3 class="text-lg font-medium text-red-600">Danger Zone</h3>
+                        <h3 class="text-lg font-medium text-red-600">Delete Account</h3>
                         <p class="text-sm text-gray-300 mb-4">Permanently delete your account and all associated data.</p>
                         
                         <form method="POST" action="{{ route('users.destroy') }}" class="inline-block" onsubmit="return confirm('Are you absolutely sure? This action cannot be undone.');">
@@ -135,7 +135,7 @@
                             @method('delete')
                             
                             <div class="flex gap-2 items-center">
-                                <input type="password" name="password" placeholder="Confirm Password" required class="text-sm text-gray-300 border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500">
+                                <input type="password" name="password" placeholder="Confirm Password" required class="text-sm text-gray-300 border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 px-3 py-2">
                                 <button type="submit" class="px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                     Delete Account
                                 </button>

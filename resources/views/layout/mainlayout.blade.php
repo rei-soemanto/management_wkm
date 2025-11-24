@@ -12,7 +12,7 @@
 
     @include('layout.internal_nav')
 
-    <main class="flex-grow">
+    <main class="flex-grow bg-black">
         @yield('content')
     </main>
 

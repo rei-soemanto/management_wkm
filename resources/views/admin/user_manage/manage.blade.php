@@ -7,9 +7,6 @@
 
     @if ($action === 'edit')
         
-        {{-- ===========================
-             EDIT FORM (Change Role)
-           =========================== --}}
         <div class="max-w-xl mx-auto">
             <div class="mb-8">
                 <a href="{{ route('admin.user_manage.list') }}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center transition-colors">
@@ -21,7 +18,7 @@
 
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 p-8">
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="h-16 w-16 rounded-full bg-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                    <div class="h-16 w-16 rounded-full bg-[#e0bb35] flex items-center justify-center text-black text-2xl font-bold">
                         {{ substr($user_to_edit->name, 0, 1) }}
                     </div>
                     <div>
@@ -36,7 +33,7 @@
 
                     <div class="mb-6">
                         <label for="role_id" class="block text-sm font-bold text-gray-700 mb-2">Assign Role</label>
-                        <select name="role_id" id="role_id" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2.5">
+                        <select name="role_id" id="role_id" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm p-2.5">
                             @foreach($roles as $role)
                                 <option value="{{ $role->id }}" 
                                     {{ $user_to_edit->role_id == $role->id ? 'selected' : '' }}>
@@ -56,7 +53,7 @@
                         <a href="{{ route('admin.user_manage.list') }}" class="px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50">
                             Cancel
                         </a>
-                        <button type="submit" class="inline-flex items-center px-6 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 shadow-sm transition-colors">
+                        <button type="submit" class="inline-flex items-center px-6 py-2 bg-[#e0bb35] border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest hover:bg-[#e3cf85] shadow-sm transition-colors">
                             Update Role
                         </button>
                     </div>
@@ -65,10 +62,6 @@
         </div>
 
     @else
-        
-        {{-- ===========================
-             LIST VIEW (All Users)
-           =========================== --}}
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">All Registered Users</h1>

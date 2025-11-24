@@ -25,26 +25,26 @@
                     <div>
                         <label for="name" class="block text-sm font-bold text-gray-700 mb-1">Company Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $client_to_edit->name ?? '') }}" required 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                     </div>
 
                     <div>
                         <label for="pic_name" class="block text-sm font-bold text-gray-700 mb-1">Person In Charge (PIC)</label>
                         <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name', $client_to_edit->pic_name ?? '') }}" required 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                     </div>
 
                     <div>
                         <label for="email" class="block text-sm font-bold text-gray-700 mb-1">Contact Email</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $client_to_edit->email ?? '') }}" required 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                     </div>
 
                     <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
                         <a href="{{ route('clients.index') }}" class="px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50">
                             Cancel
                         </a>
-                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-[#e0bb35] border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest hover:bg-[#e3cf85]">
                             {{ $action === 'edit' ? 'Update Client' : 'Save Client' }}
                         </button>
                     </div>
@@ -54,8 +54,8 @@
 
     @else
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-gray-900">Clients</h1>
-            <a href="{{ route('clients.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow transition flex items-center">
+            <h1 class="text-3xl font-bold text-[#e0bb35]">Clients</h1>
+            <a href="{{ route('clients.create') }}" class="bg-[#e0bb35] hover:bg-[#e3cf85] text-black font-bold py-2 px-4 rounded shadow transition flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Add Client
             </a>
@@ -73,7 +73,7 @@
             </div>
         @endif
 
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
+        <div class="bg-[#0f0f0f] shadow overflow-hidden sm:rounded-lg border border-gray-800">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
