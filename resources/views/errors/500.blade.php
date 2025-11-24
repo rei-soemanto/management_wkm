@@ -3,7 +3,7 @@
 @section('name', 'Server Error')
 
 @section('content')
-<main class="relative min-h-[597px] bg-gray-900 bg-no-repeat bg-center" style="background-image: url('{{ asset('img/logoWKM.jpg') }}'); background-size: 70%;">
+<main class="relative min-h-[597px] bg-black bg-no-repeat bg-center" style="background-image: url('{{ asset('img/logoWKM.jpg') }}'); background-size: 70%;">
     
     <div class="absolute inset-0 bg-black/70"></div>
 
