@@ -34,7 +34,7 @@
                         <div>
                             <label for="client_id" class="block text-sm font-bold text-[#e0bb35] mb-1">Client</label>
                             <select name="client_id" id="client_id" required 
-                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
+                                class="block w-full rounded-md bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
                                 <option value="">Select Client...</option>
                                 @foreach($clients as $client)
                                     <option value="{{ $client->id }}" @selected(old('client_id', $project_to_edit->client_id ?? '') == $client->id)>{{ $client->name }}</option>
@@ -45,7 +45,7 @@
                         <div>
                             <label for="status_id" class="block text-sm font-bold text-[#e0bb35] mb-1">Status</label>
                             <select name="status_id" id="status_id" required 
-                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
+                                class="block w-full rounded-md bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
                                 @foreach($statuses as $status)
                                     <option value="{{ $status->id }}" @selected(old('status_id', $project_to_edit->status_id ?? '') == $status->id)>{{ $status->name }}</option>
                                 @endforeach
