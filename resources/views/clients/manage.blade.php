@@ -74,33 +74,33 @@
         @endif
 
         <div class="bg-[#0f0f0f] shadow overflow-hidden sm:rounded-lg border border-gray-800">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-gray-800">
+                <thead class="bg-[#0f0f0f]">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PIC / Contact</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active Projects</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Company Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">PIC / Contact</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Active Projects</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-[#0f0f0f] divide-y divide-gray-800">
                     @forelse($clients as $client)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{{ $client->name }}</td>
+                    <tr class="hover:bg-black">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-[#e0bb35]">{{ $client->name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">{{ $client->pic_name }}</div>
-                            <div class="text-sm text-gray-500">{{ $client->email }}</div>
+                            <div class="text-sm text-[#e0bb35]">{{ $client->pic_name }}</div>
+                            <div class="text-sm text-gray-300">{{ $client->email }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-200 text-[#0f0f0f]">
                                 {{ $client->management_projects_count }} Projects
                             </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <a href="{{ route('clients.edit', $client->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-4 font-bold">Edit</a>
+                            <a href="{{ route('clients.edit', $client->id) }}" class="text-[#e0bb35] hover:text-[#e3cf85] mr-4 font-bold">Edit</a>
                             <form action="{{ route('clients.destroy', $client->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure?');">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900 font-bold">Delete</button>
+                                <button type="submit" class="text-red-600 hover:text-red-400 font-bold">Delete</button>
                             </form>
                         </td>
                     </tr>
