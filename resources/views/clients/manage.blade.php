@@ -95,12 +95,12 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-[#e0bb35]">{{ $client->name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-[#e0bb35]">{{ $client->pic_name }}</div>
-                            @if ($client->email->exist())
+                            @if ($client->email)
                                 <div class="text-sm text-gray-300">{{ $client->email }}</div>
                             @else
                                 <span class="text-sm text-gray-300">None</span>
                             @endif
-                            @if ($client->phone->exist())
+                            @if ($client->phone)
                                 <div class="text-sm text-gray-300">{{ $client->phone }}</div>
                             @else
                                 <span class="text-sm text-gray-300">None</span>
