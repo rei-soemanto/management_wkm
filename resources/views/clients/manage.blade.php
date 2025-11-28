@@ -12,10 +12,10 @@
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     Back to List
                 </a>
-                <h1 class="text-3xl font-bold text-gray-900 mt-2">{{ $action === 'edit' ? 'Edit Client' : 'Add New Client' }}</h1>
+                <h1 class="text-3xl font-bold text-[#e0bb35] mt-2">{{ $action === 'edit' ? 'Edit Client' : 'Add New Client' }}</h1>
             </div>
 
-            <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
+            <div class="bg-[#0f0f0f] shadow-lg rounded-xl overflow-hidden border border-gray-800">
                 <form action="{{ $action === 'edit' ? route('clients.update', $client_to_edit->id) : route('clients.store') }}" method="POST" class="p-8 space-y-6">
                     @csrf
                     @if ($action === 'edit')
@@ -23,21 +23,21 @@
                     @endif
 
                     <div>
-                        <label for="name" class="block text-sm font-bold text-gray-700 mb-1">Company Name</label>
+                        <label for="name" class="block text-sm font-bold text-[#e0bb35] mb-1">Company Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $client_to_edit->name ?? '') }}" required 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
                     </div>
 
                     <div>
-                        <label for="pic_name" class="block text-sm font-bold text-gray-700 mb-1">Person In Charge (PIC)</label>
+                        <label for="pic_name" class="block text-sm font-bold text-[#e0bb35] mb-1">Person In Charge (PIC)</label>
                         <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name', $client_to_edit->pic_name ?? '') }}" required 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
                     </div>
 
                     <div>
-                        <label for="email" class="block text-sm font-bold text-gray-700 mb-1">Contact Email</label>
+                        <label for="email" class="block text-sm font-bold text-[#e0bb35] mb-1">Contact Email</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $client_to_edit->email ?? '') }}" required 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
                     </div>
 
                     <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">

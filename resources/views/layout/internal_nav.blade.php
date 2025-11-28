@@ -4,9 +4,7 @@
             
             <div class="flex items-center">
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ url('/') }}">
-                        <img class="h-10 w-auto" src="{{ asset('img/logoWKM.png') }}" alt="WKM Logo">
-                    </a>
+                    <img class="h-10 w-auto" src="{{ asset('img/logoWKM.png') }}" alt="WKM Logo">
                     <span class="ml-3 font-bold text-xl tracking-wider text-gray-100 hidden md:block">
                         WKM <span class="text-[#e0bb35]">MANAGEMENT</span>
                     </span>
