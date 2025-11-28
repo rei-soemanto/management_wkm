@@ -41,7 +41,7 @@
                     </div>
 
                     <div>
-                        <label for="email" class="block text-sm font-bold text-[#e0bb35] mb-1">Contact Email</label>
+                        <label for="email" class="block text-sm font-bold text-[#e0bb35] mb-1">Contact Phone</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $client_to_edit->phone ?? '') }}" 
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
                     </div>
