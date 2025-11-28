@@ -16,6 +16,7 @@ class Client extends Model
         'name',
         'pic_name',
         'email',
+        'phone',
     ];
 
     public function managementProjects()

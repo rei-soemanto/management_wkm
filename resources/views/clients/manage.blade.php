@@ -36,7 +36,13 @@
 
                     <div>
                         <label for="email" class="block text-sm font-bold text-[#e0bb35] mb-1">Contact Email</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', $client_to_edit->email ?? '') }}" required 
+                        <input type="email" name="email" id="email" value="{{ old('email', $client_to_edit->email ?? '') }}" 
+                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-bold text-[#e0bb35] mb-1">Contact Email</label>
+                        <input type="email" name="email" id="email" value="{{ old('email', $client_to_edit->phone ?? '') }}" 
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
                     </div>
 
@@ -89,7 +95,16 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-[#e0bb35]">{{ $client->name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm text-[#e0bb35]">{{ $client->pic_name }}</div>
-                            <div class="text-sm text-gray-300">{{ $client->email }}</div>
+                            @if ($client->email->exist())
+                                <div class="text-sm text-gray-300">{{ $client->email }}</div>
+                            @else
+                                <span class="text-sm text-gray-300">None</span>
+                            @endif
+                            @if ($client->phone->exist())
+                                <div class="text-sm text-gray-300">{{ $client->phone }}</div>
+                            @else
+                                <span class="text-sm text-gray-300">None</span>
+                            @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-200 text-[#0f0f0f]">
