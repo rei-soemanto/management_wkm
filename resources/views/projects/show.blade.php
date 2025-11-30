@@ -49,6 +49,40 @@
             2. LEFT COLUMN (Progress)
         =========================== --}}
         <div class="lg:col-span-2 space-y-8">
+
+            @if(Auth::user()->userRole->name === 'Admin')
+                <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
+                    <h3 class="text-xl font-bold mb-6 text-[#e0bb35]">Add New Task</h3>
+                    <form action="{{ route('projects.tasks.store', $project->id) }}" method="POST">
+                        @csrf
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Task Name</label>
+                                <input type="text" name="name" required class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Description</label>
+                                <textarea name="description" rows="2" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Assign To (PIC)</label>
+                                <select name="assigned_to" required class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                                    @foreach($project->roleAssignments as $assignment)
+                                        <option value="{{ $assignment->user->id }}">{{ $assignment->user->name }} ({{ $assignment->projectRole->name }})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Due Date</label>
+                                <input type="date" name="due_date" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-[#e0bb35] text-black font-bold py-2 px-4 rounded-md hover:bg-[#e3cf85] transition">
+                            Create Task
+                        </button>
+                    </form>
+                </div>
+            @endif
             
             {{-- ACTION: REPORT PROGRESS --}}
             <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
