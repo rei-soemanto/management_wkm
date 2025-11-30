@@ -114,7 +114,7 @@
                                                 </div>
                                             </div>
                                             @if(Auth::user()->userRole->name === 'Admin')
-                                                <a href="{{ route('projects.tasks.update', [$task->management_project_id, $task->id]) }}" class="text-[#e0bb35] hover:text-[#e3cf85] font-bold">Change Status</a>
+                                                <a href="{{ route('projects.tasks.edit', [$task->management_project_id, $task->id]) }}" class="text-[#e0bb35] hover:text-[#e3cf85] font-bold">Change Status</a>
                                             @endif
                                         </div>
                                     </div>
