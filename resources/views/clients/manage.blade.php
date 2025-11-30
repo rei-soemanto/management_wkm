@@ -46,7 +46,7 @@
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
                     </div>
 
-                    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
+                    <div class="pt-4 border-t border-[#e0bb35] flex justify-end gap-3">
                         <a href="{{ route('clients.index') }}" class="px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50">
                             Cancel
                         </a>

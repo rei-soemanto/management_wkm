@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <p class="text-gray-600 mt-4 border-t border-gray-200 pt-4">
+        <p class="text-gray-300 mt-4 border-t border-[#e0bb35] pt-4">
             {{ $project->description }}
         </p>
     </div>
@@ -188,7 +188,7 @@
                 <h3 class="text-lg font-bold text-[#e0bb35] mb-4">Allocated Products</h3>
                 <ul class="space-y-3">
                     @forelse($project->productUsages as $usage)
-                        <li class="flex justify-between items-center bg-gray-200 p-3 rounded-md group">
+                        <li class="flex justify-between items-center bg-[#0f0f0f] p-3 rounded-md group">
                             <div>
                                 <p class="text-sm font-medium text-[#e0bb35]">{{ $usage->inventoryItem->product->name }}</p>
                                 <p class="text-xs text-gray-300">Qty: <span class="font-bold">{{ $usage->quantity }}</span></p>
