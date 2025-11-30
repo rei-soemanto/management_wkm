@@ -53,29 +53,28 @@
             @if(Auth::user()->userRole->name === 'Admin')
                 <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
                     <h3 class="text-xl font-bold mb-6 text-[#e0bb35]">Add New Task</h3>
-                    <form action="{{ route('projects.tasks.store', $project->id) }}" method="POST">
+                    <form action="{{ route('projects.tasks.store', $project->id) }}" method="POST" class="space-y-4">
                         @csrf
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Task Name</label>
-                                <input type="text" name="name" required class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Description</label>
-                                <textarea name="description" rows="2" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2"></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Assign To (PIC)</label>
-                                <select name="assigned_to" required class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
-                                    @foreach($project->roleAssignments as $assignment)
-                                        <option value="{{ $assignment->user->id }}">{{ $assignment->user->name }} ({{ $assignment->projectRole->name }})</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Due Date</label>
-                                <input type="date" name="due_date" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
-                            </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Task Name</label>
+                            <input type="text" name="name" required class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Description</label>
+                            <textarea name="description" rows="2" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Assign To (PIC)</label>
+                            <select name="assigned_to" required class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                                @foreach($project->roleAssignments as $assignment)
+                                    <option value="{{ $assignment->user->id }}">{{ $assignment->user->name }} ({{ $assignment->projectRole->name }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Due Date</label>
+                            <input type="date" name="due_date" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
                         </div>
                         <button type="submit" class="w-full bg-[#e0bb35] text-black font-bold py-2 px-4 rounded-md hover:bg-[#e3cf85] transition">
                             Create Task
@@ -83,6 +82,52 @@
                     </form>
                 </div>
             @endif
+
+            <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
+                <h2 class="text-xl font-bold text-[#e0bb35] mb-6">Tasks</h2>
+                <div class="flow-root">
+                    <ul role="list" class="-mb-8">
+                        @foreach($project->tasks->sortByDesc('created_at') as $task)
+                            <li>
+                                <div class="relative pb-8">
+                                    @if(!$loop->last)
+                                        <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-800" aria-hidden="true"></span>
+                                    @endif
+                                    <div class="relative flex space-x-3">
+                                        <div>
+                                            <span class="h-8 w-8 rounded-full bg-[#0f0f0f] flex items-center justify-center ring-2 ring-[#e0bb35]">
+                                                <svg class="h-5 w-5 text-[#e0bb35]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                            <div>
+                                                <p class="text-sm text-gray-300">
+                                                    Assigned to <span class="font-medium text-[#e0bb35]">{{ $task->user->name }}</span>
+                                                </p>
+                                                <p class="text-sm text-gray-300 mt-1">{{ $log->notes }}</p>
+                                                <div class="text-right text-sm whitespace-nowrap text-gray-300">
+                                                    <time datetime="{{ $task->due_date }}">{{ \Carbon\Carbon::parse($task->due_date)->format('M d, Y') }}</time>
+                                                </div>
+                                            </div>
+                                            @if(Auth::user()->userRole->name === 'Admin')
+                                                <select name="status_id" class="mt-1 block w-full rounded-md bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                                                    @foreach(App\Models\Managements\Status::all() as $status)
+                                                        <option value="{{ $status->id }}" {{ $project->status_id == $status->id ? 'selected' : '' }}>
+                                                            {{ $status->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
             
             {{-- ACTION: REPORT PROGRESS --}}
             <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
@@ -330,17 +375,4 @@
         </form>
     </div>
 </div>
-
-<script>
-    function openUpdateModal(taskId, taskName, currentStatus) {
-        // Set Action URL dynamically
-        const form = document.getElementById('updateTaskForm');
-        form.action = `/projects/{{ $project->id }}/tasks/${taskId}`;
-        
-        document.getElementById('modalTaskName').innerText = taskName;
-        document.getElementById('modalTaskStatus').value = currentStatus;
-        
-        document.getElementById('updateTaskModal').classList.remove('hidden');
-    }
-</script>
 @endsection
