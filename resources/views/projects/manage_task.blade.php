@@ -16,38 +16,10 @@
     <div class="bg-[#0f0f0f] shadow-lg rounded-lg p-6 border border-gray-800">
         <p class="text-gray-400 text-sm mb-6">Editing Task: <strong class="text-white">{{ $task->name }}</strong></p>
 
-        {{-- UPDATE FORM --}}
         <form action="{{ route('projects.tasks.update', [$project->id, $task->id]) }}" method="POST" class="space-y-5">
             @csrf
             @method('PATCH')
 
-            {{-- Task Name --}}
-            <div>
-                <label class="block text-sm font-medium text-[#e0bb35] mb-1">Task Name</label>
-                <input type="text" name="name" value="{{ old('name', $task->name) }}" required 
-                    class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
-            </div>
-
-            {{-- Description --}}
-            <div>
-                <label class="block text-sm font-medium text-[#e0bb35] mb-1">Description</label>
-                <textarea name="description" rows="3" 
-                    class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">{{ old('description', $task->description) }}</textarea>
-            </div>
-
-            {{-- Assign To --}}
-            <div>
-                <label class="block text-sm font-medium text-[#e0bb35] mb-1">Assign To (PIC)</label>
-                <select name="assigned_to" required class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
-                    @foreach($project->roleAssignments as $assignment)
-                        <option value="{{ $assignment->user->id }}" {{ $task->assigned_to == $assignment->user->id ? 'selected' : '' }}>
-                            {{ $assignment->user->name }} ({{ $assignment->projectRole->name }})
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- Status --}}
             <div>
                 <label class="block text-sm font-medium text-[#e0bb35] mb-1">Status</label>
                 <select name="status" class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
@@ -58,17 +30,13 @@
                 </select>
             </div>
 
-            {{-- Due Date --}}
             <div>
                 <label class="block text-sm font-medium text-[#e0bb35] mb-1">Due Date</label>
                 <input type="date" name="due_date" value="{{ old('due_date', $task->due_date ? $task->due_date->format('Y-m-d') : '') }}" 
                     class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
             </div>
 
-            {{-- Actions --}}
             <div class="flex justify-between pt-6 border-t border-gray-800">
-                
-                {{-- Update Button --}}
                 <div class="flex gap-3">
                     <a href="{{ route('projects.show', $project->id) }}" class="px-4 py-2 border border-gray-600 rounded text-gray-400 hover:text-white hover:border-white transition">Cancel</a>
                     <button type="submit" class="px-6 py-2 bg-[#e0bb35] text-black rounded font-bold hover:bg-[#e3cf85] transition">Update Task</button>
@@ -76,7 +44,6 @@
             </div>
         </form>
 
-        {{-- DELETE BUTTON (Outside main form to prevent conflicts) --}}
         <div class="mt-4 flex justify-end">
             <form action="{{ route('projects.tasks.destroy', [$project->id, $task->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this task?');">
                 @csrf 

@@ -99,11 +99,3 @@ Route::get('/storage-link', function () {
         return 'Error creating storage link: ' . $e->getMessage();
     }
 });
-
-Route::get('/clear-all-cache', function() {
-    \Illuminate\Support\Facades\Artisan::call('view:clear');
-    \Illuminate\Support\Facades\Artisan::call('route:clear');
-    \Illuminate\Support\Facades\Artisan::call('config:clear');
-    \Illuminate\Support\Facades\Artisan::call('cache:clear');
-    return 'Cache Cleared! You can go back now.';
-});
