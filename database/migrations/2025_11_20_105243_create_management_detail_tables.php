@@ -36,7 +36,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->unsignedBigInteger('management_project_id');
             $table->foreign('management_project_id', 'mpp_mgmt_project_id_foreign')->references('id')->on('management_projects')->onDelete('cascade');
-            $table->foreignId('status_id')->constrained('status');
+            $table->foreignId('task_id')->constrained('management_project_tasks')->onDelete('cascade');
             $table->date('progress_date');
             $table->text('document_path');
             $table->text('notes')->nullable();

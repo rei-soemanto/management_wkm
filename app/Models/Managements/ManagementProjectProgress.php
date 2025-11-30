@@ -15,7 +15,7 @@ class ManagementProjectProgress extends Model
     protected $fillable = [
         'user_id',
         'management_project_id',
-        'status_id',
+        'task_id',
         'progress_date',
         'document_path',
         'notes',
@@ -31,8 +31,8 @@ class ManagementProjectProgress extends Model
         return $this->belongsTo(ManagementProject::class, 'management_project_id');
     }
 
-    public function status()
+    public function task()
     {
-        return $this->belongsTo(Status::class, 'status_id');
+        return $this->belongsTo(Status::class, 'task_id');
     }
 }

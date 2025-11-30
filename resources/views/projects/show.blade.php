@@ -198,7 +198,8 @@
                                         <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                             <div>
                                                 <p class="text-sm text-gray-300">
-                                                    Updated to <span class="font-medium text-[#e0bb35]">{{ $log->status->name }}</span> by <span class="font-medium text-[#e0bb35]">{{ $log->user->name }}</span>
+                                                    Report for Task: <span class="font-medium text-[#e0bb35]">{{ $log->task->name ?? 'Unknown Task' }}</span> 
+                                                    by <span class="font-medium text-[#e0bb35]">{{ $log->user->name }}</span>
                                                 </p>
                                                 <p class="text-sm text-gray-300 mt-1">{{ $log->notes }}</p>
                                                 <a href="{{ asset('storage/' . $log->document_path) }}" target="_blank" class="inline-flex items-center mt-2 px-2.5 py-1.5 bg-[#e0bb35] border border-gray-800 shadow-sm text-xs font-medium rounded text-black hover:bg-[#e3cf85]">

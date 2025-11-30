@@ -15,7 +15,7 @@ class ManagementProjectProgressController extends Controller
     public function store(Request $request, $projectId)
     {
         $request->validate([
-            'task_id' => 'required|exists:task,id',
+            'task_id' => 'required|exists:management_project_tasks,id',
             'progress_date' => 'required|date',
             'document' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:8192',
             'notes' => 'nullable|string',
