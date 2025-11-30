@@ -222,4 +222,91 @@
 
     </div>
 </div>
+
+{{-- MODAL: CREATE TASK --}}
+<div id="createTaskModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg w-full max-w-md p-6">
+        <h3 class="text-lg font-bold mb-4">Add New Task</h3>
+        <form action="{{ route('projects.tasks.store', $project->id) }}" method="POST">
+            @csrf
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Task Name</label>
+                    <input type="text" name="name" required class="w-full rounded border-gray-300">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Description</label>
+                    <textarea name="description" rows="2" class="w-full rounded border-gray-300"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Assign To (PIC)</label>
+                    <select name="assigned_to" required class="w-full rounded border-gray-300">
+                        @foreach($project->roleAssignments as $assignment)
+                            <option value="{{ $assignment->user->id }}">{{ $assignment->user->name }} ({{ $assignment->projectRole->name }})</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Due Date</label>
+                    <input type="date" name="due_date" class="w-full rounded border-gray-300">
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button type="button" onclick="document.getElementById('createTaskModal').classList.add('hidden')" class="px-4 py-2 border rounded">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded font-bold">Create Task</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- MODAL: UPDATE TASK --}}
+<div id="updateTaskModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg w-full max-w-md p-6">
+        <h3 class="text-lg font-bold mb-2">Update Task Progress</h3>
+        <p id="modalTaskName" class="text-sm text-gray-500 mb-4"></p>
+        
+        <form id="updateTaskForm" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PATCH')
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Status</label>
+                    <select name="status" id="modalTaskStatus" class="w-full rounded border-gray-300">
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Proof / Document (Optional)</label>
+                    <input type="file" name="document" class="w-full text-sm border border-gray-300 rounded">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Notes / Comment</label>
+                    <textarea name="notes" rows="2" class="w-full rounded border-gray-300"></textarea>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-end gap-2">
+                <button type="button" onclick="document.getElementById('updateTaskModal').classList.add('hidden')" class="px-4 py-2 border rounded">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded font-bold">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openUpdateModal(taskId, taskName, currentStatus) {
+        // Set Action URL dynamically
+        const form = document.getElementById('updateTaskForm');
+        form.action = `/projects/{{ $project->id }}/tasks/${taskId}`;
+        
+        document.getElementById('modalTaskName').innerText = taskName;
+        document.getElementById('modalTaskStatus').value = currentStatus;
+        
+        document.getElementById('updateTaskModal').classList.remove('hidden');
+    }
+</script>
 @endsection

@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Models\Managements;
+
+use App\Models\Users\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ManagementProjectTask extends Model
+{
+    use HasFactory;
+
+    protected $table = 'management_project_tasks';
+
+    protected $fillable = [
+        'management_project_id',
+        'assigned_to',
+        'name',
+        'description',
+        'status',
+        'due_date',
+    ];
+
+    protected $casts = [
+        'due_date' => 'date',
+    ];
+
+    public function project()
+    {
+        return $this->belongsTo(ManagementProject::class, 'management_project_id');
+    }
+
+    public function assignee()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+}
