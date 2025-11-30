@@ -224,7 +224,7 @@
 </div>
 
 {{-- MODAL: CREATE TASK --}}
-<div id="createTaskModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+<div id="createTaskModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg w-full max-w-md p-6">
         <h3 class="text-lg font-bold mb-4">Add New Task</h3>
         <form action="{{ route('projects.tasks.store', $project->id) }}" method="POST">
@@ -260,7 +260,7 @@
 </div>
 
 {{-- MODAL: UPDATE TASK --}}
-<div id="updateTaskModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+<div id="updateTaskModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg w-full max-w-md p-6">
         <h3 class="text-lg font-bold mb-2">Update Task Progress</h3>
         <p id="modalTaskName" class="text-sm text-gray-500 mb-4"></p>
