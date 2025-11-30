@@ -45,4 +45,9 @@ class ManagementProject extends Model
     {
         return $this->hasMany(ProductProjectUsage::class, 'management_project_id');
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(ManagementProjectTask::class, 'management_project_id');
+    }
 }

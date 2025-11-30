@@ -87,7 +87,7 @@
                 <h2 class="text-xl font-bold text-[#e0bb35] mb-6">Tasks</h2>
                 <div class="flow-root">
                     <ul role="list" class="-mb-8">
-                        @foreach($project->tasks->sortByDesc('created_at') as $task)
+                        @foreach($project->tasks()->orderBy('created_at', 'desc')->get() as $task)
                             <li>
                                 <div class="relative pb-8">
                                     @if(!$loop->last)

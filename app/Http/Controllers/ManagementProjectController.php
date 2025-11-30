@@ -74,7 +74,8 @@ class ManagementProjectController extends Controller
             'roleAssignments.user', 
             'roleAssignments.projectRole',
             'progressLogs.user',
-            'productUsages.inventoryItem.product'
+            'productUsages.inventoryItem.product',
+            'tasks'
         ])->findOrFail($id);
 
         return view('projects.show', compact('project'));
