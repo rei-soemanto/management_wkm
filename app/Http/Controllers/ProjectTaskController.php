@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Managements\ManagementProject;
 use App\Models\Managements\ManagementProjectTask;
 use App\Models\Managements\ManagementProjectProgress;
-use App\Models\Managements\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProjectTaskController extends Controller
 {
-    // Store a new task
+    // Store a new task (From Show Page)
     public function store(Request $request, $projectId)
     {
         $request->validate([
@@ -33,41 +32,54 @@ class ProjectTaskController extends Controller
         return back()->with('success', 'Task created successfully.');
     }
 
-    // Update task status (The new "Progress" workflow)
-    public function updateStatus(Request $request, $projectId, $taskId)
+    // Show the "Manage Task" page (Edit)
+    public function edit($projectId, $taskId)
+    {
+        $project = ManagementProject::with('roleAssignments.user')->findOrFail($projectId);
+        $task = ManagementProjectTask::where('management_project_id', $projectId)->findOrFail($taskId);
+
+        // We pass the project so we can populate the "Assign To" dropdown with team members
+        return view('projects.manage_task', compact('project', 'task'));
+    }
+
+    // Update Task (From Manage Page)
+    public function update(Request $request, $projectId, $taskId)
     {
         $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'assigned_to' => 'required|exists:users,id',
             'status' => 'required|in:Pending,In Progress,Completed,On Hold',
-            'document' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:8192',
-            'notes' => 'nullable|string'
+            'due_date' => 'nullable|date',
         ]);
 
         $task = ManagementProjectTask::where('management_project_id', $projectId)
             ->where('id', $taskId)
             ->firstOrFail();
 
-        // 1. Update Task Status
-        $task->update(['status' => $request->status]);
+        $oldStatus = $task->status;
 
-        // 2. Log this in the main Project Progress History (so we keep a timeline)
-        $project = ManagementProject::findOrFail($projectId);
-        
-        $documentPath = null;
-        if ($request->hasFile('document')) {
-            $documentPath = $request->file('document')->store('project_documents', 'public');
-        }
-
-        // Create a log entry
-        ManagementProjectProgress::create([
-            'management_project_id' => $projectId,
-            'user_id' => Auth::id(),
-            'status_id' => $project->status_id,
-            'progress_date' => now(),
-            'document_path' => $documentPath,
-            'notes' => "Task '{$task->name}' updated to {$request->status}. " . $request->notes,
+        $task->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'assigned_to' => $request->assigned_to,
+            'status' => $request->status,
+            'due_date' => $request->due_date,
         ]);
 
-        return back()->with('success', 'Task status updated.');
+        // Optional: Log status change if it happened
+        if ($oldStatus !== $request->status) {
+            ManagementProjectProgress::create([
+                'management_project_id' => $projectId,
+                'user_id' => Auth::id(),
+                'status_id' => ManagementProject::find($projectId)->status_id, // Keep project status
+                'progress_date' => now(),
+                'document_path' => '', // No doc for admin edit
+                'notes' => "Task '{$task->name}' status updated to {$request->status} by Admin.",
+            ]);
+        }
+
+        return redirect()->route('projects.show', $projectId)->with('success', 'Task updated successfully.');
     }
 
     // Delete task
@@ -79,6 +91,6 @@ class ProjectTaskController extends Controller
             
         $task->delete();
 
-        return back()->with('success', 'Task deleted.');
+        return redirect()->route('projects.show', $projectId)->with('success', 'Task deleted.');
     }
 }

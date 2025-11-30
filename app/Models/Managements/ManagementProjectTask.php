@@ -30,7 +30,7 @@ class ManagementProjectTask extends Model
         return $this->belongsTo(ManagementProject::class, 'management_project_id');
     }
 
-    public function assignee()
+    public function assigned()
     {
         return $this->belongsTo(User::class, 'assigned_to');
     }
