@@ -37,8 +37,8 @@ Route::middleware(['auth','internal'])->group(function () {
     Route::delete('projects/{id}/team/{assignmentId}', [ProjectTeamController::class, 'destroy'])->name('projects.team.destroy');
 
     Route::post('projects/{projectId}/tasks', [ProjectTaskController::class, 'store'])->name('projects.tasks.store');
-    Route::post('projects/{projectId}/tasks/{taskId}/edit', [ProjectTaskController::class, 'edit'])->name('projects.tasks.edit');
-    Route::get('projects/{projectId}/tasks/{taskId}/update', [ProjectTaskController::class, 'update'])->name('projects.tasks.update');
+    Route::get('projects/{projectId}/tasks/{taskId}/edit', [ProjectTaskController::class, 'edit'])->name('projects.tasks.edit');
+    Route::patch('projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'update'])->name('projects.tasks.update');
     Route::delete('projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'destroy'])->name('projects.tasks.destroy');
 
     Route::get('projects/{id}/allocation/create', [ProjectAllocationController::class, 'create'])->name('projects.allocation.create');
