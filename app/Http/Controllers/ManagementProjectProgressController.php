@@ -17,14 +17,14 @@ class ManagementProjectProgressController extends Controller
         $request->validate([
             'status_id' => 'required|exists:status,id',
             'progress_date' => 'required|date',
-            'document' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:2048',
+            'document' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:8192',
             'notes' => 'nullable|string',
         ]);
 
         $project = ManagementProject::findOrFail($projectId);
 
         // Handle File Upload
-        $path = $request->file('document')->store('project_documents', 'public');
+        $path = $request->file('document')->store('uploads/document/project_documents', 'public');
 
         // Create Progress Log
         ManagementProjectProgress::create([

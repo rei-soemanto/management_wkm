@@ -43,15 +43,15 @@
                     </div>
 
                     <div>
-                        <label for="name" class="block text-sm font-bold text-gray-300 mb-1">Full Name</label>
+                        <label for="name" class="block text-sm font-bold text-[#e0bb35] mb-1">Full Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required 
-                            class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                     </div>
 
                     <div>
-                        <label for="email" class="block text-sm font-bold text-gray-300 mb-1">Email Address</label>
+                        <label for="email" class="block text-sm font-bold text-[#e0bb35] mb-1">Email Address</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required 
-                            class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                     </div>
 
                     <hr class="border-[#e0bb35] my-4">
