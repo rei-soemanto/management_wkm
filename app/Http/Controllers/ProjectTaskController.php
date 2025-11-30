@@ -57,6 +57,7 @@ class ProjectTaskController extends Controller
             ->where('id', $taskId)
             ->firstOrFail();
 
+        $oldAssigned = $task->assigned_to;
         $oldStatus = $task->status;
 
         $task->update([
