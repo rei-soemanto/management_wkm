@@ -140,8 +140,9 @@
                         <div>
                             <label class="block text-sm font-medium text-[#e0bb35]">New Task</label>
                             <select name="task_id" class="mt-1 block w-full rounded-md bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
-                                @foreach(App\Models\Managements\ManagementProjectTask::all() as $task)
-                                    <option value="{{ $task->id }}" {{ $project->task_id == $task->id ? 'selected' : '' }}>
+                                <option value="">-- Select a Task --</option>
+                                @foreach($project->tasks as $task)
+                                    <option value="{{ $task->id }}">
                                         {{ $task->name }}
                                     </option>
                                 @endforeach
