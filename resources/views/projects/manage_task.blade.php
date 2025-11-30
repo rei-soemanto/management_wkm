@@ -19,7 +19,7 @@
         {{-- UPDATE FORM --}}
         <form action="{{ route('projects.tasks.update', [$project->id, $task->id]) }}" method="POST" class="space-y-5">
             @csrf
-            @method('PUT')
+            @method('PATCH')
 
             {{-- Task Name --}}
             <div>
