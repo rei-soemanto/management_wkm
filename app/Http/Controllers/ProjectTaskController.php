@@ -67,18 +67,6 @@ class ProjectTaskController extends Controller
             'due_date' => $request->due_date,
         ]);
 
-        // Optional: Log status change if it happened
-        if ($oldStatus !== $request->status) {
-            ManagementProjectProgress::create([
-                'management_project_id' => $projectId,
-                'user_id' => Auth::id(),
-                'status_id' => ManagementProject::find($projectId)->status_id, // Keep project status
-                'progress_date' => now(),
-                'document_path' => '', // No doc for admin edit
-                'notes' => "Task '{$task->name}' status updated to {$request->status} by Admin.",
-            ]);
-        }
-
         return redirect()->route('projects.show', $projectId)->with('success', 'Task updated successfully.');
     }
 
