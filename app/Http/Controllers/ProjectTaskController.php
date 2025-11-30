@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Managements\ManagementProject;
 use App\Models\Managements\ManagementProjectTask;
-use App\Models\Managements\ManagementProjectProgress;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectTaskController extends Controller
 {
-    // Store a new task (From Show Page)
+    // Store new task
     public function store(Request $request, $projectId)
     {
         $request->validate([
@@ -32,17 +30,16 @@ class ProjectTaskController extends Controller
         return back()->with('success', 'Task created successfully.');
     }
 
-    // Show the "Manage Task" page (Edit)
+    // Show Manage Task page
     public function edit($projectId, $taskId)
     {
         $project = ManagementProject::with('roleAssignments.user')->findOrFail($projectId);
         $task = ManagementProjectTask::where('management_project_id', $projectId)->findOrFail($taskId);
 
-        // We pass the project so we can populate the "Assign To" dropdown with team members
         return view('projects.manage_task', compact('project', 'task'));
     }
 
-    // Update Task (From Manage Page)
+    // Update Task
     public function update(Request $request, $projectId, $taskId)
     {
         $request->validate([

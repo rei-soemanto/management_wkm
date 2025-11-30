@@ -5,7 +5,6 @@
 @section('content')
 <div class="max-w-2xl mx-auto px-4 py-8">
     
-    {{-- Header --}}
     <div class="mb-6 flex items-center justify-between">
         <h2 class="text-xl text-[#e0bb35] font-bold">Manage Task</h2>
         <a href="{{ route('projects.show', $project->id) }}" class="text-gray-400 hover:text-white text-sm">

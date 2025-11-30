@@ -6,14 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Tables to update.
-     */
     protected $tables = ['products', 'services', 'projects'];
 
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         foreach ($this->tables as $tableName) {

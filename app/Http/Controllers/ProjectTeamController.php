@@ -31,7 +31,6 @@ class ProjectTeamController extends Controller
             'role_id' => 'required|exists:project_roles,id',
         ]);
 
-        // Check if user is already assigned to prevent duplicates
         $exists = ManagementProjectRoleAssignment::where('management_project_id', $projectId)
             ->where('user_id', $request->user_id)
             ->exists();
@@ -49,7 +48,7 @@ class ProjectTeamController extends Controller
         return redirect()->route('projects.show', $projectId)->with('success', 'Team member assigned successfully.');
     }
 
-    // Remove a member
+    // Remove member
     public function destroy($projectId, $assignmentId)
     {
         $assignment = ManagementProjectRoleAssignment::where('management_project_id', $projectId)

@@ -5,9 +5,6 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    {{-- ===========================
-            1. HEADER SECTION
-    =========================== --}}
     <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6 mb-8">
         <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
             <div>
@@ -31,7 +28,6 @@
                     <p class="text-xs text-gray-300 uppercase tracking-wide">Current Status</p>
                     <p class="text-lg font-bold text-[#e0bb35]">{{ $project->status->name }}</p>
                 </div>
-                {{-- Visual Status Indicator --}}
                 <div class="h-10 w-10 rounded-full flex items-center justify-center 
                     {{ $project->status->name == 'Finished' ? 'bg-green-500' : ($project->status->name == 'Cancelled' ? 'bg-red-500' : 'bg-blue-500') }}">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -45,9 +41,6 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {{-- ===========================
-            2. LEFT COLUMN (Progress)
-        =========================== --}}
         <div class="lg:col-span-2 space-y-8">
 
             @if(Auth::user()->userRole->name === 'Admin')
@@ -127,7 +120,6 @@
                 </div>
             </div>
             
-            {{-- ACTION: REPORT PROGRESS --}}
             <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
                 <h2 class="text-xl font-bold text-[#e0bb35] mb-4 flex items-center">
                     <svg class="w-5 h-5 mr-2 text-[#e0bb35]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
@@ -176,7 +168,6 @@
                 </form>
             </div>
 
-            {{-- HISTORY TIMELINE --}}
             <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
                 <h2 class="text-xl font-bold text-[#e0bb35] mb-6">Progress History</h2>
                 <div class="flow-root">
@@ -220,12 +211,8 @@
 
         </div>
 
-        {{-- ===========================
-            3. RIGHT COLUMN (Team & BOM)
-        =========================== --}}
         <div class="space-y-8">
 
-            {{-- TEAM MEMBERS --}}
             <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
                 <h3 class="text-lg font-bold text-[#e0bb35] mb-4">Project Team</h3>
                 <ul class="divide-y divide-[#e0bb35]">
@@ -241,7 +228,6 @@
                                 </div>
                             </div>
                             
-                            {{-- Remove Button (Admin Only) --}}
                             @if(Auth::user()->userRole->name === 'Admin')
                                 <form action="{{ route('projects.team.destroy', [$project->id, $assignment->id]) }}" method="POST" onsubmit="return confirm('Remove this member?')">
                                     @csrf
@@ -255,14 +241,12 @@
                     @endforeach
                 </ul>
                 @if(Auth::user()->userRole->name === 'Admin')
-                    {{-- FIXED: Now links to the real controller --}}
                     <a href="{{ route('projects.team.create', $project->id) }}" class="mt-4 w-full block text-center border border-dashed border-gray-200 text-[#e0bb35] py-2 rounded-md text-sm hover:bg-gray-200 hover:text-[#0f0f0f] transition">
                         + Assign Member (Admin)
                     </a>
                 @endif
             </div>
 
-            {{-- ALLOCATED INVENTORY (BOM) --}}
             <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
                 <h3 class="text-lg font-bold text-[#e0bb35] mb-4">Allocated Products</h3>
                 <ul class="space-y-3">
@@ -273,7 +257,6 @@
                                 <p class="text-xs text-gray-300">Qty: <span class="font-bold">{{ $usage->quantity }}</span></p>
                             </div>
                             <div class="flex items-center gap-2">
-                                {{-- Remove Button (Admin Only) --}}
                                 @if(Auth::user()->userRole->name === 'Admin')
                                     <form action="{{ route('projects.allocation.destroy', [$project->id, $usage->id]) }}" method="POST" onsubmit="return confirm('Remove item? Stock will be returned.')">
                                         @csrf
@@ -290,7 +273,6 @@
                     @endforelse
                 </ul>
                 @if(Auth::user()->userRole->name === 'Admin')
-                    {{-- FIXED: Now links to the real controller --}}
                     <a href="{{ route('projects.allocation.create', $project->id) }}" class="mt-4 w-full block text-center border border-dashed border-gray-200 text-[#e0bb35] py-2 rounded-md text-sm hover:bg-gray-200 hover:text-[#0f0f0f] transition">
                         + Allocate Product (Admin)
                     </a>

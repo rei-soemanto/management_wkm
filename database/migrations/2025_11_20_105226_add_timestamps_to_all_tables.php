@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * List of tables to update.
-     */
     protected $tables = [
         'products',
         'services',
@@ -19,9 +16,6 @@ return new class extends Migration
         'project_categories',
     ];
 
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         foreach ($this->tables as $tableName) {
