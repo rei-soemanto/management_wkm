@@ -55,11 +55,11 @@
                     @endif
 
                     @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Employee')
-                        <a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'bg-[#e0bb35] text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition">
+                        <a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
                             <i class="fa-solid fa-briefcase mr-1"></i> My Projects
                         </a>
 
-                        <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'bg-[#e0bb35] text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }} px-3 py-2 rounded-md text-sm font-medium transition">
+                        <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
                             <i class="fa-solid fa-boxes-stacked mr-1"></i> Inventory
                         </a>
                     @endif
