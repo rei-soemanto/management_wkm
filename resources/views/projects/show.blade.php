@@ -107,7 +107,7 @@
                                                     {{ $task->name }}
                                                 </p>
                                                 <p class="text-sm text-gray-300">
-                                                    Assigned to <span class="font-medium text-[#e0bb35]">{{ $task->user->name }}</span>
+                                                    Assigned to <span class="font-medium text-[#e0bb35]">{{ $task->assigned->name ?? 'Unassigned' }}</span>
                                                 </p>
                                                 <div class="text-right text-sm whitespace-nowrap text-gray-300">
                                                     <time datetime="{{ $task->due_date }}">{{ \Carbon\Carbon::parse($task->due_date)->format('M d, Y') }}</time>
