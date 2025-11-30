@@ -24,7 +24,7 @@ class ManagementProjectProgressController extends Controller
         $project = ManagementProject::findOrFail($projectId);
 
         // Handle File Upload
-        $path = $request->file('document')->store('uploads/document/project_documents', 'public');
+        $path = $request->file('document')->store('project_documents', 'public');
 
         // Create Progress Log
         ManagementProjectProgress::create([
