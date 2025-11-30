@@ -21,6 +21,17 @@
             @method('PATCH')
 
             <div>
+                <label class="block text-sm font-medium text-[#e0bb35] mb-1">Assign To (PIC)</label>
+                <select name="assigned_to" required class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
+                    @foreach($project->roleAssignments as $assignment)
+                        <option value="{{ $assignment->user->id }}" {{ $task->assigned_to == $assignment->user->id ? 'selected' : '' }}>
+                            {{ $assignment->user->name }} ({{ $assignment->projectRole->name }})
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div>
                 <label class="block text-sm font-medium text-[#e0bb35] mb-1">Status</label>
                 <select name="status" class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
                     <option value="Pending" {{ $task->status == 'Pending' ? 'selected' : '' }}>Pending</option>
