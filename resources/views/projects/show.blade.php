@@ -103,22 +103,18 @@
                                         </div>
                                         <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                             <div>
+                                                <p class="font-medium text-[#e0bb35]">
+                                                    {{ $task->name }}
+                                                </p>
                                                 <p class="text-sm text-gray-300">
                                                     Assigned to <span class="font-medium text-[#e0bb35]">{{ $task->user->name }}</span>
                                                 </p>
-                                                <p class="text-sm text-gray-300 mt-1">{{ $log->notes }}</p>
                                                 <div class="text-right text-sm whitespace-nowrap text-gray-300">
                                                     <time datetime="{{ $task->due_date }}">{{ \Carbon\Carbon::parse($task->due_date)->format('M d, Y') }}</time>
                                                 </div>
                                             </div>
                                             @if(Auth::user()->userRole->name === 'Admin')
-                                                <select name="status_id" class="mt-1 block w-full rounded-md bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
-                                                    @foreach(App\Models\Managements\Status::all() as $status)
-                                                        <option value="{{ $status->id }}" {{ $project->status_id == $status->id ? 'selected' : '' }}>
-                                                            {{ $status->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                                <a href="{{ route('projects.tasks.update', $user->id) }}" class="text-[#e0bb35] hover:text-[#e3cf85] font-bold">Change Status</a>
                                             @endif
                                         </div>
                                     </div>
