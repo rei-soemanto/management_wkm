@@ -21,6 +21,18 @@
             @method('PATCH')
 
             <div>
+                <label class="block text-sm font-medium text-[#e0bb35] mb-1">Task Name</label>
+                <input type="text" name="name" value="{{ old('name', $task->name) }}" required 
+                    class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-[#e0bb35] mb-1">Description</label>
+                <textarea name="description" rows="3" 
+                    class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">{{ old('description', $task->description) }}</textarea>
+            </div>
+
+            <div>
                 <label class="block text-sm font-medium text-[#e0bb35] mb-1">Assign To (PIC)</label>
                 <select name="assigned_to" required class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
                     @foreach($project->roleAssignments as $assignment)

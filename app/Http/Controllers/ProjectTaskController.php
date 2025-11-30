@@ -61,6 +61,8 @@ class ProjectTaskController extends Controller
         $oldStatus = $task->status;
 
         $task->update([
+            'name' => $request->name,
+            'description' => $request->description,
             'assigned_to' => $request->assigned_to,
             'status' => $request->status,
             'due_date' => $request->due_date,
