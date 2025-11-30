@@ -15,7 +15,7 @@ class ManagementProjectProgressController extends Controller
     public function store(Request $request, $projectId)
     {
         $request->validate([
-            'status_id' => 'required|exists:status,id',
+            'task_id' => 'required|exists:task,id',
             'progress_date' => 'required|date',
             'document' => 'required|file|mimes:pdf,doc,docx,jpg,png|max:8192',
             'notes' => 'nullable|string',
@@ -30,14 +30,11 @@ class ManagementProjectProgressController extends Controller
         ManagementProjectProgress::create([
             'management_project_id' => $project->id,
             'user_id' => Auth::id(),
-            'status_id' => $request->status_id,
+            'task_id' => $request->task_id,
             'progress_date' => $request->progress_date,
             'document_path' => $path,
             'notes' => $request->notes,
         ]);
-
-        // Automatically update Main Project Status
-        $project->update(['status_id' => $request->status_id]);
 
         return redirect()->route('projects.show', $project->id)
             ->with('success', 'Progress report uploaded and status updated.');
