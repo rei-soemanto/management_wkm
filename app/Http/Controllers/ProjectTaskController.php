@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Managements\ManagementProject;
 use App\Models\Managements\ManagementProjectTask;
 use App\Models\Managements\Status;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
+use App\Mail\TaskAssignedMail;
+use Spatie\GoogleCalendar\Event;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class ProjectTaskController extends Controller
 {
@@ -19,7 +24,7 @@ class ProjectTaskController extends Controller
             'due_date' => 'nullable|date',
         ]);
 
-        ManagementProjectTask::create([
+        $task = ManagementProjectTask::create([
             'management_project_id' => $projectId,
             'assigned_to' => $request->assigned_to,
             'name' => $request->name,
@@ -27,6 +32,11 @@ class ProjectTaskController extends Controller
             'due_date' => $request->due_date,
             'status_id' => 1
         ]);
+
+        if ($task->assigned_to) {
+            $user = User::find($request->assigned_to);
+            Mail::to($user->email)->send(new TaskAssignedMail($task));
+        }
 
         return back()->with('success', 'Task created successfully.');
     }
