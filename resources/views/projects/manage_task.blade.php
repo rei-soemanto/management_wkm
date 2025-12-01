@@ -45,10 +45,9 @@
             <div>
                 <label class="block text-sm font-medium text-[#e0bb35] mb-1">Status</label>
                 <select name="status" class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
-                    <option value="Pending" {{ $task->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="In Progress" {{ $task->status == 'In Progress' ? 'selected' : '' }}>In Progress</option>
-                    <option value="On Hold" {{ $task->status == 'On Hold' ? 'selected' : '' }}>On Hold</option>
-                    <option value="Completed" {{ $task->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                    @foreach($statuses as $status)
+                        <option value="{{ $status->id }}" @selected(old('status_id', $task->status_id ?? '') == $status->id)>{{ $status->name }}</option>
+                    @endforeach
                 </select>
             </div>
 
