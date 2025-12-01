@@ -44,7 +44,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-[#e0bb35] mb-1">Status</label>
-                <select name="status" class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
+                <select name="status_id" class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
                     @foreach($statuses as $status)
                         <option value="{{ $status->id }}" @selected(old('status_id', $task->status_id ?? '') == $status->id)>{{ $status->name }}</option>
                     @endforeach

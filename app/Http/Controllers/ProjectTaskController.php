@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Managements\ManagementProject;
 use App\Models\Managements\ManagementProjectTask;
+use App\Models\Managements\Status;
 use Illuminate\Http\Request;
 
 class ProjectTaskController extends Controller
@@ -36,7 +37,9 @@ class ProjectTaskController extends Controller
         $project = ManagementProject::with('roleAssignments.user')->findOrFail($projectId);
         $task = ManagementProjectTask::where('management_project_id', $projectId)->findOrFail($taskId);
 
-        return view('projects.manage_task', compact('project', 'task'));
+        $statuses = Status::all();
+
+        return view('projects.manage_task', compact('project', 'task', 'statuses'));
     }
 
     // Update Task
