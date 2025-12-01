@@ -25,6 +25,11 @@ class ManagementProjectTask extends Model
         'due_date' => 'date',
     ];
 
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+
     public function project()
     {
         return $this->belongsTo(ManagementProject::class, 'management_project_id');
