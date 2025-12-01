@@ -24,7 +24,7 @@ class ProjectTaskController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'due_date' => $request->due_date,
-            'status' => 'Pending'
+            'status_id' => 1
         ]);
 
         return back()->with('success', 'Task created successfully.');
@@ -48,6 +48,7 @@ class ProjectTaskController extends Controller
             'assigned_to' => 'required|exists:users,id',
             'status' => 'required|in:Pending,In Progress,Completed,On Hold',
             'due_date' => 'nullable|date',
+            'status_id' => 'required|exists:status,id'
         ]);
 
         $task = ManagementProjectTask::where('management_project_id', $projectId)
@@ -61,7 +62,7 @@ class ProjectTaskController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'assigned_to' => $request->assigned_to,
-            'status' => $request->status,
+            'status_id' => $request->status_id,
             'due_date' => $request->due_date,
         ]);
 

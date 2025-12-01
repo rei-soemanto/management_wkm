@@ -17,7 +17,7 @@ class ManagementProjectTask extends Model
         'assigned_to',
         'name',
         'description',
-        'status',
+        'status_id',
         'due_date',
     ];
 
