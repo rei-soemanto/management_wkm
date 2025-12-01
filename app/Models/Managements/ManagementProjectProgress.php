@@ -33,6 +33,6 @@ class ManagementProjectProgress extends Model
 
     public function task()
     {
-        return $this->belongsTo(Status::class, 'task_id');
+        return $this->belongsTo(ManagementProjectTask::class, 'task_id');
     }
 }
