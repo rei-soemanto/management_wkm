@@ -36,7 +36,7 @@ class AdminDailyDigestMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.admin_digest',
         );
     }
 
