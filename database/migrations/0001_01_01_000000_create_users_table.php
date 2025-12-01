@@ -33,44 +33,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('users')->insert([
-            [
-                'name' => 'Rei Soemanto',
-                'email' => 'reresoemanto@gmail.com',
-                'password' => Hash::make('@Cc2061355'),
-                'role_id' => 1,
-                'email_verified_at' => now(),
-            ],
-            [
-                'name' => 'Antonius Soemanto',
-                'email' => 'antonius.soemanto.as@gmail.com',
-                'password' => Hash::make('Azmaria1'),
-                'role_id' => 1,
-                'email_verified_at' => now(),
-            ],
-            [
-                'name' => 'Valentinus Soemanto',
-                'email' => 'wraksa.kencana.mukti@gmail.com',
-                'password' => Hash::make('@Thewkm131428'),
-                'role_id' => 1,
-                'email_verified_at' => now(),
-            ],
-            [
-                'name' => 'Office WKM',
-                'email' => 'office@thewkm.com',
-                'password' => Hash::make('@WKMukti131428'),
-                'role_id' => 1,
-                'email_verified_at' => now(),
-            ],
-            [
-                'name' => 'Admin WKM',
-                'email' => 'admin@thewkm.com',
-                'password' => Hash::make('@WKM131428'),
-                'role_id' => 1,
-                'email_verified_at' => now(),
-            ],
-        ]);
-
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
