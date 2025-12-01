@@ -49,7 +49,6 @@ class ProjectTaskController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'assigned_to' => 'required|exists:users,id',
-            'status' => 'required|in:Pending,In Progress,Completed,On Hold',
             'due_date' => 'nullable|date',
             'status_id' => 'required|exists:status,id'
         ]);
