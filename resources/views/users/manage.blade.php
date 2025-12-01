@@ -59,12 +59,12 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="password" class="block text-sm font-bold text-gray-300 mb-1">New Password</label>
-                            <input type="password" name="password" id="password" placeholder="New Password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            <label for="password" class="block text-sm font-bold text-[#e0bb35] mb-1">New Password</label>
+                            <input type="password" name="password" id="password" placeholder="New Password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                         </div>
                         <div>
-                            <label for="password_confirmation" class="block text-sm font-bold text-gray-300 mb-1">Confirm Password</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-[#e0bb35] focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            <label for="password_confirmation" class="block text-sm font-bold text-[#e0bb35] mb-1">Confirm Password</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
                         </div>
                     </div>
 
@@ -121,8 +121,8 @@
 
                     <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
                         <div class="sm:col-span-1">
-                            <dt class="text-sm font-medium text-gray-300">Assigned Projects</dt>
-                            <dd class="mt-1 text-sm text-[#e0bb35]">{{ $user->projectRoleAssignments->count() }} Active</dd>
+                            <dt class="text-sm font-medium text-[#e0bb35]">Assigned Projects</dt>
+                            <dd class="mt-1 text-sm text-gray-300">{{ $user->projectRoleAssignments->count() }} Active</dd>
                         </div>
                     </dl>
 
