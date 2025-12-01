@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
 class TaskReminderMail extends Mailable
 {
@@ -30,6 +31,7 @@ class TaskReminderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new Address('noreply@thewkm.com', 'WKM Task System'),
             subject: 'Task Reminder Mail',
         );
     }
