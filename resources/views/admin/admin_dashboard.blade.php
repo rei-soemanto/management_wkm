@@ -42,7 +42,7 @@
                         'btn_color' => 'bg-[#e0bb35] hover:bg-[#e3cf85] text-[#0f0f0f]',
                     ],
                     [
-                        'title' => 'Total Projects',
+                        'title' => 'Total Finished Projects',
                         'value' => $project_count,
                         'route' => 'admin.projects.list',
                         'btn_color' => 'bg-[#e0bb35] hover:bg-[#e3cf85] text-[#0f0f0f]',
@@ -78,9 +78,6 @@
                         </a>
                         <a href="{{ route('admin.services.create') }}" class="w-full py-2 px-4 bg-green-700 hover:bg-green-800 text-white font-bold rounded-lg text-center shadow-sm transition-colors">
                             Add Service
-                        </a>
-                        <a href="{{ route('admin.projects.create') }}" class="w-full py-2 px-4 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-lg text-center shadow-sm transition-colors">
-                            Add Project
                         </a>
                     </div>
                 </div>
