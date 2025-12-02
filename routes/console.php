@@ -11,10 +11,12 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('tasks:send-reminders')->everyMinute();
+Schedule::command('tasks:send-reminders')->everyMinute()
     // ->dailyAt('09:00')
     // ->timezone('Asia/Jakarta');
+    ->appendOutputTo(storage_path('logs/scheduler_output.log'));
 
 Schedule::command('admin:send-digest')
     ->dailyAt('20:00')
-    ->timezone('Asia/Jakarta');
+    ->timezone('Asia/Jakarta')
+    ->appendOutputTo(storage_path('logs/scheduler_output.log'));
