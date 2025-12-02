@@ -5,6 +5,7 @@ namespace App\Models\Managements;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Managements\ManagementProjectProgress;
 
 class ManagementProjectTask extends Model
 {
@@ -38,5 +39,10 @@ class ManagementProjectTask extends Model
     public function assigned()
     {
         return $this->belongsTo(User::class, 'assigned_to');
+    }
+
+    public function progressLogs()
+    {
+        return $this->hasMany(ManagementProjectProgress::class, 'task_id');
     }
 }
