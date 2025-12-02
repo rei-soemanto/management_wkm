@@ -27,8 +27,8 @@ class AdminDailyDigestMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('noreply@thewkm.com', 'WKM Task System'),
-            subject: 'Admin Daily Digest Mail',
+            from: new Address('noreply@thewkm.com', 'WKM Daily Report'),
+            subject: 'Daily Progress Report',
         );
     }
 
