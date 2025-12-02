@@ -9,7 +9,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('tasks:send-reminders')
-    ->dailyAt('09:20')
+    ->dailyAt('09:30')
     ->timezone('Asia/Jakarta');
 
 Schedule::command('admin:send-digest')
