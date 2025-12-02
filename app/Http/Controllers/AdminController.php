@@ -65,6 +65,7 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'pdf_path'    => 'nullable|file|mimes:pdf|max:10240',
+            'is_hidden'   => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -76,6 +77,8 @@ class AdminController extends Controller
         }
 
         $data['last_update_by'] = Auth::id();
+        
+        $data['is_hidden'] = $request->has('is_hidden') ? true : false;
 
         Product::create($data);
 
@@ -103,6 +106,7 @@ class AdminController extends Controller
             'description' => 'nullable|string',
             'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'pdf_path'    => 'nullable|file|mimes:pdf|max:5120',
+            'is_hidden'   => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('image')) {
@@ -120,6 +124,9 @@ class AdminController extends Controller
         }
 
         $data['last_update_by'] = Auth::id();
+
+        $data['is_hidden'] = $request->has('is_hidden') ? true : false;
+        
         $product->update($data);
 
         return redirect()->route('admin.products.list')->with('message', 'Product updated successfully.');

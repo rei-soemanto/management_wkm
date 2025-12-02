@@ -150,7 +150,17 @@
                                         <span class="text-gray-300 italic">Never</span>
                                     @endif
                                 </td>
-                                
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-bold text-[#e0bb35] flex items-center gap-2">
+                                        {{ $product->name }}
+                                        @if($product->is_hidden)
+                                            <span title="Hidden from Public" class="px-1.5 py-0.5 rounded text-[10px] bg-gray-700 text-gray-300 border border-gray-600">
+                                                Hidden
+                                            </span>
+                                        @endif
+                                    </div>
+                                    <div class="text-xs text-gray-300">{{ $product->brand->name ?? '-' }}</div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     @if(Auth::user()->userRole->name === 'Admin')
                                         {{-- 

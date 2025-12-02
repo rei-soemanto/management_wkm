@@ -21,6 +21,11 @@ class Product extends Model
         'image',
         'pdf_path',
         'last_update_by',
+        'is_hidden',
+    ];
+
+    protected $casts = [
+        'is_hidden' => 'boolean',
     ];
 
     public function brand()
