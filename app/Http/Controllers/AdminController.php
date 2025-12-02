@@ -333,12 +333,12 @@ class AdminController extends Controller
     public function listUsers(): View
     {
         $users = User::whereHas('userRole', function ($q) {
-            $q->where('name', '==', 'User');
+            $q->where('name', '=', 'User');
         })
         ->where(function ($query) {
             $query->has('interested_products')->orHas('interested_services');
         })
-        ->with(['interestedProducts', 'interestedServices'])->latest()->get();
+        ->with(['interested_products', 'interested_services'])->latest()->get();
 
         return view('admin.manage_user', ['users' => $users]);
     }
