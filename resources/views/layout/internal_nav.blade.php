@@ -56,6 +56,10 @@
                         <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
                             <i class="fa-solid fa-boxes-stacked mr-1"></i> Inventory
                         </a>
+
+                        <a href="{{ route('admin.users.list') }}" class="{{ request()->routeIs('admin.users.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
+                            Interest
+                        </a>
                     @endif
 
                     @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Employee')
