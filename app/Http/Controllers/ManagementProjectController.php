@@ -17,7 +17,7 @@ class ManagementProjectController extends Controller
         // If Admin, show all. If Employee, show only assigned projects.
         $user = Auth::user();
 
-        if ($user->userRole->name === 'Admin') {
+        if (in_array($user->userRole->name, ['Admin', 'Manager'])) {
             $projects = ManagementProject::with(['client', 'status'])->get();
         } else {
             // Get projects where the user has an assignment

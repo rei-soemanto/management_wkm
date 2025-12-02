@@ -82,7 +82,7 @@
             <div>
                 <h1 class="text-3xl font-bold text-[#e0bb35]">Internal Projects</h1>
                 <p class="text-gray-300 mt-1">
-                    @if(Auth::user()->userRole->name === 'Admin')
+                    @if(Auth::user()->userRole->name === 'Admin' || Auth::user()->userRole->name === 'Manager')
                         Managing all operational projects
                     @else
                         Projects you are assigned to
