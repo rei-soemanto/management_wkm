@@ -17,7 +17,7 @@ class EnsureInternalUser
 
         $role = Auth::user()->userRole->name ?? '';
 
-        if ($role === 'Admin' || $role === 'Employee') {
+        if ($role === 'Admin' || $role === 'Employee' || $role === 'Manager') {
             return $next($request);
         }
 

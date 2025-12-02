@@ -68,8 +68,9 @@ class ManagementProjectController extends Controller
     // Display specified project.
     public function show($id)
     {
-        $user = Auth::user();
+        $user = \Illuminate\Support\Facades\Auth::user();
 
+        $roleName = optional($user->userRole)->name;
         $canSeeHidden = in_array($user->userRole->name, ['Admin', 'Manager']);
 
         $project = ManagementProject::with([
@@ -77,7 +78,6 @@ class ManagementProjectController extends Controller
             'status', 
             'roleAssignments.user', 
             'roleAssignments.projectRole',
-            'progressLogs.user',
             'productUsages.inventoryItem.product',
 
             'tasks' => function($query) use ($canSeeHidden) {
