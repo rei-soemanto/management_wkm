@@ -20,10 +20,12 @@ class ManagementProjectTask extends Model
         'description',
         'status_id',
         'due_date',
+        'is_hidden',
     ];
 
     protected $casts = [
         'due_date' => 'date',
+        'is_hidden' => 'boolean',
     ];
 
     public function status()

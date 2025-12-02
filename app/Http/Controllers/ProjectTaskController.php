@@ -30,7 +30,8 @@ class ProjectTaskController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'due_date' => $request->due_date,
-            'status_id' => 1
+            'status_id' => 1,
+            'is_hidden' => $request->has('is_hidden') ? true : false,
         ]);
 
         if ($task->assigned_to) {
@@ -76,6 +77,7 @@ class ProjectTaskController extends Controller
             'assigned_to' => $request->assigned_to,
             'status_id' => $request->status_id,
             'due_date' => $request->due_date,
+            'is_hidden' => $request->has('is_hidden') ? true : false,
         ]);
 
         return redirect()->route('projects.show', $projectId)->with('success', 'Task updated successfully.');

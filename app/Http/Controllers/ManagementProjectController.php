@@ -68,6 +68,10 @@ class ManagementProjectController extends Controller
     // Display specified project.
     public function show($id)
     {
+        $user = Auth::user();
+
+        $canSeeHidden = in_array($user->userRole->name, ['Admin', 'Manager']);
+
         $project = ManagementProject::with([
             'client', 
             'status', 
@@ -75,10 +79,25 @@ class ManagementProjectController extends Controller
             'roleAssignments.projectRole',
             'progressLogs.user',
             'productUsages.inventoryItem.product',
-            'tasks'
+
+            'tasks' => function($query) use ($canSeeHidden) {
+                if (!$canSeeHidden) {
+                    $query->where('is_hidden', false);
+                }
+            },
+            
+            'progressLogs' => function($query) use ($canSeeHidden) {
+                $query->with('user', 'task');
+                
+                if (!$canSeeHidden) {
+                    $query->whereHas('task', function($q) {
+                        $q->where('is_hidden', false);
+                    });
+                }
+            }
         ])->findOrFail($id);
 
-        return view('projects.show', compact('project'));
+        return view('projects.show', compact('project', 'canSeeHidden'));
     }
 
     // Show form for edit specified project.

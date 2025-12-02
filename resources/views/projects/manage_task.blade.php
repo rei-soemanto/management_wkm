@@ -57,6 +57,15 @@
                     class="w-full rounded bg-[#1a1a1a] border-gray-700 text-white focus:border-[#e0bb35] focus:ring-[#e0bb35] px-3 py-2">
             </div>
 
+            <div class="flex items-center pt-2">
+                <input id="is_hidden" name="is_hidden" type="checkbox" value="1" 
+                    {{ old('is_hidden', $task->is_hidden) ? 'checked' : '' }}
+                    class="h-4 w-4 rounded border-gray-700 bg-[#1a1a1a] text-[#e0bb35] focus:ring-[#e0bb35]">
+                <label for="is_hidden" class="ml-2 block text-sm text-gray-300">
+                    Mark as Hidden Task (Visible to Admin/Manager only)
+                </label>
+            </div>
+
             <div class="flex justify-between pt-6 border-t border-gray-800">
                 <div class="flex gap-3">
                     <a href="{{ route('projects.show', $project->id) }}" class="px-4 py-2 border border-gray-600 rounded text-gray-400 hover:text-white hover:border-white transition">Cancel</a>
