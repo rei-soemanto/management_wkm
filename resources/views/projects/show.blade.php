@@ -271,7 +271,7 @@
                         <li class="flex justify-between items-center bg-[#0f0f0f] p-3 rounded-md group">
                             <div>
                                 <p class="text-sm font-medium text-[#e0bb35]">{{ $usage->inventoryItem->product->name }}</p>
-                                @if ($inventory->stock < $usage->quantity)
+                                @if ($inventoryItem->stock < $usage->quantity)
                                     <p class="text-xs text-gray-300">Qty: <span class="font-bold">{{ $usage->quantity }}</span></p>
                                     <p class="text-xs text-gray-300">Qty ammount is minus! Please restock!</p>
                                 @else
