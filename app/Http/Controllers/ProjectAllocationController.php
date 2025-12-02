@@ -16,7 +16,7 @@ class ProjectAllocationController extends Controller
         $project = ManagementProject::findOrFail($projectId);
         
         // Get inventory items that have stock > 0
-        $inventory = ProductInventory::where('stock', '>', 0)->with('product')->get();
+        $inventory = ProductInventory::with('product')->get();
 
         return view('projects.allocate_product', compact('project', 'inventory'));
     }
@@ -33,11 +33,11 @@ class ProjectAllocationController extends Controller
             $inventory = ProductInventory::lockForUpdate()->find($request->product_inventory_id);
 
             // Check Stock
-            if ($inventory->stock < $request->quantity) {
-                throw \Illuminate\Validation\ValidationException::withMessages([
-                    'quantity' => "Not enough stock. Only {$inventory->stock} available."
-                ]);
-            }
+            // if ($inventory->stock < $request->quantity) {
+            //     throw \Illuminate\Validation\ValidationException::withMessages([
+            //         'quantity' => "Not enough stock. Only {$inventory->stock} available."
+            //     ]);
+            // }
 
             // Deduct Stock
             $inventory->decrement('stock', $request->quantity);
