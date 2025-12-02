@@ -15,26 +15,43 @@ class SendTaskReminders extends Command
 
     public function handle()
     {
+        $this->info('Starting Reminder Check...');
+        
         $tasks = ManagementProjectTask::where('status_id', '!=', 3)
             ->whereNotNull('due_date')
             ->whereNotNull('assigned_to')
             ->get();
 
+        $this->info('Found ' . $tasks->count() . ' active tasks.');
+
         foreach ($tasks as $task) {
+            $this->info("Checking Task: {$task->name} (ID: {$task->id})");
+
             if ($task->progressLogs()->count() > 0) {
+                $this->info(" -> Skipped: Progress already uploaded.");
                 continue;
             }
 
-            $dueDate = Carbon::parse($task->due_date);
-            $today = Carbon::now('Asia/Jakarta')->startOfDay();
-            $diffInDays = $today->diffInDays($dueDate, false);
+            $dueDateString = $task->due_date->format('Y-m-d'); 
+            $todayString = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+            
+            $due = Carbon::parse($dueDateString);
+            $today = Carbon::parse($todayString);
+            
+            $diffInDays = $today->diffInDays($due, false);
+
+            $this->info(" -> Due: $dueDateString | Today: $todayString | Diff: $diffInDays days");
 
             if (in_array($diffInDays, [7, 3, 1, 0])) {
                 $user = $task->assigned;
                 if ($user && $user->email) {
                     Mail::to($user->email)->send(new TaskReminderMail($task, $diffInDays));
-                    $this->info("Reminder sent to {$user->email} for task {$task->name} (H-{$diffInDays})");
+                    $this->info(" -> EMAIL SENT to {$user->email}");
+                } else {
+                    $this->error(" -> User has no email!");
                 }
+            } else {
+                $this->info(" -> Skipped: Day gap ($diffInDays) is not 0, 1, 3, or 7.");
             }
         }
     }
