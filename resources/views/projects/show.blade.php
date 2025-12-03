@@ -13,7 +13,9 @@
                         {{ $project->client->name }}
                     </span>
                     <span class="text-gray-300 text-sm">|</span>
-                    <span class="text-gray-300 text-sm">Due: {{ \Carbon\Carbon::parse($project->due_date)->format('M d, Y') }}</span>
+                    <span class="text-gray-300 text-sm">SPO Date: {{ $project->start_date ? $project->start_date->format('M d, Y')}}</span>
+                    <span class="text-gray-300 text-sm">-</span>
+                    <span class="text-gray-300 text-sm">Due Date: {{ \Carbon\Carbon::parse($project->due_date)->format('M d, Y') }}</span>
                 </div>
                 <div class="flex items-center gap-4">
                     <h1 class="text-3xl font-bold text-[#e0bb35]">{{ $project->name }}</h1>

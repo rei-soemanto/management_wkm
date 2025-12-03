@@ -57,7 +57,8 @@ class ManagementProjectController extends Controller
             'client_id' => 'required|exists:clients,id',
             'status_id' => 'required|exists:status,id',
             'description' => 'nullable|string',
-            'due_date' => 'required|date',
+            'start_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:start_date',
             'category_ids' => 'nullable|array',
             'category_ids.*' => 'exists:project_categories,id',
         ]);
@@ -136,7 +137,8 @@ class ManagementProjectController extends Controller
             'client_id' => 'required|exists:clients,id',
             'status_id' => 'required|exists:status,id',
             'description' => 'nullable|string',
-            'due_date' => 'required|date',
+            'start_date' => 'required|date',
+            'due_date' => 'required|date|after_or_equal:start_date',
             'category_ids' => 'nullable|array',
             'category_ids.*' => 'exists:project_categories,id',
         ]);

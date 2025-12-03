@@ -19,7 +19,13 @@ class ManagementProject extends Model
         'client_id',
         'name',
         'description',
+        'start_date',
         'due_date',
+    ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'due_date' => 'date',
     ];
 
     public function status()

@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <label class="block text-sm font-bold text-[#e0bb35] mb-2">Project Categories</label>
+                        <label class="block text-sm font-bold text-[#e0bb35] mb-2">Project Scope</label>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-2 bg-[#0f0f0f] border border-gray-700 p-4 rounded-md">
                             @foreach($categories as $category)
                                 <div class="flex items-center">
@@ -71,10 +71,20 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label for="due_date" class="block text-sm font-bold text-[#e0bb35] mb-1">Target Due Date</label>
-                        <input type="date" name="due_date" id="due_date" value="{{ old('due_date', $project_to_edit->due_date ?? '') }}" required 
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="start_date" class="block text-sm font-bold text-[#e0bb35] mb-1">SPO Date</label>
+                            <input type="date" name="start_date" id="start_date" 
+                                value="{{ old('start_date', isset($project_to_edit->start_date) ? $project_to_edit->start_date->format('Y-m-d') : '') }}" required 
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
+                        </div>
+
+                        <div>
+                            <label for="due_date" class="block text-sm font-bold text-[#e0bb35] mb-1">Due Date</label>
+                            <input type="date" name="due_date" id="due_date" 
+                                value="{{ old('due_date', isset($project_to_edit->due_date) ? $project_to_edit->due_date->format('Y-m-d') : '') }}" required 
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
+                        </div>
                     </div>
 
                     <div>
