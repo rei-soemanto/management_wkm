@@ -21,7 +21,7 @@
                         <a href="{{ route('projects.edit', $project->id) }}" class="text-sm text-gray-400 hover:underline font-bold">Edit Project</a>
                     @endif
                 </div>
-                <div class="flex items-center gap-3 mb-2">
+                <div class="flex items-center gap-3 mt-2">
                     @foreach($project->categories as $category)
                         <span class="border border-[#e0bb35] text-[#e0bb35] text-sm font-bold px-2 py-0.5 rounded">
                             {{ $category->name }}
