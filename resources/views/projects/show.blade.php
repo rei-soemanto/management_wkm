@@ -13,11 +13,6 @@
                         {{ $project->client->name }}
                     </span>
                     <span class="text-gray-300 text-sm">|</span>
-                    @foreach($project->categories as $category)
-                        <span class="border border-[#e0bb35] text-[#e0bb35] text-[10px] font-bold px-2 py-0.5 rounded">
-                            {{ $category->name }}
-                        </span>
-                    @endforeach
                     <span class="text-gray-300 text-sm">Due: {{ \Carbon\Carbon::parse($project->due_date)->format('M d, Y') }}</span>
                 </div>
                 <div class="flex items-center gap-4">
@@ -25,6 +20,13 @@
                     @if(Auth::user()->userRole->name === 'Admin')
                         <a href="{{ route('projects.edit', $project->id) }}" class="text-sm text-gray-400 hover:underline font-bold">Edit Project</a>
                     @endif
+                </div>
+                <div class="flex items-center gap-3 mb-2">
+                    @foreach($project->categories as $category)
+                        <span class="border border-[#e0bb35] text-[#e0bb35] text-sm font-bold px-2 py-0.5 rounded">
+                            {{ $category->name }}
+                        </span>
+                    @endforeach
                 </div>
             </div>
             
