@@ -30,6 +30,24 @@
                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 py-2 px-3">
                     </div>
 
+                    <div class="mt-4">
+                        <label class="block text-sm font-bold text-[#e0bb35] mb-2">Project Categories</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 bg-[#0f0f0f] border border-gray-700 p-4 rounded-md">
+                            @foreach($categories as $category)
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="category_ids[]" value="{{ $category->id }}" id="cat_{{ $category->id }}"
+                                        @checked(is_array(old('category_ids')) 
+                                            ? in_array($category->id, old('category_ids')) 
+                                            : ($project_to_edit && $project_to_edit->categories->contains($category->id)))
+                                        class="h-4 w-4 rounded border-gray-600 bg-[#1a1a1a] text-[#e0bb35] focus:ring-[#e0bb35]">
+                                    <label for="cat_{{ $category->id }}" class="ml-2 text-sm text-gray-300">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="client_id" class="block text-sm font-bold text-[#e0bb35] mb-1">Client</label>

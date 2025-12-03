@@ -4,6 +4,7 @@ namespace App\Models\Managements;
 
 use App\Models\Clients\Client;
 use App\Models\Inventories\ProductProjectUsage;
+use App\Models\Projects\ProjectCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +25,16 @@ class ManagementProject extends Model
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(
+            ProjectCategory::class,
+            'management_project_category_assignments',
+            'management_project_id',
+            'project_category_id'
+        );
     }
 
     public function client()

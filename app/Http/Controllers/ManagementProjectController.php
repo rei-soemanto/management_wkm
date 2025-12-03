@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Clients\Client;
 use App\Models\Managements\ManagementProject;
 use App\Models\Managements\Status;
+use App\Models\Projects\ProjectCategory;
 use App\Events\ManagementProjectFinished;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,11 +38,13 @@ class ManagementProjectController extends Controller
     {
         $clients = Client::all();
         $statuses = Status::all();
+        $categories = ProjectCategory::all();
         
         return view('projects.manage', [
             'action' => 'add',
             'clients' => $clients,
             'statuses' => $statuses,
+            'categories' => $categories,
             'project_to_edit' => null
         ]);
     }
@@ -55,11 +58,17 @@ class ManagementProjectController extends Controller
             'status_id' => 'required|exists:status,id',
             'description' => 'nullable|string',
             'due_date' => 'required|date',
+            'category_ids' => 'nullable|array',
+            'category_ids.*' => 'exists:project_categories,id',
         ]);
 
         $validated['user_id'] = Auth::id(); 
 
         $project = ManagementProject::create($validated);
+
+        if ($request->has('category_ids')) {
+            $project->categories()->attach($request->category_ids);
+        }
 
         return redirect()->route('projects.show', $project->id)
             ->with('success', 'Project created successfully.');
@@ -106,12 +115,14 @@ class ManagementProjectController extends Controller
         $project = ManagementProject::findOrFail($id);
         $clients = Client::all();
         $statuses = Status::all();
+        $categories = ProjectCategory::all();
 
         return view('projects.manage', [
             'action' => 'edit',
             'project_to_edit' => $project,
             'clients' => $clients,
-            'statuses' => $statuses
+            'statuses' => $statuses,
+            'categories' => $categories,
         ]);
     }
 
@@ -126,10 +137,18 @@ class ManagementProjectController extends Controller
             'status_id' => 'required|exists:status,id',
             'description' => 'nullable|string',
             'due_date' => 'required|date',
+            'category_ids' => 'nullable|array',
+            'category_ids.*' => 'exists:project_categories,id',
         ]);
 
         // Update project
         $project->update($validated);
+
+        if ($request->has('category_ids')) {
+            $project->categories()->sync($request->category_ids);
+        } else {
+            $project->categories()->detach();
+        }
 
         // Check if status changed to Finished
         $finishedStatus = Status::where('name', 'Finished')->first();

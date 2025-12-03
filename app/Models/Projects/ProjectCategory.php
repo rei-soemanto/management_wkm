@@ -2,6 +2,7 @@
 
 namespace App\Models\Projects;
 
+use App\Models\Managements\ManagementProject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,6 +21,16 @@ class ProjectCategory extends Model
             'project_category_assignments',
             'category_id',
             'project_id'
+        );
+    }
+
+    public function managementProjects()
+    {
+        return $this->belongsToMany(
+            ManagementProject::class,
+            'management_project_category_assignments',
+            'project_category_id',
+            'management_project_id'
         );
     }
 }
