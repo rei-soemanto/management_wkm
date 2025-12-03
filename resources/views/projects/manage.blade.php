@@ -170,6 +170,10 @@
                             <div class="p-5 flex-grow">
                                 <div class="flex items-center text-sm text-gray-300 mb-4">
                                     <svg class="w-4 h-4 mr-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    Due: {{ $project->start_date ? \Carbon\Carbon::parse($project->start_date)->format('M d, Y') : 'No SPO Date' }}
+                                </div>
+                                <div class="flex items-center text-sm text-gray-300 mb-4">
+                                    <svg class="w-4 h-4 mr-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                     Due: {{ $project->due_date ? \Carbon\Carbon::parse($project->due_date)->format('M d, Y') : 'No Deadline' }}
                                 </div>
                                 <p class="text-sm text-gray-400 line-clamp-3">
