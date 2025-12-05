@@ -39,11 +39,24 @@ class AdminController extends Controller
     }
 
     // PRODUCT MANAGEMENT
-    public function listProducts(): View
+    public function listProducts(Request $request): View
     {
+        $search = $request->input('search');
+
+        $query = Product::with(['brand', 'category', 'lastUpdatedBy'])->latest();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")->orWhereHas('brand', fn($q) => $q->where('name', 'like', "%{$search}%"))->orWhereHas('category', fn($q) => $q->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        $products = $query->paginate(10);
+
         return view('admin.manage_product', [
             'action'   => 'list',
-            'products' => Product::with(['brand', 'category', 'lastUpdatedBy'])->orderBy('id', 'asc')->get(),
+            'products' => $products,
+            'search'   => $search
         ]);
     }
 
@@ -145,11 +158,24 @@ class AdminController extends Controller
     }
 
     // SERVICE MANAGEMENT
-    public function listServices(): View
+    public function listServices(Request $request): View
     {
+        $search = $request->input('search');
+
+        $query = Service::with(['category', 'lastUpdatedBy'])->latest();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")->orWhereHas('category', fn($q) => $q->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        $services = $query->paginate(10);
+
         return view('admin.manage_service', [
             'action'   => 'list',
-            'services' => Service::with(['category', 'lastUpdatedBy'])->orderBy('id', 'asc')->get(),
+            'services' => $services,
+            'search'   => $search
         ]);
     }
 
@@ -337,16 +363,29 @@ class AdminController extends Controller
     }
 
     // USER INTERESTS
-    public function listUsers(): View
+    public function listUsers(Request $request): View
     {
-        $users = User::whereHas('userRole', function ($q) {
+        $search = $request->input('search');
+
+        $query = User::whereHas('userRole', function ($q) {
             $q->where('name', '=', 'User');
         })
         ->where(function ($query) {
             $query->has('interested_products')->orHas('interested_services');
         })
-        ->with(['interested_products', 'interested_services'])->latest()->get();
+        ->with(['interested_products', 'interested_services'])->latest();
 
-        return view('admin.manage_user', ['users' => $users]);
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->paginate(10);
+
+        return view('admin.manage_user', [
+            'users'  => $users,
+            'search' => $search
+        ]);
     }
 }

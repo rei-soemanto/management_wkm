@@ -62,6 +62,31 @@
         
             <div class="flex flex-col md:flex-row justify-between items-center mb-8">
                 <h1 class="text-3xl md:text-4xl font-bold text-white drop-shadow-sm">Manage Services</h1>
+
+                <form action="{{ route('admin.services.list') }}" method="GET" class="flex-1 w-full md:max-w-md mx-4">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            name="search" 
+                            value="{{ request('search') }}" 
+                            placeholder="Search services or categories..." 
+                            class="w-full bg-white/90 text-gray-800 border-none rounded-lg py-2 px-4 pl-10 focus:ring-2 focus:ring-green-500 shadow-lg"
+                        >
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        @if(request('search'))
+                            <a href="{{ route('admin.services.list') }}" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-red-500">
+                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </a>
+                        @endif
+                    </div>
+                </form>
+
                 <a href="{{ route('admin.services.create') }}" class="mt-4 md:mt-0 bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all">
                     Add New Service
                 </a>
@@ -112,6 +137,13 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl overflow-hidden">
+                {{-- ... Table Content ... --}}
+            </div>
+
+            <div class="mt-4">
+                {{ $products->withQueryString()->links() }}
             </div>
         @endif
     </div>
