@@ -76,33 +76,32 @@
         <div class="flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-[#e0bb35]">Product Inventory</h1>
-
-                <form action="{{ route('inventory.index') }}" method="GET" class="flex-1 w-full md:max-w-md mx-4">
-                    <div class="relative">
-                        <input 
-                            type="text" 
-                            name="search" 
-                            value="{{ request('search') }}" 
-                            placeholder="Search product by name, brand, category..." 
-                            class="w-full bg-[#0f0f0f] text-gray-300 border border-gray-700 rounded-md py-2 px-4 pl-10 focus:outline-none focus:border-[#e0bb35] focus:ring-1 focus:ring-[#e0bb35] placeholder-gray-600"
-                        >
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
-                        @if(request('search'))
-                            <a href="{{ route('inventory.index') }}" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </a>
-                        @endif
-                    </div>
-                </form>
-
                 <p class="text-gray-300 mt-1">Real-time stock levels for all catalog items.</p>
             </div>
+
+            <form action="{{ route('inventory.index') }}" method="GET" class="flex-1 w-full md:max-w-md mx-4">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        value="{{ request('search') }}" 
+                        placeholder="Search product by name, brand, category..." 
+                        class="w-full bg-[#0f0f0f] text-gray-300 border border-gray-700 rounded-md py-2 px-4 pl-10 focus:outline-none focus:border-[#e0bb35] focus:ring-1 focus:ring-[#e0bb35] placeholder-gray-600"
+                    >
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    @if(request('search'))
+                        <a href="{{ route('inventory.index') }}" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </a>
+                    @endif
+                </div>
+            </form>
             
             <div class="mt-4 md:mt-0 flex gap-4">
                 <div class="bg-[#0f0f0f] px-4 py-2 rounded-lg shadow-sm border border-gray-800 text-center">
