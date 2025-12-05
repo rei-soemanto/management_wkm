@@ -239,7 +239,7 @@
             </div>
 
             <div class="mt-4">
-                {{ $clients->withQueryString()->links() }}
+                {{ $projects->links() }}
             </div>
         @endif
 
