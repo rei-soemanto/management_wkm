@@ -8,13 +8,24 @@ use Illuminate\Http\Request;
 class ClientController extends Controller
 {
     // Display list of clients.
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::withCount('managementProjects')->latest()->get();
-        
+        $search = $request->input('search');
+
+        $query = Client::withCount('managementProjects')->latest();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")->orWhere('pic_name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%")->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $clients = $query->paginate(10);
+
         return view('clients.manage', [
             'action' => 'list',
-            'clients' => $clients
+            'clients' => $clients,
+            'search' => $search
         ]);
     }
 

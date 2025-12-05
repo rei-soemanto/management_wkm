@@ -61,6 +61,31 @@
     @else
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-[#e0bb35]">Clients</h1>
+
+            <form action="{{ route('clients.index') }}" method="GET" class="flex-1 w-full md:max-w-md mx-4">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        value="{{ request('search') }}" 
+                        placeholder="Search clients by name, PIC, email..." 
+                        class="w-full bg-[#0f0f0f] text-gray-300 border border-gray-700 rounded-md py-2 px-4 pl-10 focus:outline-none focus:border-[#e0bb35] focus:ring-1 focus:ring-[#e0bb35] placeholder-gray-600"
+                    >
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    @if(request('search'))
+                        <a href="{{ route('clients.index') }}" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-white">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </a>
+                    @endif
+                </div>
+            </form>
+
             <a href="{{ route('clients.create') }}" class="bg-[#e0bb35] hover:bg-[#e3cf85] text-black font-bold py-2 px-4 rounded shadow transition flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Add Client
@@ -126,6 +151,34 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+        <div class="bg-[#0f0f0f] shadow overflow-hidden sm:rounded-lg border border-gray-800">
+            <table class="min-w-full divide-y divide-gray-800">
+                <style>
+                    nav[role="navigation"] .hidden.sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between div:first-child p {
+                        color: #9ca3af;
+                    }
+                    nav[role="navigation"] span[aria-current="page"] span {
+                        background-color: #e0bb35 !important;
+                        color: black !important;
+                        border-color: #e0bb35 !important;
+                    }
+                    nav[role="navigation"] a {
+                        background-color: #0f0f0f !important;
+                        color: white !important;
+                        border-color: #374151 !important;
+                    }
+                    nav[role="navigation"] span[aria-disabled="true"] span {
+                        background-color: #0f0f0f !important;
+                        color: #6b7280 !important;
+                        border-color: #374151 !important;
+                    }
+                </style>
+            </table>
+        </div>
+
+        <div class="mt-4">
+            {{ $clients->withQueryString()->links() }}
         </div>
     @endif
 </div>
