@@ -13,19 +13,30 @@ use Illuminate\Support\Facades\Auth;
 class ManagementProjectController extends Controller
 {
     // Display list of projects.
-    public function index()
+    public function index(Request $request)
     {
-        // If Admin, show all. If Employee, show only assigned projects.
         $user = Auth::user();
+
+        $query = ManagementProject::with(['client', 'status']);
 
         if (in_array($user->userRole->name, ['Admin', 'Manager'])) {
             $projects = ManagementProject::with(['client', 'status'])->get();
         } else {
-            // Get projects where the user has an assignment
             $projects = ManagementProject::whereHas('roleAssignments', function($q) use ($user) {
                 $q->where('user_id', $user->id);
             })->with(['client', 'status'])->get();
         }
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")->orWhere('description', 'like', "%{$search}%")->orWhereHas('client', function($subQ) use ($search) {
+                    $subQ->where('name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        $projects = $query->orderBy('created_at', 'desc')->paginate(3)->withQueryString();
 
         return view('projects.manage', [
             'action' => 'list',
