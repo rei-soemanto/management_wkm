@@ -10,14 +10,24 @@ use Illuminate\Support\Facades\Auth;
 class ProductInventoryController extends Controller
 {
     // Display list of inventory.
-    public function index()
+    public function index(Request $request)
     {
-        // Get all products with their inventory data
-        $products = Product::with(['inventory', 'brand', 'category'])->get();
-        
+        $search = $request->input('search');
+
+        $query = Product::withCount(['inventory', 'brand', 'category'])->latest();
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")->orWhereHas('brand', fn($q) => $q->where('name', 'like', "%{$search}%"))->orWhereHas('category', fn($q) => $q->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        $products = $query->paginate(10);
+
         return view('inventory.manage', [
             'action' => 'list',
-            'products' => $products
+            'products' => $products,
+            'search' => $search
         ]);
     }
 
