@@ -67,7 +67,7 @@
                 <h1 class="text-3xl font-bold text-[#e0bb35]">All Registered Users</h1>
                 <p class="text-gray-300 mt-1">Manage access control and user roles.</p>
             </div>
-            <form method="GET" action="{{ route('users.index') }}" class="w-full md:w-1/3">
+            <form method="GET" action="{{ route('users.index') }}" class="w-2/3 md:w-1/3">
                 <div class="relative">
                     <input type="text" 
                             name="search" 
