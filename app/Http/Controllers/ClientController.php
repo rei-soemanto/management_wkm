@@ -20,7 +20,7 @@ class ClientController extends Controller
             });
         }
 
-        $clients = $query->paginate(10);
+        $clients = $query->paginate(5);
 
         return view('clients.manage', [
             'action' => 'list',

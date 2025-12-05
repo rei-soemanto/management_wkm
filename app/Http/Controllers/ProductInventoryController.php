@@ -22,7 +22,7 @@ class ProductInventoryController extends Controller
             });
         }
 
-        $products = $query->paginate(10);
+        $products = $query->paginate(5);
 
         return view('inventory.manage', [
             'action' => 'list',

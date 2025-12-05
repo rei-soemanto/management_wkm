@@ -51,7 +51,7 @@ class AdminController extends Controller
             });
         }
 
-        $products = $query->paginate(10);
+        $products = $query->paginate(5);
 
         return view('admin.manage_product', [
             'action'   => 'list',
@@ -170,7 +170,7 @@ class AdminController extends Controller
             });
         }
 
-        $services = $query->paginate(10);
+        $services = $query->paginate(5);
 
         return view('admin.manage_service', [
             'action'   => 'list',
@@ -381,7 +381,7 @@ class AdminController extends Controller
             });
         }
 
-        $users = $query->paginate(10);
+        $users = $query->paginate(5);
 
         return view('admin.manage_user', [
             'users'  => $users,
