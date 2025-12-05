@@ -118,7 +118,7 @@
                 </p>
             </div>
 
-            <div class="w-full md:w-1/3">
+            <div class="w-2/3 md:w-1/3">
                 <form method="GET" action="{{ route('projects.index') }}" class="relative">
                     <input type="text" 
                         name="search" 
