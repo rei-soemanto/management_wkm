@@ -13,7 +13,8 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('tasks:send-reminders')
-    ->everyMinute()
+    ->dailyAt('09:00')
+    ->timezone('Asia/Jakarta')
     ->appendOutputTo(storage_path('logs/scheduler_output.log'))
     ->before(function () {
         Log::info('tasks:send-reminders scheduled to run at ' . now());
