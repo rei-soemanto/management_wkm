@@ -99,3 +99,22 @@ Route::get('/storage-link', function () {
         return 'Error creating storage link: ' . $e->getMessage();
     }
 });
+
+use Spatie\GoogleCalendar\Event;
+use Carbon\Carbon;
+
+Route::get('/test-calendar', function () {
+    try {
+        // Create a new event
+        $event = new Event;
+        $event->name = 'WKM Test Event';
+        $event->description = 'If you see this, your Laravel Google Calendar integration is working!';
+        $event->startDateTime = Carbon::now()->addHour();
+        $event->endDateTime = Carbon::now()->addHour()->addMinutes(30);
+        $event->save();
+
+        return 'Success! Check your Google Calendar for "WKM Test Event" at ' . Carbon::now()->addHour()->format('H:i');
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
