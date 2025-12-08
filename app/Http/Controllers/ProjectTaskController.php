@@ -26,6 +26,16 @@ class ProjectTaskController extends Controller
             'due_date' => 'nullable|date',
         ]);
 
+        $assignedUser = User::findOrFail($request->assigned_to);
+
+        if ($request->has('is_hidden')) {
+            $userRole = $assignedUser->userRole->name ?? '';
+            
+            if (!in_array($userRole, ['Admin', 'Manager'])) {
+                return back()->with('error', 'Hidden tasks can only be assigned to Admin or Manager roles.')->withInput();
+            }
+        }
+
         $task = ManagementProjectTask::create([
             'management_project_id' => $projectId,
             'assigned_to' => $request->assigned_to,
