@@ -92,9 +92,9 @@
 
             @else
                 
-                <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                     <h1 class="text-3xl md:text-4xl font-bold text-white drop-shadow-sm">Manage Projects</h1>
-                    <a href="{{ route('admin.projects.create') }}" class="mt-4 md:mt-0 bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all">
+                    <a href="{{ route('admin.projects.create') }}" class="md:mt-0 bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-6 rounded-lg shadow-lg transition-all">
                         Add New Project
                     </a>
                 </div>

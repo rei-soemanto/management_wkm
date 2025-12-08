@@ -3,12 +3,16 @@
         <div class="flex justify-between h-16">
             
             <div class="flex items-center">
-                <div class="shrink-0 flex items-center">
-                    <img class="h-10 w-auto" src="{{ asset('img/logoWKM.png') }}" alt="WKM Logo">
-                    <span class="ml-3 font-bold text-xl tracking-wider text-gray-100 hidden md:block">
-                        WKM <span class="text-[#e0bb35]">MANAGEMENT</span>
-                    </span>
-                </div>
+                @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')
+                    <div class="shrink-0 flex items-center">
+                        <a href="{{ route('admin.dashboard') }}" class="flex items-center">
+                            <img class="h-10 w-auto" src="{{ asset('img/logoWKM.png') }}" alt="WKM Logo">
+                            <span class="ml-3 font-bold text-xl tracking-wider text-gray-100 hidden sm:block">
+                                WKM <span class="text-[#e0bb35]">MANAGEMENT</span>
+                            </span>
+                        </a>
+                    </div>
+                @endif
 
                 <div class="hidden lg:ml-10 lg:flex lg:space-x-4">
                     
