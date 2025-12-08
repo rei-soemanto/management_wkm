@@ -15,12 +15,10 @@
         <p><strong>Description:</strong><br> {{ $task->description ?? 'No description provided.' }}</p>
     </div>
 
-    @if($calendarLink)
-        <a href="{{ $calendarLink }}" 
-            style="background-color: #4285F4; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-            Add to Google Calendar
-        </a>
-    @endif
+    <a href="{{ $calendarLink }}" 
+        style="background-color: #4285F4; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+        Add to Google Calendar
+    </a>
 
     <p>Please log in to the dashboard to update your progress.</p>
     <p>Thank you.</p>
