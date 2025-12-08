@@ -45,15 +45,15 @@ class ProjectTaskController extends Controller
                 $startDate = Carbon::parse($task->due_date)->setTime(20, 0, 0);
                 $endDate   = $startDate->copy()->addHour();
 
-                $startStr = $startDate->clone()->setTimezone('UTC')->format('Ymd\THis\Z');
-                $endStr   = $endDate->clone()->setTimezone('UTC')->format('Ymd\THis\Z');
+                $startStr = $startDate->clone()->setTimezone('Asia/Jakarta')->format('Ymd\THis');
+                $endStr   = $endDate->clone()->setTimezone('Asia/Jakarta')->format('Ymd\THis');
 
                 $linkParams = [
                     'action'  => 'TEMPLATE',
                     'text'    => 'Deadline: ' . $task->name,
                     'details' => $task->description ?? 'No description',
                     'dates'   => $startStr . '/' . $endStr,
-                    'ctz'     => config('app.timezone'),
+                    'ctz'     => 'Asia/Jakarta',
                 ];
 
                 $googleCalendarLink = 'https://calendar.google.com/calendar/render?' . http_build_query($linkParams);
