@@ -37,6 +37,20 @@ class ProjectTaskController extends Controller
         if ($task->assigned_to) {
             $user = User::find($request->assigned_to);
             Mail::to($user->email)->send(new TaskAssignedMail($task));
+
+            if ($task->due_date) {
+                $deadline = Carbon::parse($task->due_date->format('Y-m-d') . ' 20:00:00', 'Asia/Jakarta');
+                
+                $event = new Event;
+                $event->name = 'Deadline: ' . $task->name;
+                $event->description = $task->description;
+                $event->startDateTime = $deadline;
+                $event->endDateTime = $deadline->copy()->addHour();
+                $event->addAttendee([
+                    'email' => $user->email
+                ]);
+                $event->save();
+            }
         }
 
         return back()->with('success', 'Task created successfully.');
