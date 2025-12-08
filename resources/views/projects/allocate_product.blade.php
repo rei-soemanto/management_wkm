@@ -16,7 +16,7 @@
 
                 <select name="product_inventory_id" id="productSelect" class="mt-1 block w-full rounded-md bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
                     @foreach($inventory as $item)
-                        <option value="{{ $item->id }}">
+                        <option value="{{ $item->id }}" data-search="{{ strtolower($item->name) }}">
                             {{ $item->product->name }}
                         </option>
                     @endforeach
