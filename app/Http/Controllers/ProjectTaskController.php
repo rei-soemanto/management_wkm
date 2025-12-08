@@ -51,7 +51,10 @@ class ProjectTaskController extends Controller
                     $event->startDateTime = $deadline;
                     $event->endDateTime = $deadline->copy()->addHour();
 
-                    $event->calendarId = $user->email;
+                    $event->addAttendee([
+                        'email' => $user->email,
+                        'responseStatus' => 'accepted'
+                    ]);
                     
                     $newEvent = $event->save();
 
