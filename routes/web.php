@@ -14,6 +14,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\Admin\UserManagementController;
 
+use Spatie\GoogleCalendar\Event;
+use Carbon\Carbon;
+
 
 Auth::routes();
 
@@ -99,9 +102,6 @@ Route::get('/storage-link', function () {
         return 'Error creating storage link: ' . $e->getMessage();
     }
 });
-
-use Spatie\GoogleCalendar\Event;
-use Carbon\Carbon;
 
 Route::get('/test-calendar', function () {
     try {
