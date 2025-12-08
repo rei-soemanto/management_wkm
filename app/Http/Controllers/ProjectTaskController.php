@@ -48,12 +48,13 @@ class ProjectTaskController extends Controller
                 $event->startDateTime = $deadline;
                 $event->endDateTime = $deadline->copy()->addHour();
 
-                $googleCalendarLink = "https://calendar.google.com/calendar/render?action=TEMPLATE" .
-                    "&text=" . urlencode($event->name) .
-                    "&details=" . urlencode($event->description) .
-                    "&dates=" . $deadline->format('Ymd\THis') . "/" . $deadline->copy()->addHour()->format('Ymd\THis');
+                $event->calendarId = $user->email;
+
+                try {
+                    $event->save();
+                } catch (\Exception $e) {
                     
-                $event->save();
+                }
             }
 
             Mail::to($user->email)->send(new TaskAssignedMail($task, $googleCalendarLink));
