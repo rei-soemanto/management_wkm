@@ -27,7 +27,7 @@
                         const searchInput = document.getElementById('productSearch');
                         const selectDropdown = document.getElementById('productSelect');
 
-                        const originalOptions = Array.from(selectDropdown.options).slice(1); 
+                        const originalOptions = Array.from(selectDropdown.options).slice(0); 
 
                         searchInput.addEventListener('input', function() {
                             const filter = this.value.toLowerCase();
