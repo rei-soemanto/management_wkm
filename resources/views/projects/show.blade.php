@@ -48,6 +48,12 @@
         </p>
     </div>
 
+    @if (session('error'))
+        <div class="bg-green-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-md">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         <div class="lg:col-span-2 space-y-8">
