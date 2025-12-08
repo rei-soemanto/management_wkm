@@ -39,7 +39,7 @@ class ProjectTaskController extends Controller
             Mail::to($user->email)->send(new TaskAssignedMail($task));
 
             if ($task->due_date) {
-                $deadline = Carbon::parse($task->due_date . ' 20:00:00', 'Asia/Jakarta');
+                $deadline = Carbon::parse($task->due_date)->setTime(20, 0, 0);
                 
                 $event = new Event;
                 $event->name = 'Deadline: ' . $task->name;
