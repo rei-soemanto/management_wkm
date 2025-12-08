@@ -12,7 +12,7 @@ use Carbon\Carbon;
 class SendAdminDigest extends Command
 {
     protected $signature = 'admin:send-digest';
-    protected $description = 'Send daily recap of uploaded progress';
+    protected $description = 'Send daily progress recap to admin';
 
     public function handle()
     {

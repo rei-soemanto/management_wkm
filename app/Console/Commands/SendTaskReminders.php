@@ -27,32 +27,36 @@ class SendTaskReminders extends Command
         foreach ($tasks as $task) {
             $this->info("Checking Task: {$task->name} (ID: {$task->id})");
 
-            if ($task->progressLogs()->count() > 0) {
+            if (method_exists($task, 'progressLogs') && $task->progressLogs()->count() > 0) {
                 $this->info(" -> Skipped: Progress already uploaded.");
                 continue;
             }
 
-            $dueDateString = $task->due_date->format('Y-m-d'); 
-            $todayString = Carbon::now('Asia/Jakarta')->format('Y-m-d');
-            
-            $due = Carbon::parse($dueDateString);
-            $today = Carbon::parse($todayString);
-            
-            $diffInDays = $today->diffInDays($due, false);
+            try {
+                $due = Carbon::parse($task->due_date)->startOfDay();
+                $today = Carbon::now('Asia/Jakarta')->startOfDay();
+                
+                $diffInDays = $today->diffInDays($due, false);
+                $diffInDays = (int) $diffInDays;
 
-            $this->info(" -> Due: $dueDateString | Today: $todayString | Diff: $diffInDays days");
+                $this->info(" -> Due: {$due->format('Y-m-d')} | Today: {$today->format('Y-m-d')} | Diff: $diffInDays days");
 
-            if (in_array($diffInDays, [7, 3, 1, 0])) {
-                $user = $task->assigned;
-                if ($user && $user->email) {
-                    Mail::to($user->email)->send(new TaskReminderMail($task, $diffInDays));
-                    $this->info(" -> EMAIL SENT to {$user->email}");
+                if (in_array($diffInDays, [7, 3, 1, 0])) {
+                    $user = $task->assigned;
+                    if ($user && $user->email) {
+                        Mail::to($user->email)->send(new TaskReminderMail($task, $diffInDays));
+                        $this->info(" -> EMAIL SENT to {$user->email}");
+                    } else {
+                        $this->error(" -> User has no email!");
+                    }
                 } else {
-                    $this->error(" -> User has no email!");
+                    $this->info(" -> Skipped: Day gap ($diffInDays) is not 0, 1, 3, or 7.");
                 }
-            } else {
-                $this->info(" -> Skipped: Day gap ($diffInDays) is not 0, 1, 3, or 7.");
+            } catch (\Exception $e) {
+                $this->error(" -> Error processing dates: " . $e->getMessage());
             }
         }
+        
+        $this->info('Reminder Check Complete.');
     }
 }
