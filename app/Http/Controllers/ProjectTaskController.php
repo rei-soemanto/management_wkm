@@ -53,7 +53,9 @@ class ProjectTaskController extends Controller
 
                     $event->calendarId = $user->email;
                     
-                    $event->save();
+                    $newEvent = $event->save();
+
+                    $googleCalendarLink = $newEvent->htmlLink;
                 
                 } catch (Exception $e) {
                     Log::warning("Could not save to calendar for {$user->email}: " . $e->getMessage());
