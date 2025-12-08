@@ -53,11 +53,11 @@ class ProjectTaskController extends Controller
 
                     $event->addAttendee([
                         'email' => $user->email,
-                        'responseStatus' => 'accepted'
+                        'responseStatus' => 'needsAction'
                     ]);
-                    
-                    $newEvent = $event->save();
 
+                    $newEvent = $event->save();
+                    
                     $googleCalendarLink = $newEvent->htmlLink;
                 
                 } catch (Exception $e) {
