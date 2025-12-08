@@ -42,26 +42,34 @@ class ProjectTaskController extends Controller
             $googleCalendarLink = null;
 
             if ($task->due_date) {
-                try {
-                    $deadline = Carbon::parse($task->due_date)->setTime(20, 0, 0);
-                    
+                $startDate = Carbon::parse($task->due_date)->setTime(20, 0, 0);
+                $endDate   = $startDate->copy()->addHour();
+
+                $startStr = $startDate->clone()->setTimezone('UTC')->format('Ymd\THis\Z');
+                $endStr   = $endDate->clone()->setTimezone('UTC')->format('Ymd\THis\Z');
+
+                $linkParams = [
+                    'action'  => 'TEMPLATE',
+                    'text'    => 'Deadline: ' . $task->name,
+                    'details' => $task->description ?? 'No description',
+                    'dates'   => $startStr . '/' . $endStr,
+                    'ctz'     => config('app.timezone'),
+                ];
+
+                $googleCalendarLink = 'https://calendar.google.com/calendar/render?' . http_build_query($linkParams);
+                try {                    
                     $event = new Event;
                     $event->name = 'Deadline: ' . $task->name;
                     $event->description = $task->description;
-                    $event->startDateTime = $deadline;
-                    $event->endDateTime = $deadline->copy()->addHour();
+                    $event->startDateTime = $startDate;
+                    $event->endDateTime = $endDate;
 
-                    $event->addAttendee([
-                        'email' => $user->email,
-                        'responseStatus' => 'needsAction'
-                    ]);
+                    $event->addAttendee(['email' => $user->email,]);
 
-                    $newEvent = $event->save();
-                    
-                    $googleCalendarLink = $newEvent->htmlLink;
-                
+                    $event->save();
+
                 } catch (Exception $e) {
-                    Log::warning("Could not save to calendar for {$user->email}: " . $e->getMessage());
+                    Log::warning("Calendar API Error: " . $e->getMessage());
                 }
             }
 
