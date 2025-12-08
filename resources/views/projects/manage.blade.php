@@ -154,6 +154,13 @@
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($projects as $project)
+                @php
+                    $user = Auth::user();
+                    $isPrivileged = in_array($user->userRole->name, ['Admin', 'Manager']);
+                    $isAssigned = $project->roleAssignments->contains('user_id', $user->id);
+                @endphp
+
+                @if($isPrivileged || $isAssigned)
                     <a href="{{ route('projects.show', $project->id) }}" class="block group">
                         <div class="bg-[#0f0f0f] rounded-xl shadow-sm hover:shadow-md border border-gray-800 transition-all duration-200 h-full flex flex-col">
                             <div class="p-5 border-b border-gray-800 flex justify-between items-start">

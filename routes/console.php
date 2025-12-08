@@ -14,7 +14,7 @@ Artisan::command('inspire', function () {
 
 Schedule::command('tasks:send-reminders')
     ->everyMinute()
-    // ->dailyAt('08:33')
+    // ->dailyAt('09:00')
     // ->timezone('Asia/Jakarta')
     ->appendOutputTo('/home/thep2892/public_html/management.thewkm.com/storage/logs/scheduler_output.log')
     ->before(function () {
