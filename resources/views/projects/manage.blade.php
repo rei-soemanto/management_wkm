@@ -218,6 +218,7 @@
                             </div>
                         </div>
                     </a>
+                @endif
                 @endforeach
             </div>
             <div class="bg-[#0f0f0f] shadow overflow-hidden sm:rounded-lg border border-gray-800">
