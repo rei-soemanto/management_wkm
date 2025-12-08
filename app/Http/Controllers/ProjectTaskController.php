@@ -36,7 +36,8 @@ class ProjectTaskController extends Controller
 
         if ($task->assigned_to) {
             $user = User::find($request->assigned_to);
-            Mail::to($user->email)->send(new TaskAssignedMail($task));
+
+            $googleCalendarLink = null;
 
             if ($task->due_date) {
                 $deadline = Carbon::parse($task->due_date)->setTime(20, 0, 0);
@@ -46,11 +47,16 @@ class ProjectTaskController extends Controller
                 $event->description = $task->description;
                 $event->startDateTime = $deadline;
                 $event->endDateTime = $deadline->copy()->addHour();
-                $event->attendees = [
-                    ['email' => $user->email]
-                ];
+
+                $googleCalendarLink = "https://calendar.google.com/calendar/render?action=TEMPLATE" .
+                    "&text=" . urlencode($event->name) .
+                    "&details=" . urlencode($event->description) .
+                    "&dates=" . $deadline->format('Ymd\THis') . "/" . $deadline->copy()->addHour()->format('Ymd\THis');
+                    
                 $event->save();
             }
+
+            Mail::to($user->email)->send(new TaskAssignedMail($task, $googleCalendarLink));
         }
 
         return back()->with('success', 'Task created successfully.');
