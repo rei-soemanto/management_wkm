@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
 use App\Models\Managements\ManagementProject;
 use App\Models\Managements\ManagementProjectTask;
 use App\Models\Managements\Status;
@@ -40,20 +42,21 @@ class ProjectTaskController extends Controller
             $googleCalendarLink = null;
 
             if ($task->due_date) {
-                $deadline = Carbon::parse($task->due_date)->setTime(20, 0, 0);
-                
-                $event = new Event;
-                $event->name = 'Deadline: ' . $task->name;
-                $event->description = $task->description;
-                $event->startDateTime = $deadline;
-                $event->endDateTime = $deadline->copy()->addHour();
-
-                $event->calendarId = $user->email;
-
                 try {
-                    $event->save();
-                } catch (\Exception $e) {
+                    $deadline = Carbon::parse($task->due_date)->setTime(20, 0, 0);
                     
+                    $event = new Event;
+                    $event->name = 'Deadline: ' . $task->name;
+                    $event->description = $task->description;
+                    $event->startDateTime = $deadline;
+                    $event->endDateTime = $deadline->copy()->addHour();
+
+                    $event->calendarId = $user->email;
+                    
+                    $event->save();
+                
+                } catch (Exception $e) {
+                    Log::warning("Could not save to calendar for {$user->email}: " . $e->getMessage());
                 }
             }
 
