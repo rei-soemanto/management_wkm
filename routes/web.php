@@ -14,10 +14,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\Admin\UserManagementController;
 
-use Spatie\GoogleCalendar\Event;
-use Carbon\Carbon;
-
-
 Auth::routes();
 
 Route::get('/', function () {
@@ -100,21 +96,5 @@ Route::get('/storage-link', function () {
         return 'Storage link created successfully!';
     } catch (\Exception $e) {
         return 'Error creating storage link: ' . $e->getMessage();
-    }
-});
-
-Route::get('/test-calendar', function () {
-    try {
-        // Create a new event
-        $event = new Event;
-        $event->name = 'WKM Test Event';
-        $event->description = 'If you see this, your Laravel Google Calendar integration is working!';
-        $event->startDateTime = Carbon::now()->addHour();
-        $event->endDateTime = Carbon::now()->addHour()->addMinutes(30);
-        $event->save();
-
-        return 'Success! Check your Google Calendar for "WKM Test Event" at ' . Carbon::now()->addHour()->format('H:i');
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
     }
 });
