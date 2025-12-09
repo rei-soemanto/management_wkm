@@ -4,6 +4,13 @@
 <div class="max-w-2xl mx-auto px-4 py-8">
     <div class="bg-[#0f0f0f] shadow rounded-lg p-6">
         <h2 class="text-xl text-[#e0bb35] font-bold mb-4">Assign Team Member</h2>
+
+        @if (session('error'))
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-md">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <p class="text-gray-300 mb-6">Project: <strong>{{ $project->name }}</strong></p>
 
         <form action="{{ route('projects.team.store', $project->id) }}" method="POST" class="space-y-4">
