@@ -24,12 +24,18 @@
                         <label for="name" class="block text-sm font-bold text-[#e0bb35] mb-1">Full Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required 
                             class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="email" class="block text-sm font-bold text-[#e0bb35] mb-1">Email Address</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required 
                             class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <hr class="border-[#e0bb35] my-4">
@@ -39,6 +45,9 @@
                         <div>
                             <label for="password" class="block text-sm font-bold text-[#e0bb35] mb-1">New Password</label>
                             <input type="password" name="password" id="password" placeholder="New Password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            @error('password')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label for="password_confirmation" class="block text-sm font-bold text-[#e0bb35] mb-1">Confirm Password</label>
