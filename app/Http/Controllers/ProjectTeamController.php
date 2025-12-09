@@ -36,7 +36,7 @@ class ProjectTeamController extends Controller
             ->exists();
 
         if ($exists) {
-            return back()->with('error', 'This user is already assigned to this project.');
+            return redirect()->route('projects.show', $projectId)->with('error', 'This user is already assigned to this project.');
         }
 
         ManagementProjectRoleAssignment::create([
