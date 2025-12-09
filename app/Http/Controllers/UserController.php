@@ -45,7 +45,7 @@ class UserController extends Controller
 
         // Handle Password 
         if ($request->filled('password')) {
-            $user->password = Hash::make($validated['password']);
+            $user->password = $validated['password'];
         }
 
         $user->save();
