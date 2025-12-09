@@ -17,12 +17,13 @@ class SendTaskReminders extends Command
     {
         $this->info('Starting Reminder Check...');
         
-        $tasks = ManagementProjectTask::where('status_id', '!=', 3)
+        $tasks = ManagementProjectTask::with(['assigned', 'project', 'progressLogs'])
+            ->where('status_id', '!=', 3)
             ->whereNotNull('due_date')
             ->whereNotNull('assigned_to')
             ->get();
 
-        $this->info('Found ' . $tasks->count() . ' active tasks.');
+        $this->info('Found ' . $tasks->count() . ' total active tasks. Filtering...');
 
         foreach ($tasks as $task) {
             $this->info("Checking Task: {$task->name} (ID: {$task->id})");
@@ -44,7 +45,7 @@ class SendTaskReminders extends Command
                 if (in_array($diffInDays, [7, 3, 1, 0])) {
                     $user = $task->assigned;
                     if ($user && $user->email) {
-                        Mail::to($user->email)->send(new TaskReminderMail($task, $diffInDays));
+                        Mail::to($user->email)->send(new TaskReminderMail($task, $tasks, $diffInDays));
                         $this->info(" -> EMAIL SENT to {$user->email}");
                     } else {
                         $this->error(" -> User has no email!");

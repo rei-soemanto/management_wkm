@@ -14,7 +14,9 @@ class TaskReminderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public $task, public $daysLeft) {}
+    public function __construct(public $task, public $tasks, public $daysLeft) {
+        $this->tasks = $tasks;
+    }
 
     public function build()
     {
@@ -22,7 +24,7 @@ class TaskReminderMail extends Mailable
             ? 'URGENT: Task Due Today - ' . $this->task->name 
             : 'Reminder: Task Due in ' . $this->daysLeft . ' days - ' . $this->task->name;
 
-        return $this->subject($subject)->view('emails.task_reminder');
+        return $this->subject($subject)->view('emails.task_reminder')->subject('Task Reminder: You have pending tasks')->with(['tasks' => $this->tasks]);
     }
 
     /**
