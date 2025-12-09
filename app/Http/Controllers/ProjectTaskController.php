@@ -46,6 +46,7 @@ class ProjectTaskController extends Controller
             'is_hidden' => $request->has('is_hidden') ? true : false,
         ]);
 
+        // Send assignment task email to assigned PIC and google calendar link
         if ($task->assigned_to) {
             $user = User::find($request->assigned_to);
 

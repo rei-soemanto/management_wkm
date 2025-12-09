@@ -15,6 +15,7 @@ class SendTaskReminders extends Command
 
     public function handle()
     {
+        // Check if there's user task due today or in 1, 3, 7 days
         $this->info('Starting Reminder Check...');
         
         $allTasks = ManagementProjectTask::with(['assigned', 'project', 'progressLogs'])
@@ -23,11 +24,13 @@ class SendTaskReminders extends Command
             ->whereNotNull('assigned_to')
             ->get();
 
+        // Gather all tasks for each user that due today or in 1, 3, 7 days
         $this->info('Found ' . $allTasks->count() . ' total active tasks. Filtering and Grouping...');
 
         $reminders = [];
 
         foreach ($allTasks as $task) {
+            // Skip task if the task have been finished before due
             if (method_exists($task, 'progressLogs') && $task->progressLogs()->count() > 0) {
                 continue; 
             }
@@ -62,6 +65,7 @@ class SendTaskReminders extends Command
             }
         }
 
+        // Sending reminder email with task for each user that due today or in 1, 3, 7 days
         $this->info('Sending Emails...');
 
         foreach ($reminders as $userId => $data) {

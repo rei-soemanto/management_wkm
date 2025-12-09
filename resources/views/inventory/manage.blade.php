@@ -41,7 +41,7 @@
                             <button type="button" onclick="adjustStock(-1)" class="p-3 bg-[#e0bb35] hover:bg-[#e3cf85] rounded-l-md border border-r-0 border-gray-800 text-black">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
                             </button>
-                            <input type="number" name="stock" id="stock" value="{{ old('stock', $current_stock) }}" min="0" required 
+                            <input type="number" name="stock" id="stock" value="{{ old('stock', $current_stock) }}" min="0"oninput="validity.valid||(value='');" required 
                                 class="block w-full text-center border-gray-800 focus:ring-[#e0bb35] focus:border-[#e0bb35] sm:text-lg text-[#e0bb35] font-bold py-2.5">
                             <button type="button" onclick="adjustStock(1)" class="p-3 bg-[#e0bb35] hover:bg-[#e3cf85] rounded-r-md border border-l-0 border-gray-800 text-black">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>

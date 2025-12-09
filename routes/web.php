@@ -42,6 +42,7 @@ Route::middleware(['auth','internal'])->group(function () {
 
     Route::get('projects/{id}/allocation/create', [ProjectAllocationController::class, 'create'])->name('projects.allocation.create');
     Route::post('projects/{id}/allocation', [ProjectAllocationController::class, 'store'])->name('projects.allocation.store');
+    Route::put('/projects/{id}/allocation/{usage_id}', [ProjectAllocationController::class, 'update'])->name('projects.allocation.update');
     Route::delete('projects/{id}/allocation/{usageId}', [ProjectAllocationController::class, 'destroy'])->name('projects.allocation.destroy');
 
     Route::get('/inventory', [ProductInventoryController::class, 'index'])->name('inventory.index');

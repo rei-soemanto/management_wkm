@@ -26,30 +26,71 @@ class ProjectAllocationController extends Controller
     {
         $request->validate([
             'product_inventory_id' => 'required|exists:product_inventories,id',
-            'quantity' => 'required|integer|min:1',
+            'quantity_needed' => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:0',
         ]);
 
         return DB::transaction(function () use ($request, $projectId) {
             $inventory = ProductInventory::lockForUpdate()->find($request->product_inventory_id);
 
-            // Check Stock
-            // if ($inventory->stock < $request->quantity) {
-            //     throw \Illuminate\Validation\ValidationException::withMessages([
-            //         'quantity' => "Not enough stock. Only {$inventory->stock} available."
-            //     ]);
-            // }
+            // Allocated cannot more than stock
+            if ($request->quantity_allocated > $inventory->stock) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'quantity_allocated' => "Cannot allocate {$request->quantity_allocated}. Only {$inventory->stock} available in stock."
+                ]);
+            }
+
+            // Allocated cannot more than needed
+            if ($request->quantity_allocated > $request->quantity_needed) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'quantity_allocated' => "Allocated amount cannot exceed the needed amount."
+                ]);
+            }
 
             // Deduct Stock
-            $inventory->decrement('stock', $request->quantity);
+            if ($request->quantity_allocated > 0) {
+                $inventory->decrement('stock', $request->quantity_allocated);
+            }
 
             // Create Usage Record
             ProductProjectUsage::create([
                 'management_project_id' => $projectId,
                 'product_inventory_id' => $inventory->id,
+                'quantity_needed' => $request->quantity_needed,
                 'quantity' => $request->quantity,
             ]);
 
             return redirect()->route('projects.show', $projectId)->with('success', 'Product allocated successfully.');
+        });
+    }
+
+    // Update Allocation
+    public function update(Request $request, $projectId, $usageId)
+    {
+        $request->validate([
+            'add_quantity' => 'required|integer|min:1',
+        ]);
+
+        return DB::transaction(function () use ($request, $projectId, $usageId) {
+            $usage = ProductProjectUsage::with('inventoryItem')->findOrFail($usageId);
+            $inventory = $usage->inventoryItem;
+
+            // Calculate how many are still needed
+            $remaining_needed = $usage->quantity_needed - $usage->quantity;
+
+            if ($request->add_quantity > $remaining_needed) {
+                return back()->with('error', "You are trying to add more than needed.");
+            }
+
+            if ($request->add_quantity > $inventory->stock) {
+                return back()->with('error', "Not enough stock in inventory to add that amount.");
+            }
+
+            // Update Inventory and Usage
+            $inventory->decrement('stock', $request->add_quantity);
+            $usage->increment('quantity', $request->add_quantity);
+
+            return redirect()->route('projects.show', $projectId)->with('success', 'Additional stock allocated to project.');
         });
     }
 
@@ -62,7 +103,9 @@ class ProjectAllocationController extends Controller
                 ->firstOrFail();
 
             // Return stock to inventory
-            $usage->inventoryItem->increment('stock', $usage->quantity);
+            if ($usage->quantity > 0) {
+                $usage->inventoryItem->increment('stock', $usage->quantity);
+            }
 
             // Delete usage record
             $usage->delete();
