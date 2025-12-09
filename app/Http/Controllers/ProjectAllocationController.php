@@ -27,7 +27,7 @@ class ProjectAllocationController extends Controller
         $request->validate([
             'product_inventory_id' => 'required|exists:product_inventories,id',
             'quantity_needed' => 'required|integer|min:1',
-            'quantity' => 'required|integer|min:0',
+            'quantity_allocated' => 'required|integer|min:0',
         ]);
 
         return DB::transaction(function () use ($request, $projectId) {
@@ -57,7 +57,7 @@ class ProjectAllocationController extends Controller
                 'management_project_id' => $projectId,
                 'product_inventory_id' => $inventory->id,
                 'quantity_needed' => $request->quantity_needed,
-                'quantity' => $request->quantity,
+                'quantity' => $request->quantity_allocated,
             ]);
 
             return redirect()->route('projects.show', $projectId)->with('success', 'Product allocated successfully.');
