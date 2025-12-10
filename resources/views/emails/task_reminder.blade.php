@@ -14,7 +14,7 @@
             $dueDate = \Carbon\Carbon::parse($task->due_date);
             $isToday = $dueDate->isToday();
             $isOverdue = $dueDate->isPast() && !$isToday;
-            $daysLeft = $dueDate->diffInDays(\Carbon\Carbon::now()); 
+            $daysLeft = round($dueDate->floatDiffInDays(\Carbon\Carbon::now()));
         @endphp
 
         <div style="background: #fff3cd; padding: 15px; border-left: 4px solid #d9534f; margin: 20px 0;">

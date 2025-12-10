@@ -13,7 +13,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('tasks:send-reminders')
-    ->dailyAt('09:30')
+    ->dailyAt('09:00')
     ->timezone('Asia/Jakarta')
     ->appendOutputTo('/home/thep2892/public_html/management.thewkm.com/storage/logs/scheduler_output.log')
     ->before(function () {
