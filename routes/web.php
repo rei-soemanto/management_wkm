@@ -14,6 +14,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\Admin\UserManagementController;
 
+use App\Http\Middleware\CheckAdminRole;
+use App\Http\Middleware\CheckManagerRole;
+
 Auth::routes();
 
 Route::get('/', function () {
@@ -45,21 +48,24 @@ Route::middleware(['auth','internal'])->group(function () {
     Route::put('/projects/{id}/allocation/{usage_id}', [ProjectAllocationController::class, 'update'])->name('projects.allocation.update');
     Route::delete('projects/{id}/allocation/{usageId}', [ProjectAllocationController::class, 'destroy'])->name('projects.allocation.destroy');
 
-    Route::get('/inventory', [ProductInventoryController::class, 'index'])->name('inventory.index');
-    Route::get('/inventory/{id}/edit', [ProductInventoryController::class, 'edit'])->name('inventory.edit');
-    Route::post('/inventory/{id}', [ProductInventoryController::class, 'update'])->name('inventory.update');
+    Route::middleware([CheckManagerRole::class])->group(function () {
 
-    Route::prefix('admin')->group(function () {
+        Route::get('/inventory', [ProductInventoryController::class, 'index'])->name('inventory.index');
+        Route::get('/inventory/{id}/edit', [ProductInventoryController::class, 'edit'])->name('inventory.edit');
+        Route::post('/inventory/{id}', [ProductInventoryController::class, 'update'])->name('inventory.update');
+
+        Route::get('admin/users', [AdminController::class, 'listUsers'])->name('admin.users.list');
+    });
+
+    Route::prefix('admin')->name('admin.')->middleware([CheckAdminRole::class])->group(function () {
+
+        Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
         Route::get('/user_manage', [UserManagementController::class, 'index'])->name('admin.user_manage.list');
         Route::get('/user_manage/{id}/edit', [UserManagementController::class, 'edit'])->name('admin.user_manage.edit');
         Route::put('/user_manage/{id}', [UserManagementController::class, 'update'])->name('admin.user_manage.update');
         
-        Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
         Route::resource('clients', ClientController::class);
-
-        Route::get('/users', [AdminController::class, 'listUsers'])->name('admin.users.list');
 
         Route::prefix('products')->name('admin.products.')->group(function () {
             Route::get('/', [AdminController::class, 'listProducts'])->name('list');
@@ -89,13 +95,4 @@ Route::middleware(['auth','internal'])->group(function () {
         });
     });
 
-});
-
-Route::get('/storage-link', function () {
-    try {
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
-        return 'Storage link created successfully!';
-    } catch (\Exception $e) {
-        return 'Error creating storage link: ' . $e->getMessage();
-    }
 });
