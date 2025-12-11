@@ -26,7 +26,7 @@ class CheckProjectAccess
             return $next($request);
         }
 
-        $isAssigned = ManagementProjectRoleAssignment::where('project_id', $projectId)->where('user_id', $user->id)->exists();
+        $isAssigned = ManagementProjectRoleAssignment::where('management_project_id', $projectId)->where('user_id', $user->id)->exists();
 
         if ($isAssigned) {
             return $next($request);
