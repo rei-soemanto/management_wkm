@@ -24,7 +24,7 @@
                 </p>
                 
                 <div class="mt-12">
-                    <a href="{{ url('/') }}" class="inline-block px-8 py-3 text-lg font-bold text-black bg-[#e0bb35] rounded hover:bg-[#e3cf85] transition duration-300 ease-in-out shadow-lg">
+                    <a href="{{ route('projects.index') }}" class="inline-block px-8 py-3 text-lg font-bold text-black bg-[#e0bb35] rounded hover:bg-[#e3cf85] transition duration-300 ease-in-out shadow-lg">
                         Go Back Home
                     </a>
                 </div>
