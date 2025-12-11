@@ -7,7 +7,7 @@
 
     <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6 mb-8">
         <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
-            <div>
+            <div class="max-w-3/4">
                 <div class="flex items-center gap-3 mb-2">
                     <span class="bg-gray-300 text-[#0f0f0f] text-xs font-bold px-2.5 py-0.5 rounded">
                         {{ $project->client->name }}
@@ -82,7 +82,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Due Date</label>
-                            <input type="date" name="due_date" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                            <input type="date" name="due_date" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2 [&::-webkit-calendar-picker-indicator]:invert">
                         </div>
                         <div class="flex items-center mt-3">
                             <input id="is_hidden" name="is_hidden" type="checkbox" value="1" 
@@ -174,7 +174,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-[#e0bb35]">Date</label>
-                            <input type="date" name="progress_date" value="{{ date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                            <input type="date" name="progress_date" value="{{ date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2 [&::-webkit-calendar-picker-indicator]:invert">
                         </div>
                     </div>
 
