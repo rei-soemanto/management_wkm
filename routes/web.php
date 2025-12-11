@@ -41,8 +41,6 @@ Route::middleware(['auth','internal'])->group(function () {
     Route::middleware([CheckManagerRole::class])->group(function () {
 
         Route::get('/inventory', [ProductInventoryController::class, 'index'])->name('inventory.index');
-        Route::get('/inventory/{id}/edit', [ProductInventoryController::class, 'edit'])->name('inventory.edit');
-        Route::post('/inventory/{id}', [ProductInventoryController::class, 'update'])->name('inventory.update');
 
         Route::get('admin/users', [AdminController::class, 'listUsers'])->name('admin.users.list');
     });
@@ -57,19 +55,24 @@ Route::middleware(['auth','internal'])->group(function () {
         
         Route::resource('clients', ClientController::class);
 
-        Route::get('projects/{id}/team/create', [ProjectTeamController::class, 'create'])->name('projects.team.create');
-        Route::post('projects/{id}/team', [ProjectTeamController::class, 'store'])->name('projects.team.store');
-        Route::delete('projects/{id}/team/{assignmentId}', [ProjectTeamController::class, 'destroy'])->name('projects.team.destroy');
+        Route::get('/inventory/{id}/edit', [ProductInventoryController::class, 'edit'])->name('inventory.edit');
+        Route::post('/inventory/{id}', [ProductInventoryController::class, 'update'])->name('inventory.update');
 
-        Route::post('projects/{projectId}/tasks', [ProjectTaskController::class, 'store'])->name('projects.tasks.store');
-        Route::get('projects/{projectId}/tasks/{taskId}/edit', [ProjectTaskController::class, 'edit'])->name('projects.tasks.edit');
-        Route::patch('projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'update'])->name('projects.tasks.update');
-        Route::delete('projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'destroy'])->name('projects.tasks.destroy');
+        Route::prefix('projects')->name('projects.')->group(function () {
+            Route::get('/{id}/team/create', [ProjectTeamController::class, 'create'])->name('team.create');
+            Route::post('/{id}/team', [ProjectTeamController::class, 'store'])->name('team.store');
+            Route::delete('/{id}/team/{assignmentId}', [ProjectTeamController::class, 'destroy'])->name('team.destroy');
 
-        Route::get('projects/{id}/allocation/create', [ProjectAllocationController::class, 'create'])->name('projects.allocation.create');
-        Route::post('projects/{id}/allocation', [ProjectAllocationController::class, 'store'])->name('projects.allocation.store');
-        Route::put('/projects/{id}/allocation/{usage_id}', [ProjectAllocationController::class, 'update'])->name('projects.allocation.update');
-        Route::delete('projects/{id}/allocation/{usageId}', [ProjectAllocationController::class, 'destroy'])->name('projects.allocation.destroy');
+            Route::post('/{projectId}/tasks', [ProjectTaskController::class, 'store'])->name('tasks.store');
+            Route::get('/{projectId}/tasks/{taskId}/edit', [ProjectTaskController::class, 'edit'])->name('tasks.edit');
+            Route::patch('/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'update'])->name('tasks.update');
+            Route::delete('/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'destroy'])->name('tasks.destroy');
+
+            Route::get('/{id}/allocation/create', [ProjectAllocationController::class, 'create'])->name('allocation.create');
+            Route::post('/{id}/allocation', [ProjectAllocationController::class, 'store'])->name('allocation.store');
+            Route::put('/{id}/allocation/{usage_id}', [ProjectAllocationController::class, 'update'])->name('allocation.update');
+            Route::delete('/{id}/allocation/{usageId}', [ProjectAllocationController::class, 'destroy'])->name('allocation.destroy');
+        });
 
         Route::prefix('products')->name('admin.products.')->group(function () {
             Route::get('/', [AdminController::class, 'listProducts'])->name('list');
