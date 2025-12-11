@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 
 use App\Http\Middleware\CheckAdminRole;
 use App\Http\Middleware\CheckManagerRole;
+use App\Http\Middleware\CheckProjectAccess;
 
 Auth::routes();
 
@@ -30,23 +31,12 @@ Route::middleware(['auth','internal'])->group(function () {
     Route::patch('/users', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users', [UserController::class, 'destroy'])->name('users.destroy');
 
-    Route::resource('projects', ManagementProjectController::class);
-    
-    Route::post('projects/{id}/progress', [ManagementProjectProgressController::class, 'store'])->name('projects.progress.store');
+    Route::middleware([CheckProjectAccess::class])->group(function () {
 
-    Route::get('projects/{id}/team/create', [ProjectTeamController::class, 'create'])->name('projects.team.create');
-    Route::post('projects/{id}/team', [ProjectTeamController::class, 'store'])->name('projects.team.store');
-    Route::delete('projects/{id}/team/{assignmentId}', [ProjectTeamController::class, 'destroy'])->name('projects.team.destroy');
-
-    Route::post('projects/{projectId}/tasks', [ProjectTaskController::class, 'store'])->name('projects.tasks.store');
-    Route::get('projects/{projectId}/tasks/{taskId}/edit', [ProjectTaskController::class, 'edit'])->name('projects.tasks.edit');
-    Route::patch('projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'update'])->name('projects.tasks.update');
-    Route::delete('projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'destroy'])->name('projects.tasks.destroy');
-
-    Route::get('projects/{id}/allocation/create', [ProjectAllocationController::class, 'create'])->name('projects.allocation.create');
-    Route::post('projects/{id}/allocation', [ProjectAllocationController::class, 'store'])->name('projects.allocation.store');
-    Route::put('/projects/{id}/allocation/{usage_id}', [ProjectAllocationController::class, 'update'])->name('projects.allocation.update');
-    Route::delete('projects/{id}/allocation/{usageId}', [ProjectAllocationController::class, 'destroy'])->name('projects.allocation.destroy');
+        Route::resource('projects', ManagementProjectController::class);
+        
+        Route::post('projects/{id}/progress', [ManagementProjectProgressController::class, 'store'])->name('projects.progress.store');
+    });
 
     Route::middleware([CheckManagerRole::class])->group(function () {
 
@@ -66,6 +56,20 @@ Route::middleware(['auth','internal'])->group(function () {
         Route::put('/user_manage/{id}', [UserManagementController::class, 'update'])->name('admin.user_manage.update');
         
         Route::resource('clients', ClientController::class);
+
+        Route::get('projects/{id}/team/create', [ProjectTeamController::class, 'create'])->name('projects.team.create');
+        Route::post('projects/{id}/team', [ProjectTeamController::class, 'store'])->name('projects.team.store');
+        Route::delete('projects/{id}/team/{assignmentId}', [ProjectTeamController::class, 'destroy'])->name('projects.team.destroy');
+
+        Route::post('projects/{projectId}/tasks', [ProjectTaskController::class, 'store'])->name('projects.tasks.store');
+        Route::get('projects/{projectId}/tasks/{taskId}/edit', [ProjectTaskController::class, 'edit'])->name('projects.tasks.edit');
+        Route::patch('projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'update'])->name('projects.tasks.update');
+        Route::delete('projects/{projectId}/tasks/{taskId}', [ProjectTaskController::class, 'destroy'])->name('projects.tasks.destroy');
+
+        Route::get('projects/{id}/allocation/create', [ProjectAllocationController::class, 'create'])->name('projects.allocation.create');
+        Route::post('projects/{id}/allocation', [ProjectAllocationController::class, 'store'])->name('projects.allocation.store');
+        Route::put('/projects/{id}/allocation/{usage_id}', [ProjectAllocationController::class, 'update'])->name('projects.allocation.update');
+        Route::delete('projects/{id}/allocation/{usageId}', [ProjectAllocationController::class, 'destroy'])->name('projects.allocation.destroy');
 
         Route::prefix('products')->name('admin.products.')->group(function () {
             Route::get('/', [AdminController::class, 'listProducts'])->name('list');
