@@ -57,7 +57,7 @@ Route::middleware(['auth','internal'])->group(function () {
         Route::get('admin/users', [AdminController::class, 'listUsers'])->name('admin.users.list');
     });
 
-    Route::prefix('admin')->name('admin.')->middleware([CheckAdminRole::class])->group(function () {
+    Route::middleware([CheckAdminRole::class])->group(function () {
 
         Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
