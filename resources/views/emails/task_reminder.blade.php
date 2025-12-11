@@ -12,9 +12,12 @@
     @foreach($tasks as $task)
         @php
             $dueDate = \Carbon\Carbon::parse($task->due_date);
+            $now = \Carbon\Carbon::now();
+            
             $isToday = $dueDate->isToday();
             $isOverdue = $dueDate->isPast() && !$isToday;
-            $daysLeft = round($dueDate->floatDiffInDays(\Carbon\Carbon::now()));
+            
+            $daysLeft = abs(round($dueDate->floatDiffInDays($now)));
         @endphp
 
         <div style="background: #fff3cd; padding: 15px; border-left: 4px solid #d9534f; margin: 20px 0;">

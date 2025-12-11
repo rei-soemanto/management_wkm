@@ -41,7 +41,7 @@ class SendTaskReminders extends Command
                 
                 $diffInDays = (int) $today->diffInDays($due, false);
 
-                if (in_array($diffInDays, [7, 3, 1, 0])) {
+                if (in_array($diffInDays, [7, 3, 1, 0, -1, -2, -3, -7])) {
                     $userId = $task->assigned_to;
                     $user = $task->assigned;
 
