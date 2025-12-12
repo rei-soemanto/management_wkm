@@ -195,7 +195,7 @@
                     </div>
 
                     <button type="submit" class="w-full bg-[#e0bb35] text-black font-bold py-2 px-4 rounded-md hover:bg-[#e3cf85] transition">
-                        Submit Report & Update Status
+                        Submit Report
                     </button>
                 </form>
             </div>
