@@ -264,7 +264,7 @@ class AdminController extends Controller
         $data = $request->validate([
             'name'           => 'required|string|max:255',
             'description'    => 'nullable|string',
-            'category_ids'   => 'required|array|max:4',
+            'category_ids'   => 'required|array',
             'category_ids.*' => 'integer|exists:project_categories,id',
             'images'         => 'nullable|array',
             'images.*'       => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -309,7 +309,7 @@ class AdminController extends Controller
         $data = $request->validate([
             'name'           => 'required|string|max:255',
             'description'    => 'nullable|string',
-            'category_ids'   => 'required|array|max:4',
+            'category_ids'   => 'required|array',
             'category_ids.*' => 'integer|exists:project_categories,id',
             'images'         => 'nullable|array',
             'images.*'       => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
