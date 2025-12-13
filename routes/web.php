@@ -26,7 +26,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth','internal'])->group(function () {
 
-    Route::get('/', [LoginController::class, 'dashboard'])->name('projects.index');
+    Route::get('/projects', [LoginController::class, 'dashboard'])->name('projects.index');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/edit', [UserController::class, 'edit'])->name('users.edit');
