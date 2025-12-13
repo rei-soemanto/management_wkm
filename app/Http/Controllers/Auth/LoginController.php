@@ -22,7 +22,7 @@ class LoginController extends Controller
             return route('projects.index');
         }
 
-        if ($roleName === 'Employee') {
+        if ($roleName === 'Admin') {
             return route('projects.index');
         }
     }
