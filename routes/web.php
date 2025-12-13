@@ -13,7 +13,6 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\Admin\UserManagementController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\CheckAdminRole;
 use App\Http\Middleware\CheckManagerRole;
 use App\Http\Middleware\CheckProjectAccess;
@@ -25,8 +24,6 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth','internal'])->group(function () {
-
-    Route::get('/projects', [LoginController::class, 'dashboard'])->name('projects.index');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/edit', [UserController::class, 'edit'])->name('users.edit');

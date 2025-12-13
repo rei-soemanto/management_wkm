@@ -18,13 +18,7 @@ class LoginController extends Controller
             return route('admin.dashboard');
         }
 
-        if ($roleName === 'Manager') {
-            return route('projects.index');
-        }
-
-        if ($roleName === 'Admin') {
-            return route('projects.index');
-        }
+        return route('projects.index');
     }
 
     public function __construct()
