@@ -15,10 +15,10 @@ class LoginController extends Controller
         $roleName = Auth::user()->userRole->name ?? '';
 
         if ($roleName === 'Admin') {
-            return route('admin.dashboard');
+            return redirect()->route('admin.dashboard');
         }
 
-        return route('projects.index');
+        return redirect()->route('projects.index');
     }
 
     public function __construct()
