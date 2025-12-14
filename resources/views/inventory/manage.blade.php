@@ -73,7 +73,7 @@
         </script>
 
     @else
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+        <div class="flex flex-col md:flex-row md:text-left text-center justify-between items-center mb-8 gap-4 md:gap-0">
             <div>
                 <h1 class="text-3xl font-bold text-[#e0bb35]">Product Inventory</h1>
                 <p class="text-gray-300 mt-1">Real-time stock levels for all catalog items.</p>
@@ -103,7 +103,7 @@
                 </div>
             </form>
             
-            <div class="mt-4 md:mt-0 flex gap-4">
+            <div class="flex gap-4">
                 <div class="bg-[#0f0f0f] px-4 py-2 rounded-lg shadow-sm border border-gray-800 text-center">
                     <span class="block text-xs text-gray-300 uppercase font-bold">Total Items</span>
                     <span class="text-xl font-bold text-[#e0bb35]">{{ $products->sum(fn($p) => $p->inventory->stock ?? 0) }}</span>
@@ -125,19 +125,25 @@
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-800">
                     <thead class="bg-[#0f0f0f]">
+
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider w-20">Image</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Product</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Category</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-300 uppercase tracking-wider w-20 hidden sm:table-cell">Image</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-300 uppercase tracking-wider">Product</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-300 uppercase tracking-wider hidden md:table-cell">Category</th>
                             <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-300 uppercase tracking-wider">Stock Level</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Last Updated</th>
-                            <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-300 uppercase tracking-wider">Action</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-300 uppercase tracking-wider hidden lg:table-cell">Last Updated</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-300 uppercase tracking-wider hidden lg:table-cell">Updated By</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-300 uppercase tracking-wider">Action</th>
                         </tr>
+
                     </thead>
                     <tbody class="bg-[#0f0f0f] divide-y divide-gray-800">
                         @forelse($products as $product)
+
                             <tr class="hover:bg-black transition-colors group">
-                                <td class="px-6 py-4 whitespace-nowrap">
+
+                                {{-- Image --}}
+                                <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">
                                     @if($product->image)
                                         <img class="h-10 w-10 rounded-lg object-cover border border-gray-200" src="{{ asset('storage/' . $product->image) }}" alt="">
                                     @else
@@ -146,15 +152,21 @@
                                         </div>
                                     @endif
                                 </td>
+
+                                {{-- Product --}}
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-bold text-[#e0bb35]">{{ $product->name }}</div>
                                     <div class="text-xs text-gray-300">{{ $product->brand->name ?? '-' }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+
+                                {{-- Category --}}
+                                <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                                         {{ $product->category->name ?? '-' }}
                                     </span>
                                 </td>
+
+                                {{-- Stock Level --}}
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     @php
                                         $stock = $product->inventory->stock ?? 0;
@@ -164,7 +176,9 @@
                                         {{ $stock }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+
+                                {{-- Last Updated --}}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300 hidden lg:table-cell">
                                     @if($product->inventory && $product->inventory->updated_at)
                                         <div class="flex flex-col">
                                             <span>{{ $product->inventory->updated_at->format('M d, Y') }}</span>
@@ -174,7 +188,9 @@
                                         <span class="text-gray-300 italic">Never</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+
+                                {{-- Updated By --}}
+                                <td class="px-6 py-4 whitespace-nowrap hidden lg:table-cell">
                                     <div class="text-sm font-bold text-[#e0bb35] flex items-center gap-2">
                                         {{ $product->name }}
                                         @if($product->is_hidden)
@@ -185,22 +201,73 @@
                                     </div>
                                     <div class="text-xs text-gray-300">{{ $product->brand->name ?? '-' }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+
+                                {{-- Action --}}
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
                                     @if(Auth::user()->userRole->name === 'Admin')
-                                        {{-- 
-                                            Using a route parameter here. 
-                                            The route must be: Route::get('/inventory/{id}/edit', ...)->name('inventory.edit');
-                                            Wait! We didn't add the 'edit' route in web.php yet. 
-                                            I will remind you to add it below.
-                                        --}}
-                                        <a href="{{ route('inventory.edit', $product->id) }}" class="text-[#e0bb35] hover:text-[#e3cf85] font-bold hover:underline">
-                                            Update Stock
-                                        </a>
-                                    @else
-                                        <span class="text-gray-300 cursor-not-allowed">View Only</span>
+                                        <div>
+                                            <a href="{{ route('inventory.edit', $product->id) }}" class="text-[#e0bb35] hover:text-[#e3cf85] font-bold hover:underline text-center">
+                                                Update Stock
+                                            </a>
+                                        </div>
+                                        
                                     @endif
+                                        <!--<span class="text-gray-300 cursor-not-allowed">View Only</span>-->
+                                    <button class="lg:hidden
+                                        sidebar-details-trigger
+                                        text-[#e0bb35] hover:text-[#e3cf85] font-bold hover:underline text-center"
+                                            
+                                            {{-- Sidebar HTML --}}
+                                            data-sidebar-content="
+
+                                            {{-- Header --}}
+                                                <h2 class='text-xl font-bold text-[#e0bb35] mb-3'>{{ $product->name }}</h2>
+                                                <p class='text-gray-300 text-sm mb-4'>Brand: {{ $product->brand->name ?? '-' }}</p>
+                                            
+                                            {{-- Category --}}
+                                                <div class='border-t border-gray-700 pt-4 mb-4'>
+                                                    <p class='text-sm font-bold text-gray-300 uppercase mb-1'>Category</p>
+                                                    <p class='text-xs text-gray-300'>{{ $product->category->name ?? '-' }}</p>
+                                                </div>
+
+                                            {{-- Stock Level --}}
+                                                <div class='border-t border-gray-700 pt-4 mb-4'>
+                                                    <p class='text-sm font-bold text-gray-300 uppercase mb-1'>Stock Level</p>
+                                                    <span class='px-3 py-1 inline-flex text-xs rounded-full {{ $color }}'>
+                                                        {{ $stock }}
+                                                    </span>
+                                                </div>
+
+                                            {{-- Last Updated --}}
+                                                <div class='border-t border-gray-700 pt-4 mb-4'>
+                                                    <p class='text-sm font-bold text-gray-300 uppercase'>Last Updated</p>
+                                                    <div class='text-sm text-gray-300 mt-1'>
+                                                        @if($product->inventory && $product->inventory->updated_at)
+                                                            <span>{{ $product->inventory->updated_at->format('M d, Y \a\t H:i') }}</span>
+                                                            <span class='text-xs text-gray-400 block'>({{ $product->inventory->updated_at->diffForHumans() }})</span>
+                                                        @else
+                                                            <span class='text-gray-300 italic'>Never</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class='border-t border-gray-700 pt-4'>
+                                                    <p class='text-sm font-bold text-gray-300 uppercase'>Status</p>
+                                                    <div class='text-sm font-bold text-[#e0bb35] mt-1'>
+                                                        {{ $product->name }}
+                                                        @if($product->is_hidden)
+                                                            <span title='Hidden from Public' class='ml-2 px-1.5 py-0.5 rounded text-[10px] bg-gray-700 text-gray-300 border border-gray-600'>
+                                                                Hidden
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                ">
+                                        Details
+                                    </button>
                                 </td>
                             </tr>
+
                         @empty
                             <tr>
                                 <td colspan="6" class="px-6 py-10 text-center text-gray-300 italic">No products found in catalog.</td>
