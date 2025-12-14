@@ -5,19 +5,25 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected function redirectTo()
+    protected function authenticated(Request $request, $user)
     {
         $roleName = Auth::user()->userRole->name ?? '';
 
         if ($roleName === 'Admin') {
-            return route('admin.dashboard');
+            return redirect()->route('admin.dashboard');
         }
 
+        return redirect()->route('projects.index');
+    }
+
+    protected function redirectTo()
+    {
         return route('projects.index');
     }
 

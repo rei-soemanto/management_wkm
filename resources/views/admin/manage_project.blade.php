@@ -31,7 +31,7 @@
                             </div>
                             
                             <div class="mb-6">
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Categories (Max 4)</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Categories</label>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
                                     @foreach ($categories as $category)
                                     <div class="flex items-center">

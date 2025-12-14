@@ -7,7 +7,7 @@
 
     <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6 mb-8">
         <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
-            <div>
+            <div class="max-w-3/4">
                 <div class="flex items-center gap-3 mb-2">
                     <span class="bg-gray-300 text-[#0f0f0f] text-xs font-bold px-2.5 py-0.5 rounded">
                         {{ $project->client->name }}
@@ -48,6 +48,12 @@
         </p>
     </div>
 
+    @if (session('error'))
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-md">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         <div class="lg:col-span-2 space-y-8">
@@ -76,7 +82,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium mb-1 text-[#e0bb35]">Due Date</label>
-                            <input type="date" name="due_date" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                            <input type="date" name="due_date" class="w-full rounded bg-[#0f0f0f] border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2 [&::-webkit-calendar-picker-indicator]:invert">
                         </div>
                         <div class="flex items-center mt-3">
                             <input id="is_hidden" name="is_hidden" type="checkbox" value="1" 
@@ -168,7 +174,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-[#e0bb35]">Date</label>
-                            <input type="date" name="progress_date" value="{{ date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2">
+                            <input type="date" name="progress_date" value="{{ date('Y-m-d') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm text-gray-300 px-3 py-2 [&::-webkit-calendar-picker-indicator]:invert">
                         </div>
                     </div>
 
@@ -189,7 +195,7 @@
                     </div>
 
                     <button type="submit" class="w-full bg-[#e0bb35] text-black font-bold py-2 px-4 rounded-md hover:bg-[#e3cf85] transition">
-                        Submit Report & Update Status
+                        Submit Report
                     </button>
                 </form>
             </div>
@@ -274,38 +280,75 @@
             </div>
 
             <div class="bg-[#0f0f0f] rounded-xl shadow-sm border border-gray-800 p-6">
-                <h3 class="text-lg font-bold text-[#e0bb35] mb-4">Allocated Products</h3>
-                <ul class="space-y-3">
+                <h3 class="text-lg font-bold text-[#e0bb35] mb-4">Product Requirements</h3>
+                <ul class="space-y-4">
                     @forelse($project->productUsages as $usage)
-                        <li class="flex justify-between items-center bg-[#0f0f0f] p-3 rounded-md group">
-                            <div>
-                                <p class="text-sm font-medium text-[#e0bb35]">{{ $usage->inventoryItem->product->name }}</p>
-                                @if ($usage->inventoryItem->stock < 0)
-                                    <p class="text-xs text-gray-300">Qty: <span class="font-bold">{{ $usage->quantity }}</span></p>
-                                    <p class="text-xs text-gray-300">Qty ammount is minus! Please restock!</p>
-                                @else
-                                    <p class="text-xs text-gray-300">Qty: <span class="font-bold">{{ $usage->quantity }}</span></p>
-                                @endif
-                            </div>
-                            <div class="flex items-center gap-2">
+                        @php
+                            $needed = $usage->quantity_needed;
+                            $allocated = $usage->quantity;
+                            $shortage = $needed - $allocated;
+                            $inventoryStock = $usage->inventoryItem->stock;
+                        @endphp
+                        <li class="bg-[#1a1a1a] p-4 rounded-md border border-gray-800">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <p class="text-sm font-bold text-[#e0bb35]">{{ $usage->inventoryItem->product->name }}</p>
+                                    <p class="text-xs text-gray-400 mt-1">
+                                        Needed: <span class="text-white">{{ $needed }}</span> | 
+                                        Allocated: <span class="text-white">{{ $allocated }}</span>
+                                    </p>
+                                </div>
+                                
                                 @if(Auth::user()->userRole->name === 'Admin')
-                                    <form action="{{ route('projects.allocation.destroy', [$project->id, $usage->id]) }}" method="POST" onsubmit="return confirm('Remove item? Stock will be returned.')">
+                                    <form action="{{ route('projects.allocation.destroy', [$project->id, $usage->id]) }}" method="POST" onsubmit="return confirm('Remove this requirement? Any allocated stock will be returned.')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-gray-300 hover:text-red-600 p-1" title="Remove & Return Stock">
+                                        <button type="submit" class="text-gray-500 hover:text-red-500 transition-colors" title="Remove">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                         </button>
                                     </form>
                                 @endif
                             </div>
+
+                            @if ($shortage > 0)
+                                <div class="bg-red-900/20 border border-red-900/50 rounded p-2 mb-3">
+                                    <p class="text-xs text-red-400 flex items-center font-bold">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                        Need more {{ $shortage }} of this product!
+                                    </p>
+                                </div>
+
+                                @if(Auth::user()->userRole->name === 'Admin')
+                                    <form action="{{ route('projects.allocation.update', [$project->id, $usage->id]) }}" method="POST" class="flex gap-2 items-center">
+                                        @csrf
+                                        @method('PUT')
+                                        
+                                        @if($inventoryStock > 0)
+                                            <input type="number" name="add_quantity" min="1" max="{{ min($shortage, $inventoryStock) }}" placeholder="Add Qty" 
+                                                class="w-24 px-2 py-1 text-xs rounded bg-[#0f0f0f] border-gray-600 text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35]">
+                                            <button type="submit" class="text-xs bg-[#e0bb35] text-black font-bold px-3 py-1.5 rounded hover:bg-[#e3cf85] whitespace-nowrap">
+                                                + Supply
+                                            </button>
+                                            <span class="text-xs text-gray-500">(In Stock: {{ $inventoryStock }})</span>
+                                        @else
+                                            <span class="text-xs text-red-500 italic">Out of stock in inventory</span>
+                                        @endif
+                                    </form>
+                                @endif
+                            @else
+                                <span class="text-xs text-green-500 flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    Fully Supplied
+                                </span>
+                            @endif
                         </li>
                     @empty
-                        <p class="text-sm text-gray-300 italic text-center py-4">No products allocated yet.</p>
+                        <p class="text-sm text-gray-300 italic text-center py-4">No products required yet.</p>
                     @endforelse
                 </ul>
                 @if(Auth::user()->userRole->name === 'Admin')
                     <a href="{{ route('projects.allocation.create', $project->id) }}" class="mt-4 w-full block text-center border border-dashed border-gray-200 text-[#e0bb35] py-2 rounded-md text-sm hover:bg-gray-200 hover:text-[#0f0f0f] transition">
-                        + Allocate Product (Admin)
+                        + Add Product Requirement (Admin)
                     </a>
                 @endif
             </div>

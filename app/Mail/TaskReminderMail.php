@@ -9,25 +9,38 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
+use Carbon\Carbon;
 
 class TaskReminderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public $task, public $daysLeft) {}
+    public $tasks;
+
+    public function __construct($tasks) {
+        $this->tasks = $tasks;
+    }
 
     public function build()
     {
-        $subject = $this->daysLeft === 0 
-            ? 'URGENT: Task Due Today - ' . $this->task->name 
-            : 'Reminder: Task Due in ' . $this->daysLeft . ' days - ' . $this->task->name;
+        $hasUrgentTask = $this->tasks->contains(function ($task) {
+            $due = Carbon::parse($task->due_date)->startOfDay();
+            $today = Carbon::now('Asia/Jakarta')->startOfDay();
+            return (int) $today->diffInDays($due, false) === 0;
+        });
 
-        return $this->subject($subject)->view('emails.task_reminder');
+        $subject = $hasUrgentTask 
+            ? 'URGENT: Tasks Due Today - Action Required' 
+            : 'Reminder: You have ' . $this->tasks->count() . ' pending tasks';
+
+        return $this->subject($subject)
+                    ->view('emails.task_reminder')
+                    ->with([
+                        'tasks' => $this->tasks,
+                        'task'  => $this->tasks->first() 
+                    ]);
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -36,9 +49,6 @@ class TaskReminderMail extends Mailable
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -46,11 +56,6 @@ class TaskReminderMail extends Mailable
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
     public function attachments(): array
     {
         return [];

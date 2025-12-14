@@ -138,9 +138,7 @@
                     </table>
                 </div>
             </div>
-            <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl overflow-hidden">
-                {{-- ... Table Content ... --}}
-            </div>
+            <div class="bg-white/95 backdrop-blur-md rounded-xl shadow-2xl overflow-hidden"></div>
 
             <div class="mt-4">
                 {{ $services->withQueryString()->links() }}

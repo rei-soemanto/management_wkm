@@ -20,38 +20,22 @@
                     @csrf
                     @method('PATCH')
 
-                    <div class="flex items-center space-x-6">
-                        <div class="shrink-0">
-                            @if($user->profile_picture)
-                                <img class="h-16 w-16 object-cover rounded-full border-2 border-[#0f0f0f]" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Current profile photo" />
-                            @else
-                                <div class="h-16 w-16 rounded-full bg-[#e0bb35] flex items-center justify-center text-[#0f0f0f] text-2xl font-bold border-2 border-[#0f0f0f]">
-                                    {{ substr($user->name, 0, 1) }}
-                                </div>
-                            @endif
-                        </div>
-                        <label class="block">
-                            <span class="sr-only">Choose profile photo</span>
-                            <input type="file" name="profile_picture" class="block w-full text-sm text-gray-300
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded-full file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-[#e0bb35] file:text-[#0f0f0f]
-                                hover:file:bg-[#e3cf85]
-                            "/>
-                        </label>
-                    </div>
-
                     <div>
                         <label for="name" class="block text-sm font-bold text-[#e0bb35] mb-1">Full Name</label>
                         <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required 
                             class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
                         <label for="email" class="block text-sm font-bold text-[#e0bb35] mb-1">Email Address</label>
                         <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required 
                             class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <hr class="border-[#e0bb35] my-4">
@@ -61,6 +45,9 @@
                         <div>
                             <label for="password" class="block text-sm font-bold text-[#e0bb35] mb-1">New Password</label>
                             <input type="password" name="password" id="password" placeholder="New Password" class="block w-full rounded-md border-[#e0bb35] shadow-sm text-gray-300 focus:border-[#e0bb35] focus:ring-[#e0bb35] sm:text-sm px-3 py-2">
+                            @error('password')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label for="password_confirmation" class="block text-sm font-bold text-[#e0bb35] mb-1">Confirm Password</label>

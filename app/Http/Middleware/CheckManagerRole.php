@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckAdminRole
+class CheckManagerRole
 {
     public function handle(Request $request, Closure $next): Response
     {
@@ -17,7 +17,9 @@ class CheckAdminRole
             return redirect('login');
         }
 
-        if ($user->userRole && $user->userRole->name === 'Admin') {
+        $allowedRoles = ['Admin', 'Manager'];
+        
+        if ($user->userRole && in_array($user->userRole->name, $allowedRoles)) {
             return $next($request);
         }
 

@@ -30,11 +30,15 @@ class PublishProjectToPublicWebsite
 
         // Create new record in table projects
         try {
-            Project::create([
+            $categoryIds = $internalProject->categories()->pluck('project_categories.id')->toArray();
+
+            $publicProject = Project::create([
                 'name' => $internalProject->name,
                 'description' => $internalProject->description,
                 'last_updated_by' => Auth::id(),
             ]);
+
+            $publicProject->categories()->sync($categoryIds);
 
             Log::info("Project '{$internalProject->name}' succesfully published to public site.");
 

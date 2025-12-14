@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
 use App\Models\Managements\ManagementProject;
 use App\Models\Managements\ManagementProjectTask;
 use App\Models\Managements\Status;
@@ -24,6 +26,16 @@ class ProjectTaskController extends Controller
             'due_date' => 'nullable|date',
         ]);
 
+        $assignedUser = User::findOrFail($request->assigned_to);
+
+        if ($request->has('is_hidden')) {
+            $userRole = $assignedUser->userRole->name ?? '';
+            
+            if (!in_array($userRole, ['Admin', 'Manager'])) {
+                return back()->with('error', 'Hidden tasks can only be assigned to Admin or Manager roles.')->withInput();
+            }
+        }
+
         $task = ManagementProjectTask::create([
             'management_project_id' => $projectId,
             'assigned_to' => $request->assigned_to,
@@ -34,9 +46,45 @@ class ProjectTaskController extends Controller
             'is_hidden' => $request->has('is_hidden') ? true : false,
         ]);
 
+        // Send assignment task email to assigned PIC and google calendar link
         if ($task->assigned_to) {
             $user = User::find($request->assigned_to);
-            Mail::to($user->email)->send(new TaskAssignedMail($task));
+
+            $googleCalendarLink = null;
+
+            if ($task->due_date) {
+                $startDate = Carbon::parse($task->due_date)->setTime(12, 0, 0);
+                $endDate   = $startDate->copy()->addHour();
+
+                $startStr = $startDate->clone()->setTimezone('Asia/Jakarta')->format('Ymd\THis');
+                $endStr   = $endDate->clone()->setTimezone('Asia/Jakarta')->format('Ymd\THis');
+
+                $linkParams = [
+                    'action'  => 'TEMPLATE',
+                    'text'    => 'Deadline: ' . $task->name,
+                    'details' => $task->description ?? 'No description',
+                    'dates'   => $startStr . '/' . $endStr,
+                    'ctz'     => 'Asia/Jakarta',
+                ];
+
+                $googleCalendarLink = 'https://calendar.google.com/calendar/render?' . http_build_query($linkParams);
+                try {                    
+                    $event = new Event;
+                    $event->name = 'Deadline: ' . $task->name;
+                    $event->description = $task->description;
+                    $event->startDateTime = $startDate;
+                    $event->endDateTime = $endDate;
+
+                    $event->addAttendee(['email' => $user->email,]);
+
+                    $event->save();
+
+                } catch (Exception $e) {
+                    Log::warning("Calendar API Error: " . $e->getMessage());
+                }
+            }
+
+            Mail::to($user->email)->send(new TaskAssignedMail($task, $googleCalendarLink));
         }
 
         return back()->with('success', 'Task created successfully.');

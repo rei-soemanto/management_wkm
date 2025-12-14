@@ -15,6 +15,7 @@ class ProductProjectUsage extends Model
     protected $fillable = [
         'management_project_id',
         'product_inventory_id',
+        'quantity_needed',
         'quantity',
     ];
 

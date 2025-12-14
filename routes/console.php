@@ -13,8 +13,9 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('tasks:send-reminders')
-    ->everyMinute()
-    ->appendOutputTo(storage_path('logs/scheduler_output.log'))
+    ->dailyAt('09:00')
+    ->timezone('Asia/Jakarta')
+    ->appendOutputTo('/home/thep2892/public_html/management.thewkm.com/storage/logs/scheduler_output.log')
     ->before(function () {
         Log::info('tasks:send-reminders scheduled to run at ' . now());
     })
@@ -25,7 +26,7 @@ Schedule::command('tasks:send-reminders')
 Schedule::command('admin:send-digest')
     ->dailyAt('20:00')
     ->timezone('Asia/Jakarta')
-    ->appendOutputTo(storage_path('logs/scheduler_output.log'))
+    ->appendOutputTo('/home/thep2892/public_html/management.thewkm.com/storage/logs/scheduler_output.log')
     ->before(function () {
         Log::info('admin:send-digest scheduled to run at ' . now());
     })

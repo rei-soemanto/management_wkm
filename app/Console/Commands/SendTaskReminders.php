@@ -11,48 +11,75 @@ use Carbon\Carbon;
 class SendTaskReminders extends Command
 {
     protected $signature = 'tasks:send-reminders';
-    protected $description = 'Send reminders for H-7, H-3, H-1, and H-0';
+    protected $description = 'Send batched reminders for tasks due in 7, 3, 1, or 0 days';
 
     public function handle()
     {
+        // Check if there's user task due today or in 1, 3, 7 days
         $this->info('Starting Reminder Check...');
         
-        $tasks = ManagementProjectTask::where('status_id', '!=', 3)
+        $allTasks = ManagementProjectTask::with(['assigned', 'project', 'progressLogs'])
+            ->where('status_id', '!=', 3)
             ->whereNotNull('due_date')
             ->whereNotNull('assigned_to')
             ->get();
 
-        $this->info('Found ' . $tasks->count() . ' active tasks.');
+        // Gather all tasks for each user that due today or in 1, 3, 7 days
+        $this->info('Found ' . $allTasks->count() . ' total active tasks. Filtering and Grouping...');
 
-        foreach ($tasks as $task) {
-            $this->info("Checking Task: {$task->name} (ID: {$task->id})");
+        $reminders = [];
 
-            if ($task->progressLogs()->count() > 0) {
-                $this->info(" -> Skipped: Progress already uploaded.");
-                continue;
+        foreach ($allTasks as $task) {
+            // Skip task if the task have been finished before due
+            if (method_exists($task, 'progressLogs') && $task->progressLogs()->count() > 0) {
+                continue; 
             }
 
-            $dueDateString = $task->due_date->format('Y-m-d'); 
-            $todayString = Carbon::now('Asia/Jakarta')->format('Y-m-d');
-            
-            $due = Carbon::parse($dueDateString);
-            $today = Carbon::parse($todayString);
-            
-            $diffInDays = $today->diffInDays($due, false);
+            try {
+                $due = Carbon::parse($task->due_date)->startOfDay();
+                $today = Carbon::now('Asia/Jakarta')->startOfDay();
+                
+                $diffInDays = (int) $today->diffInDays($due, false);
 
-            $this->info(" -> Due: $dueDateString | Today: $todayString | Diff: $diffInDays days");
+                if (in_array($diffInDays, [7, 3, 1, 0, -1, -2, -3, -7])) {
+                    $userId = $task->assigned_to;
+                    $user = $task->assigned;
 
-            if (in_array($diffInDays, [7, 3, 1, 0])) {
-                $user = $task->assigned;
-                if ($user && $user->email) {
-                    Mail::to($user->email)->send(new TaskReminderMail($task, $diffInDays));
-                    $this->info(" -> EMAIL SENT to {$user->email}");
-                } else {
-                    $this->error(" -> User has no email!");
+                    if ($user && $user->email) {
+                        if (!isset($reminders[$userId])) {
+                            $reminders[$userId] = [
+                                'user' => $user,
+                                'tasks' => collect([])
+                            ];
+                        }
+                        
+                        $reminders[$userId]['tasks']->push($task);
+                        
+                        $this->info(" -> Queued Task: {$task->name} (Due: $diffInDays days) for {$user->email}");
+                    } else {
+                        $this->error(" -> Skipped Task {$task->id}: User has no email.");
+                    }
                 }
-            } else {
-                $this->info(" -> Skipped: Day gap ($diffInDays) is not 0, 1, 3, or 7.");
+            } catch (\Exception $e) {
+                $this->error(" -> Error processing task {$task->id}: " . $e->getMessage());
             }
         }
+
+        // Sending reminder email with task for each user that due today or in 1, 3, 7 days
+        $this->info('Sending Emails...');
+
+        foreach ($reminders as $userId => $data) {
+            $user = $data['user'];
+            $userTasks = $data['tasks'];
+
+            try {
+                Mail::to($user->email)->send(new TaskReminderMail($userTasks));
+                $this->info(" -> EMAIL SENT to {$user->email} containing " . $userTasks->count() . " tasks.");
+            } catch (\Exception $e) {
+                $this->error(" -> Failed to send email to {$user->email}: " . $e->getMessage());
+            }
+        }
+        
+        $this->info('Reminder Check Complete.');
     }
 }

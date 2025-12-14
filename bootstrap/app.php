@@ -15,8 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\CheckAdminRole::class,
             'internal' => \App\Http\Middleware\EnsureInternalUser::class,
         ]);
-
     })
+    ->withCommands([
+        __DIR__.'/../app/Console/Commands',
+    ])
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

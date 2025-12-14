@@ -14,10 +14,14 @@ class TaskAssignedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(public $task) {}
+    public $task;
+    public $calendarLink;
+
+    public function __construct($task, $calendarLink = null)
+    {
+        $this->task = $task;
+        $this->calendarLink = $calendarLink;
+    }
 
     public function build()
     {
