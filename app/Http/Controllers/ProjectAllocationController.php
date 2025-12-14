@@ -7,6 +7,7 @@ use App\Models\Inventories\ProductInventory;
 use App\Models\Inventories\ProductProjectUsage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class ProjectAllocationController extends Controller
 {
@@ -35,14 +36,14 @@ class ProjectAllocationController extends Controller
 
             // Allocated cannot more than stock
             if ($request->quantity_allocated > $inventory->stock) {
-                throw \Illuminate\Validation\ValidationException::withMessages([
+                throw ValidationException::withMessages([
                     'quantity_allocated' => "Cannot allocate {$request->quantity_allocated}. Only {$inventory->stock} available in stock."
                 ]);
             }
 
             // Allocated cannot more than needed
             if ($request->quantity_allocated > $request->quantity_needed) {
-                throw \Illuminate\Validation\ValidationException::withMessages([
+                throw ValidationException::withMessages([
                     'quantity_allocated' => "Allocated amount cannot exceed the needed amount."
                 ]);
             }
