@@ -3,14 +3,18 @@
         <div class="flex justify-between h-16">
             
             <div class="flex items-center">
-                <div class="flex-shrink-0 flex items-center">
-                    <img class="h-10 w-auto" src="{{ asset('img/logoWKM.png') }}" alt="WKM Logo">
-                    <span class="ml-3 font-bold text-xl tracking-wider text-gray-100 hidden md:block">
-                        WKM <span class="text-[#e0bb35]">MANAGEMENT</span>
-                    </span>
-                </div>
+                @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')
+                    <div class="shrink-0 flex items-center">
+                        <a href="{{ route('admin.dashboard') }}" class="flex items-center">
+                            <img class="h-10 w-auto" src="{{ asset('img/logoWKM.png') }}" alt="WKM Logo">
+                            <span class="ml-3 font-bold text-xl tracking-wider text-gray-100 hidden sm:block">
+                                WKM <span class="text-[#e0bb35]">MANAGEMENT</span>
+                            </span>
+                        </a>
+                    </div>
+                @endif
 
-                <div class="hidden md:ml-10 md:flex md:space-x-4">
+                <div class="hidden lg:ml-10 lg:flex lg:space-x-4">
                     
                     @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')
                         <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
@@ -22,11 +26,11 @@
                         </a>
 
                         <a href="{{ route('inventory.index') }}" class="{{ request()->routeIs('inventory.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
-                            <i class="fa-solid fa-boxes-stacked mr-1"></i> Inventory
+                            <i class="fa-solid fa-boxes-stacked mr-1 hidden! xl:inline!"></i> Inventory
                         </a>
 
                         <a href="{{ route('projects.index') }}" class="{{ request()->routeIs('projects.*') ? 'bg-[#e0bb35] text-[#0f0f0f]' : 'text-gray-300 hover:bg-[#e3cf85] hover:text-[#0f0f0f]' }} px-3 py-2 rounded-md text-sm font-medium transition">
-                            <i class="fa-solid fa-server mr-1"></i> Internal Ops
+                            <i class="fa-solid fa-server mr-1 hidden! xl:inline!"></i> Internal Ops
                         </a>
 
                         <div class="relative group">
@@ -72,7 +76,7 @@
             </div>
 
             @auth
-                <div class="hidden md:flex items-center">
+                <div class="hidden lg:flex items-center">
                     <div class="ml-3 relative group">
                         <div class="flex items-center cursor-pointer text-gray-300 hover:text-white transition">
                             <div class="text-right mr-3">
@@ -107,7 +111,7 @@
             @endauth
 
             {{-- MOBILE: Hamburger Button --}}
-            <div class="-mr-2 flex md:hidden">
+            <div class="-mr-2 flex lg:hidden">
                 <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span class="sr-only">Open main menu</span>
@@ -120,7 +124,7 @@
     </div>
 
     {{-- MOBILE MENU --}}
-    <div class="hidden md:hidden bg-[#0f0f0f]" id="mobile-menu">
+    <div class="hidden lg:hidden bg-[#0f0f0f]" id="mobile-menu">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-700">
             
             @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')

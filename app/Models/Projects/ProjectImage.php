@@ -9,6 +9,8 @@ class ProjectImage extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $table = 'project_images';
 
     protected $fillable = [
