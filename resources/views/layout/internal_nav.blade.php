@@ -3,7 +3,9 @@
         <div class="flex justify-between h-16">
             
             <div class="flex items-center">
-                @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin')
+                @if(Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Admin' ||
+                Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Manager'||
+                Auth::user() && Auth::user()->userRole && Auth::user()->userRole->name === 'Employee')
                     <div class="shrink-0 flex items-center">
                         <a href="{{ route('admin.dashboard') }}" class="flex items-center">
                             <img class="h-10 w-auto" src="{{ asset('img/logoWKM.png') }}" alt="WKM Logo">
