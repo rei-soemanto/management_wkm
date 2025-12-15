@@ -53,7 +53,7 @@ class ProjectTaskController extends Controller
             $googleCalendarLink = null;
 
             if ($task->due_date) {
-                $startDate = Carbon::parse($task->due_date)->setTime(12, 0, 0);
+                $startDate = Carbon::parse($task->due_date)->setTime(19, 0, 0);
                 $endDate   = $startDate->copy()->addHour();
 
                 $startStr = $startDate->clone()->setTimezone('Asia/Jakarta')->format('Ymd\THis');
