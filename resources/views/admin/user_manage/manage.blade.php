@@ -67,7 +67,7 @@
                 <h1 class="text-3xl font-bold text-[#e0bb35]">All Registered Users</h1>
                 <p class="text-gray-300 mt-1">Manage access control and user roles.</p>
             </div>
-            <form method="GET" action="{{ route('admin.user_manage.list') }}" class="w-full md:w-2/3 lg:w-1/2">
+            <form method="GET" action="{{ route('admin.user_manage.list') }}" class="w-2/3 lg:w-1/2">
                 <div class="flex flex-col md:flex-row gap-3">
                     <div class="w-full md:w-1/3">
                         <select name="role" onchange="this.form.submit()" 
