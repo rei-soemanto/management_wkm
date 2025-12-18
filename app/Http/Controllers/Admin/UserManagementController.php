@@ -21,11 +21,18 @@ class UserManagementController extends Controller
             });
         }
 
+        if ($request->filled('role')) {
+            $query->where('role_id', $request->input('role'));
+        }
+
         $users = $query->paginate(5)->withQueryString();
+
+        $roles = UserRole::all();
         
         return view('admin.user_manage.manage', [
             'action' => 'list',
-            'users' => $users
+            'users' => $users,
+            'roles' => $roles
         ]);
     }
 

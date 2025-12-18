@@ -67,16 +67,36 @@
                 <h1 class="text-3xl font-bold text-[#e0bb35]">All Registered Users</h1>
                 <p class="text-gray-300 mt-1">Manage access control and user roles.</p>
             </div>
-            <form method="GET" action="{{ route('admin.user_manage.list') }}" class="w-2/3 md:w-1/3">
-                <div class="relative">
-                    <input type="text" 
-                            name="search" 
-                            value="{{ request('search') }}" 
-                            placeholder="Search name or email..." 
-                            class="w-full bg-[#0f0f0f] border border-[#e0bb35] text-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-1 focus:ring-[#e0bb35]">
-                    <button type="submit" class="absolute right-0 top-0 mt-2 mr-3 text-[#e0bb35]">
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </button>
+            <form method="GET" action="{{ route('admin.user_manage.list') }}" class="w-full md:w-2/3 lg:w-1/2">
+                <div class="flex flex-col md:flex-row gap-3">
+                    <div class="w-full md:w-1/3">
+                        <select name="role" onchange="this.form.submit()" 
+                            class="w-full bg-[#0f0f0f] border border-[#e0bb35] text-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-1 focus:ring-[#e0bb35]">
+                            <option value="">All Roles</option>
+                            @foreach($roles as $role)
+                                <option value="{{ $role->id }}" {{ request('role') == $role->id ? 'selected' : '' }}>
+                                    {{ $role->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="relative flex-1">
+                        <input type="text" 
+                                name="search" 
+                                value="{{ request('search') }}" 
+                                placeholder="Search name or email..." 
+                                class="w-full bg-[#0f0f0f] border border-[#e0bb35] text-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-1 focus:ring-[#e0bb35]">
+                        <button type="submit" class="absolute right-0 top-0 mt-2 mr-3 text-[#e0bb35]">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </button>
+                    </div>
+                    
+                    @if(request()->filled('search') || request()->filled('role'))
+                        <a href="{{ route('admin.user_manage.list') }}" class="text-gray-400 hover:text-white text-sm flex items-center justify-center">
+                            Clear
+                        </a>
+                    @endif
                 </div>
             </form>
         </div>
