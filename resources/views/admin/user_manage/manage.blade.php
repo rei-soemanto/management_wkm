@@ -109,12 +109,12 @@
                                             </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-bold text-[#e0bb35]">{{ $user->name }}</div>
-                                                <div class="text-[10px] text-white/50 lg:hidden max-w-[150px] truncate" title="{{ $user->email }}">{{ $user->email }}</div>
+                                                <div class="text-[10px] text-white/50 lg:hidden">{{ $user->email }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 hidden lg:table-cell">
-                                        <div class="text-sm text-white font-medium max-w-[200px] truncate" title="{{ $user->email }}">{{ $user->email }}</div>
+                                        <div class="text-sm text-white font-medium">{{ $user->email }}</div>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         @php
@@ -159,7 +159,7 @@
                                                     ['type' => 'grid', 'items' => [
                                                         ['label' => 'Role', 'value' => $role],
                                                         ['label' => 'System Status', 'value' => ($role === 'User' ? 'Restricted' : 'Active Personnel')],
-                                                        ['label' => 'Email', 'value' => $user->email],
+                                                        ['label' => 'Email', 'value' => \Illuminate\Support\Str::limit($user->email, 25)],
                                                         ['label' => 'Created', 'value' => $user->created_at ? $user->created_at->format('M d, Y') : 'N/A']
                                                     ]],
                                                 ]) }}">
