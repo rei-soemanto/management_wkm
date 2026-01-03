@@ -133,7 +133,7 @@
                                                 PIC: <span class="text-gray-200">{{ $task->assigned->name ?? 'Unassigned' }}</span>
                                             </p>
                                             @if(Auth::user()->userRole->name === 'Admin')
-                                                <a href="{{ route('projects.tasks.edit', [$task->management_project_id, $task->id]) }}" class="text-[10px] mt-2 uppercase tracking-wider bg-[#e0bb35] text-black font-bold py-2 px-2 rounded-md hover:bg-[#c9a72e] transition">
+                                                <a href="{{ route('projects.tasks.edit', [$task->management_project_id, $task->id]) }}" class="w-fit text-[10px] mt-2 uppercase tracking-wider bg-[#e0bb35] text-black font-bold py-2 px-2 rounded-md hover:bg-[#c9a72e] transition">
                                                     Update Status
                                                 </a>
                                             @endif
@@ -309,7 +309,7 @@
                     @endforelse
                 </div>
                 @if(Auth::user()->userRole->name === 'Admin')
-                    <a href="{{ route('projects.allocation.create', $project->id) }}" class="mt-4 w-full block text-center border border-dashed border-gray-700 text-gray-400 py-2 rounded-md text-xs hover:text-[#e0bb35] transition">
+                    <a href="{{ route('projects.allocation.create', $project->id) }}" class="mt-4 w-full block text-center border border-dashed border-gray-700 text-gray-400 py-2 rounded-md text-xs hover:border-[#e0bb35] hover:text-[#e0bb35] transition">
                         + Add Requirement
                     </a>
                 @endif
