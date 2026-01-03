@@ -114,6 +114,7 @@
                                     <td class="px-6 py-4 hidden md:table-cell">
                                         <div class="text-sm text-white font-medium">{{ $client->pic_name }}</div>
                                         <div class="text-xs text-gray-400">{{ $client->email ?? 'No Email' }}</div>
+                                        <div class="text-xs text-gray-400">{{ $client->phone ?? 'No Phone' }}</div>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <div class="inline-flex items-center justify-center w-10 h-10 text-[#e0bb35] font-bold text-xs">
