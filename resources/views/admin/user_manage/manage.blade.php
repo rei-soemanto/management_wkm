@@ -159,7 +159,7 @@
                                                     ['type' => 'grid', 'items' => [
                                                         ['label' => 'Role', 'value' => $role],
                                                         ['label' => 'System Status', 'value' => ($role === 'User' ? 'Restricted' : 'Active Personnel')],
-                                                        ['label' => 'Email', 'value' => \Illuminate\Support\Str::limit($user->email, 25)],
+                                                        ['label' => 'Email', 'value' => \Illuminate\Support\Str::limit($user->email, 22)],
                                                         ['label' => 'Created', 'value' => $user->created_at ? $user->created_at->format('M d, Y') : 'N/A']
                                                     ]],
                                                 ]) }}">
