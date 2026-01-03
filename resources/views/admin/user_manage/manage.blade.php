@@ -146,7 +146,7 @@
                                     <td class="px-6 py-4">
                                         <div class="flex items-center justify-center gap-2">
                                             <a href="{{ route('admin.user_manage.edit', $user->id) }}" 
-                                               class="bg-[#e0bb35] hover:bg-[#f2cc4a] text-black text-[10px] font-bold py-1.5 px-3 rounded uppercase transition-all shadow-md">
+                                                class="bg-[#e0bb35] hover:bg-[#f2cc4a] text-black text-[10px] font-bold py-1.5 px-3 rounded uppercase transition-all shadow-md">
                                                 Edit
                                             </a>
 
@@ -160,7 +160,7 @@
                                                         ['label' => 'Role', 'value' => $role],
                                                         ['label' => 'System Status', 'value' => ($role === 'User' ? 'Restricted' : 'Active Personnel')],
                                                         ['label' => 'Email', 'value' => $user->email],
-                                                        ['label' => 'Created', 'value' => $user->created_at->format('M d, Y')]
+                                                        ['label' => 'Created', 'value' => $user->created_at ? $user->created_at->format('M d, Y') : 'N/A']
                                                     ]],
                                                 ]) }}">
                                                 Details
