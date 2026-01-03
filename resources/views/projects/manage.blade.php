@@ -159,56 +159,58 @@
                     @endphp
 
                     @if($isPrivileged || $isAssigned)
-                        <div class="group relative bg-[#0f0f0f] rounded-xl border border-gray-700 hover:border-[#e0bb35]/50 transition-all duration-300 shadow-2xl flex flex-col">
-                            <div class="p-6 grow">
-                                <div class="flex justify-between items-start mb-4">
-                                    <span class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-bold text-gray-400 tracking-tighter">
-                                        {{ $project->client->name ?? 'No Client' }}
-                                    </span>
-                                    <span class="px-2.5 py-1 text-[10px] font-bold rounded border uppercase tracking-tighter {{ $statusStyles }}">
-                                        {{ $statusName }}
-                                    </span>
-                                </div>
-                                
-                                <h3 class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-[#e0bb35] transition-colors">
-                                    {{ $project->name }}
-                                </h3>
-                                
-                                <div class="space-y-2 mb-4">
-                                    <div class="flex items-center text-xs text-gray-400">
-                                        <svg class="w-3.5 h-3.5 mr-2 text-[#e0bb35]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                        <span class="font-bold mr-1">SPO:</span> {{ $project->start_date ? $project->start_date->format('M d, Y') : 'N/A' }}
+                        <a href="{{ route('projects.show', $project->id) }}">
+                            <div class="group relative bg-[#0f0f0f] rounded-xl border border-gray-700 hover:border-[#e0bb35]/50 transition-all duration-300 shadow-2xl flex flex-col">
+                                <div class="p-6 grow">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <span class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-bold text-gray-400 tracking-tighter">
+                                            {{ $project->client->name ?? 'No Client' }}
+                                        </span>
+                                        <span class="px-2.5 py-1 text-[10px] font-bold rounded border uppercase tracking-tighter {{ $statusStyles }}">
+                                            {{ $statusName }}
+                                        </span>
                                     </div>
-                                    <div class="flex items-center text-xs text-gray-400">
-                                        <svg class="w-3.5 h-3.5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                        <span class="font-bold mr-1 text-red-500/80">DUE:</span> {{ $project->due_date ? $project->due_date->format('M d, Y') : 'N/A' }}
+                                    
+                                    <h3 class="text-lg font-bold text-white mb-2 leading-tight group-hover:text-[#e0bb35] transition-colors">
+                                        {{ $project->name }}
+                                    </h3>
+                                    
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center text-xs text-gray-400">
+                                            <svg class="w-3.5 h-3.5 mr-2 text-[#e0bb35]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                            <span class="font-bold mr-1">SPO:</span> {{ $project->start_date ? $project->start_date->format('M d, Y') : 'N/A' }}
+                                        </div>
+                                        <div class="flex items-center text-xs text-gray-400">
+                                            <svg class="w-3.5 h-3.5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                            <span class="font-bold mr-1 text-red-500/80">DUE:</span> {{ $project->due_date ? $project->due_date->format('M d, Y') : 'N/A' }}
+                                        </div>
                                     </div>
+
+                                    <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+                                        {{ $project->description ?? 'No scope defined for this project.' }}
+                                    </p>
                                 </div>
 
-                                <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-                                    {{ $project->description ?? 'No scope defined for this project.' }}
-                                </p>
-                            </div>
-
-                            <div class="px-6 py-4 bg-black/40 border-t border-gray-800 rounded-b-xl flex justify-between items-center">
-                                <div class="flex -space-x-2">
-                                    @foreach($project->roleAssignments->take(4) as $assignment)
-                                        <div class="h-7 w-7 rounded-full border-2 border-[#0f0f0f] bg-gray-800 flex items-center justify-center text-[10px] font-bold text-[#e0bb35] uppercase" title="{{ $assignment->user->name }}">
-                                            {{ substr($assignment->user->name, 0, 1) }}
-                                        </div>
-                                    @endforeach
-                                    @if($project->roleAssignments->count() > 4)
-                                        <div class="h-7 w-7 rounded-full border-2 border-[#0f0f0f] bg-[#e0bb35] flex items-center justify-center text-[10px] font-bold text-black">
-                                            +{{ $project->roleAssignments->count() - 4 }}
-                                        </div>
-                                    @endif
+                                <div class="px-6 py-4 bg-black/40 border-t border-gray-800 rounded-b-xl flex justify-between items-center">
+                                    <div class="flex -space-x-2">
+                                        @foreach($project->roleAssignments->take(4) as $assignment)
+                                            <div class="h-7 w-7 rounded-full border-2 border-[#0f0f0f] bg-gray-800 flex items-center justify-center text-[10px] font-bold text-[#e0bb35] uppercase" title="{{ $assignment->user->name }}">
+                                                {{ substr($assignment->user->name, 0, 1) }}
+                                            </div>
+                                        @endforeach
+                                        @if($project->roleAssignments->count() > 4)
+                                            <div class="h-7 w-7 rounded-full border-2 border-[#0f0f0f] bg-[#e0bb35] flex items-center justify-center text-[10px] font-bold text-black">
+                                                +{{ $project->roleAssignments->count() - 4 }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <p class="text-[10px] font-bold text-[#e0bb35] uppercase tracking-widest hover:text-white transition-colors flex items-center">
+                                        Details
+                                        <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                                    </p>
                                 </div>
-                                <a href="{{ route('projects.show', $project->id) }}" class="text-[10px] font-bold text-[#e0bb35] uppercase tracking-widest hover:text-white transition-colors flex items-center">
-                                    Details
-                                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                                </a>
                             </div>
-                        </div>
+                        </a>
                     @endif
                 @endforeach
             </div>
