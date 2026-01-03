@@ -32,9 +32,9 @@
                             
                             <div class="mb-6">
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Categories</label>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
                                     @foreach ($categories as $category)
-                                    <div class="flex items-center">
+                                    <div class="flex items-start">
                                         <input type="checkbox" id="category_{{ $category->id }}" name="category_ids[]" value="{{ $category->id }}"
                                             class="h-4 w-4 text-purple-700 focus:ring-purple-700 border-gray-300 rounded"
                                             @checked(in_array($category->id, $project_categories_assigned ?? []))>
@@ -112,35 +112,89 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider w-32">Image</th>
                                     <th scope="col" class="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Project Name</th>
-                                    <th scope="col" class="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Categories</th>
-                                    <th scope="col" class="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider hidden md:table-cell">Last Updated</th>
-                                    <th scope="col" class="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider">Actions</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider hidden sm:table-cell">Categories</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider hidden lg:table-cell">Last Updated</th>
+                                    <th scope="col" class="px-6 py-4 text-center text-sm font-bold uppercase tracking-wider w-44">Actions</th>
                                 </tr>
                             </thead>
+                            
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($projects as $project)
                                     <tr class="hover:bg-gray-50 transition-colors">
+                                        {{-- 1. Image --}}
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             @if ($project->thumbnail)
-                                                <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="Thumbnail" class="h-16 w-24 object-cover rounded shadow-sm">
+                                                <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="Thumbnail" class="h-12 w-20 object-cover rounded shadow-sm">
                                             @else
-                                                <div class="h-16 w-24 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">No Img</div>
+                                                <div class="h-12 w-20 bg-gray-100 rounded flex items-center justify-center text-[10px] text-gray-400">NO IMG</div>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{{ $project->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $project->category_names ?? 'N/A' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">
-                                            <span class="block">{{ $project->lastUpdatedBy->name ?? 'N/A' }}</span>
-                                            <span class="text-xs">{{ $project->updated_at->format('M j, Y, g:i a') }}</span>
+
+                                        {{-- 2. Name (Truncated to save space) --}}
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-bold text-gray-900 truncate max-w-[150px]" title="{{ $project->name }}">
+                                                {{ $project->name }}
+                                            </div>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                            <div class="flex justify-center items-center space-x-2">
-                                                <a href="{{ route('admin.projects.edit', $project->id) }}" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 py-1 px-3 rounded font-bold shadow-sm transition-colors">Edit</a>
-                                                <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded font-bold shadow-sm transition-colors" onclick="return confirm('Are you sure you want to delete this project?');">Delete</button>
+
+                                        {{-- 3. Categories (Wrapped & Limited) --}}
+                                        <td class="px-6 py-4 hidden sm:table-cell">
+                                            <div class="flex flex-wrap gap-1 max-w-[200px]">
+                                                @php 
+                                                    $cats = explode(', ', $project->category_names ?? 'N/A'); 
+                                                @endphp
+                                                @foreach(array_slice($cats, 0, 5) as $cat)
+                                                    <span class="inline-block px-2 py-0.5 bg-purple-50 text-purple-700 text-[10px] font-bold rounded border border-purple-100 uppercase truncate">
+                                                        {{ $cat }}
+                                                    </span>
+                                                @endforeach
+                                                @if(count($cats) > 5)
+                                                    <span class="text-[10px] text-gray-400 font-bold">+{{ count($cats) - 2 }}</span>
+                                                @endif
+                                            </div>
+                                        </td>
+
+                                        {{-- 4. Metadata --}}
+                                        <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-500 hidden lg:table-cell">
+                                            <span class="block text-gray-700 font-medium">{{ $project->lastUpdatedBy->name ?? 'N/A' }}</span>
+                                            <span>{{ $project->updated_at->diffForHumans() }}</span>
+                                        </td>
+
+                                        {{-- 5. Actions (Text Buttons) --}}
+                                        <td class="px-6 py-4 whitespace-nowrap min-w-38">
+                                            <div class="grid grid-cols-2 justify-center items-center gap-2">
+                                                {{-- Edit Button --}}
+                                                <a href="{{ route('admin.projects.edit', $project->id) }}" 
+                                                class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 text-[10px] font-bold py-1.5 rounded shadow-sm transition-colors text-center uppercase">
+                                                    Edit
+                                                </a>
+
+                                                {{-- Delete Button --}}
+                                                <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" class="flex">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" 
+                                                            class="w-full bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold py-1.5 rounded shadow-sm transition-colors text-center uppercase"
+                                                            onclick="return confirm('Are you sure?');">
+                                                        Delete
+                                                    </button>
                                                 </form>
+
+                                                {{-- Detail Button --}}
+                                                <button type="button" 
+                                                    class="view-details-btn cursor-pointer bg-blue-500 hover:bg-blue-600 text-white text-[10px] font-bold py-1.5 rounded shadow-sm transition-colors text-center uppercase col-span-2"
+                                                    data-sidebar-title="Project Overview"
+                                                    data-sidebar-schema="{{ json_encode([
+                                                        ['type' => 'image', 'value' => asset('storage/' . $project->thumbnail)],
+                                                        ['type' => 'header', 'label' => 'Project Name', 'value' => $project->name],
+                                                        ['type' => 'badge-list', 'label' => 'Categories', 'value' => $project->category_names],
+                                                        ['type' => 'lead', 'value' => $project->description],
+                                                        ['type' => 'grid', 'items' => [
+                                                            ['label' => 'Updated By', 'value' => $project->lastUpdatedBy->name ?? 'N/A'],
+                                                            ['label' => 'Last Update', 'value' => $project->updated_at->diffForHumans()]
+                                                        ]]
+                                                    ]) }}">
+                                                    Details
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -150,6 +204,7 @@
                                     </tr>
                                 @endforelse
                             </tbody>
+
                         </table>
                     </div>
                 </div>
