@@ -186,7 +186,7 @@
                         <textarea name="notes" rows="2" class="w-full rounded bg-[#1a1a1a] border-gray-700 text-gray-300 px-3 py-2 text-sm" placeholder="What did you accomplish?"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full bg-white text-black font-bold py-2.5 rounded hover:bg-gray-200 transition">
+                    <button type="submit" class="w-full bg-[#e0bb35] text-black font-bold py-2.5 rounded-md hover:bg-[#c9a72e] transition">
                         Submit Report
                     </button>
                 </form>
