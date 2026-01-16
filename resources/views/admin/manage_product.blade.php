@@ -235,4 +235,52 @@
         @endif
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function setupDropdownFilter(searchInputId, selectId, noResultsId) {
+            const searchInput = document.getElementById(searchInputId);
+            const select = document.getElementById(selectId);
+            const noResultsMsg = document.getElementById(noResultsId);
+            
+            if (!searchInput || !select) return;
+
+            // 1. Store the original options in memory immediately
+            const originalOptions = Array.from(select.options).slice(1); // Skip the "Select a..." placeholder
+            const placeholder = select.options[0];
+
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                // 2. Clear current options (keep placeholder)
+                select.innerHTML = '';
+                select.appendChild(placeholder);
+
+                let hasResults = false;
+
+                // 3. Re-add only the matching options
+                originalOptions.forEach(option => {
+                    const text = option.textContent.toLowerCase();
+                    
+                    if (text.includes(searchTerm)) {
+                        select.appendChild(option);
+                        hasResults = true;
+                    }
+                });
+
+                // 4. Handle "No Results" message
+                if (noResultsMsg) {
+                    if (!hasResults && searchTerm !== '') {
+                        noResultsMsg.classList.remove('hidden');
+                    } else {
+                        noResultsMsg.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        setupDropdownFilter('brand_search', 'brand_id', 'brand_no_results');
+        setupDropdownFilter('category_search', 'category_id', 'category_no_results');
+    });
+</script>
 @endsection
