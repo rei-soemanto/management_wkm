@@ -16,8 +16,12 @@ class ProjectAllocationController extends Controller
     {
         $project = ManagementProject::findOrFail($projectId);
         
-        // Get inventory items that have stock > 0
-        $inventory = ProductInventory::with('product')->get();
+        $inventory = ProductInventory::select('id', 'product_id', 'stock')
+            ->where('stock', '>', 0)
+            ->with(['product' => function($query) {
+                $query->select('id', 'name', 'brand_id', 'category_id')->with(['brand:id,name', 'category:id,name']);
+            }])
+            ->get();
 
         return view('projects.allocate_product', compact('project', 'inventory'));
     }

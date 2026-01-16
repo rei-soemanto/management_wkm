@@ -21,17 +21,27 @@
             
             <div class="space-y-2">
                 <label class="block text-sm font-bold text-[#e0bb35]">Select Product</label>
-                <input type="text" id="productSearch" placeholder="Filter products..." 
+                
+                <input type="text" id="productSearch" placeholder="Filter by name, brand, or category..." 
                     class="block w-full rounded-md bg-[#1a1a1a] border-gray-600 text-gray-300 shadow-sm focus:border-[#e0bb35] focus:ring-1 focus:ring-[#e0bb35] text-sm px-4 py-2.5 outline-none">
 
                 <select name="product_inventory_id" id="productSelect" 
                     class="mt-1 block w-full rounded-md bg-[#0f0f0f] border-gray-600 shadow-sm focus:border-[#e0bb35] focus:ring-1 focus:ring-[#e0bb35] text-sm text-gray-300 px-3 py-2.5 outline-none transition cursor-pointer">
+                    
+                    <option value="" disabled selected>-- Choose a Product --</option>
+
                     @foreach($inventory as $item)
-                        <option value="{{ $item->id }}" data-stock="{{ $item->stock }}" data-search="{{ strtolower($item->product->name) }}">
-                            {{ $item->product->name }} (Available: {{ $item->stock }})
+                        <option value="{{ $item->id }}" data-stock="{{ $item->stock }}" data-search="{{ strtolower($item->product->name . ' ' . ($item->product->brand->name ?? '') . ' ' . ($item->product->category->name ?? '')) }}">
+                            {{ $item->product->name }} 
+                            @if($item->product->brand) - {{ $item->product->brand->name }} @endif
+                            (Stock: {{ $item->stock }})
                         </option>
                     @endforeach
                 </select>
+                
+                <div id="noResults" class="hidden text-xs text-red-400 mt-1 ml-1">
+                    No products match your search.
+                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">

@@ -62,11 +62,10 @@ class AdminController extends Controller
 
     public function createProduct(): View
     {
-        return view('admin.manage_product', [
-            'action'     => 'add',
-            'brands'     => ProductBrand::orderBy('name', 'asc')->get(),
-            'categories' => ProductCategory::orderBy('name', 'asc')->get()
-        ]);
+        $brands = ProductBrand::select('id', 'name')->orderBy('name', 'asc')->get();
+        $categories = ProductCategory::select('id', 'name')->orderBy('name', 'asc')->get();
+
+        return view('admin.manage_product', compact('brands', 'categories') + ['action' => 'add']);
     }
 
     public function storeProduct(Request $request): RedirectResponse
@@ -100,12 +99,12 @@ class AdminController extends Controller
 
     public function editProduct(string $id): View
     {
-        return view('admin.manage_product', [
-            'action'          => 'edit',
-            'product_to_edit' => Product::findOrFail($id),
-            'brands'          => ProductBrand::orderBy('name', 'asc')->get(),
-            'categories'      => ProductCategory::orderBy('name', 'asc')->get()
-        ]);
+        $product_to_edit = Product::findOrFail($id);
+
+        $brands = ProductBrand::select('id', 'name')->orderBy('name', 'asc')->get();
+        $categories = ProductCategory::select('id', 'name')->orderBy('name', 'asc')->get();
+
+        return view('admin.manage_product', compact('product_to_edit', 'brands', 'categories') + ['action' => 'edit']);
     }
 
     public function updateProduct(Request $request, string $id): RedirectResponse

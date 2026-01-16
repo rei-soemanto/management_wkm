@@ -33,6 +33,10 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                 <div>
                                     <label for="brand_id" class="block text-sm font-bold text-gray-700 mb-2">Brand</label>
+                                    
+                                    <input type="text" id="brand_search" placeholder="Search brands..." 
+                                        class="mb-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700 sm:text-sm px-4 py-2 text-gray-600">
+
                                     <select id="brand_id" name="brand_id" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700 sm:text-sm px-4 py-2" required>
                                         <option value="">Select a brand</option>
                                         @foreach ($brands as $brand) 
@@ -41,9 +45,15 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    <p id="brand_no_results" class="hidden text-xs text-red-500 mt-1">No brands found.</p>
                                 </div>
+
                                 <div>
                                     <label for="category_id" class="block text-sm font-bold text-gray-700 mb-2">Category</label>
+                                    
+                                    <input type="text" id="category_search" placeholder="Search categories..." 
+                                        class="mb-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700 sm:text-sm px-4 py-2 text-gray-600">
+
                                     <select id="category_id" name="category_id" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700 sm:text-sm px-4 py-2" required>
                                         <option value="">Select a category</option>
                                         @foreach ($categories as $category) 
@@ -52,6 +62,7 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    <p id="category_no_results" class="hidden text-xs text-red-500 mt-1">No categories found.</p>
                                 </div>
                             </div>
 
